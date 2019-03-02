@@ -11,14 +11,14 @@ using SolutionNugetPackagesUpdater.Services.FileReaders;
 namespace SolutionNugetPackagesUpdater.Services
 {
     public class FileReader
-	{
-		private readonly string _file;
+    {
+        private readonly string _file;
         private readonly Dictionary<string, IFileReader> _fileReaders;
 
         public FileReader(string file) : this()
-		{
-			_file = file;
-		}
+        {
+            _file = file;
+        }
 
         private FileReader()
         {
@@ -30,20 +30,22 @@ namespace SolutionNugetPackagesUpdater.Services
         }
 
         public object ReadFile()
-		{
+        {
             var key = string.Empty;
-			var file = Path.GetFileName(_file).ToLower();
+            var file = Path.GetFileName(_file).ToLower();
 
-			if (file.Equals("packages.config"))
-			{
+            if (file.Equals("packages.config"))
+            {
                 key = "packages.config";
-			}
-            else if (file.EndsWith(".csproj",true,CultureInfo.InvariantCulture))
-			{
+            }
+            else if (file.EndsWith(".csproj", true, CultureInfo.InvariantCulture))
+            {
                 key = ".csproj";
-			}
+            }
 
             return _fileReaders[key].Read(_file);
-		}
-	}
+        }
+
+
+    }
 }
