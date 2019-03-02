@@ -1,11 +1,13 @@
-﻿
-using System;
+﻿using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using NugetPckgUpdater.Services;
 using SolutionNugetPackagesUpdater.Models;
 using SolutionNugetPackagesUpdater.Utils;
+using System;
+using Console = Colorful.Console;
 
 namespace SolutionNugetPackagesUpdater.Services
 {
@@ -58,6 +60,11 @@ namespace SolutionNugetPackagesUpdater.Services
 
             foreach (var file in files)
             {
+                var projectTypeManager = new ProjectTypeManager(file);
+                var projectType = projectTypeManager.ProjectType();
+                Console.WriteLine($"{Path.GetFileName(file)} {projectType.ToString()} ", Color.RoyalBlue);
+
+                #region comment out kejap
                 var fileFinder = new FileReader(file);
                 var fileContentObject = fileFinder.ReadFile();
 
@@ -102,6 +109,7 @@ namespace SolutionNugetPackagesUpdater.Services
                 }
 
                 WriteToTextFile(string.Empty);
+                #endregion
             }
         }
 
