@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using Colorful;
+using SolutionNugetPackagesUpdater.Models;
 using SolutionNugetPackagesUpdater.Services;
 
 namespace SolutionNugetPackagesUpdater
@@ -12,26 +13,33 @@ namespace SolutionNugetPackagesUpdater
 
 			if (args.Length == 0)
 			{
-				if (!configService.Validate())
-				{
-					Console.WriteLine("app_config.json is not yet created", Color.Red);
-					return;
-				}
-
-				configService.LoadConfiguration();
-                using (var finder = new FinderService(configService))
+                try
                 {
-                    finder.Execute();
-                }
+                    if (!configService.Validate())
+                    {
+                        Console.WriteLine($"{Configuration.FileName} is not yet created", Color.Red);
+                        return;
+                    }
 
-				// process here
-			}
-			else
+                    configService.LoadConfiguration();
+                    using (var finder = new FinderService(configService))
+                    {
+                        finder.Execute();
+                    }
+
+                    // process here
+                }
+                catch (System.Exception ex)
+                {
+                    Console.WriteLine($"{ex.GetType().Name}\n{ex.Message}", Color.Red);
+                }
+            }
+            else
 			{
 				if (args[0].ToLower().Equals("--createappconfig"))
 				{
 					configService.CreateConfigFile();
-					Console.WriteLine("app_config.json file created", Color.AliceBlue);
+					Console.WriteLine($"{Configuration.FileName} file created", Color.AliceBlue);
 				}
 
 				return;
