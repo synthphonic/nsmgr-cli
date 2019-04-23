@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Services.FileReaders;
+using SolutionNugetPackagesUpdater.Core.Services.FileReaders;
 
-namespace SolutionNugetPackagesUpdater.Services
+namespace SolutionNugetPackagesUpdater.Core.Services
 {
     public class FileReader
     {

@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Models;
+using SolutionNugetPackagesUpdater.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Services.FileReaders
+namespace SolutionNugetPackagesUpdater.Core.Services.FileReaders
 {
     public class CSharpProjectFileReader : IFileReader
     {

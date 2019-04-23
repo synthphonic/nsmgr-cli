@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NugetPckgUpdater.Models;
+using NugetPckgUpdater.Core.Models;
 
-namespace NugetPckgUpdater.Configurations
+namespace NugetPckgUpdater.Core.Configurations
 {
     public static class NETStandardVersion
     {

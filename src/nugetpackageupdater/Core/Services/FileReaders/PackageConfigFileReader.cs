@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Models;
+using SolutionNugetPackagesUpdater.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Services.FileReaders
+namespace SolutionNugetPackagesUpdater.Core.Services.FileReaders
 {
     public class PackageConfigFileReader : IFileReader
     {

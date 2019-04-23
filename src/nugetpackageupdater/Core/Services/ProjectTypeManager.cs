@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Xml;
-using NugetPckgUpdater.Configurations;
-using NugetPckgUpdater.Models;
+using NugetPckgUpdater.Core.Configurations;
+using NugetPckgUpdater.Core.Models;
 
-namespace NugetPckgUpdater.Services
+namespace NugetPckgUpdater.Core.Services
 {
     public class ProjectTypeManager
     {

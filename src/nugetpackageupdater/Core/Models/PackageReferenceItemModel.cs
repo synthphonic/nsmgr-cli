@@ -1,4 +1,4 @@
-﻿namespace SolutionNugetPackagesUpdater.Models
+﻿namespace SolutionNugetPackagesUpdater.Core.Models
 {
     public class PackageReferenceItemModel
     {

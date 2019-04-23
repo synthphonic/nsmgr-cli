@@ -2,10 +2,10 @@
 using System.Reflection;
 using Newtonsoft.Json;
 using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Models;
-using SolutionNugetPackagesUpdater.Utils;
+using SolutionNugetPackagesUpdater.Core.Models;
+using SolutionNugetPackagesUpdater.Core.Utils;
 
-namespace SolutionNugetPackagesUpdater.Services
+namespace SolutionNugetPackagesUpdater.Core.Services
 {
     public class ConfigurationService : IConfigurationService
 	{

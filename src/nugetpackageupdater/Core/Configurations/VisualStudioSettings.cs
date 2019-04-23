@@ -1,4 +1,4 @@
-﻿namespace NugetPckgUpdater.Configurations
+﻿namespace NugetPckgUpdater.Core.Configurations
 {
     public static class VisualStudioSettings
     {

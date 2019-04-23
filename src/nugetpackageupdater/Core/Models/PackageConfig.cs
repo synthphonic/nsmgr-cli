@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace SolutionNugetPackagesUpdater.Models
+namespace SolutionNugetPackagesUpdater.Core.Models
 {
 	[XmlRoot(ElementName = "packages")]
 	public class PackageConfig

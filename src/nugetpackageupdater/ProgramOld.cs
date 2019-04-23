@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Colorful;
-using SolutionNugetPackagesUpdater.Models;
-using SolutionNugetPackagesUpdater.Services;
+using SolutionNugetPackagesUpdater.Core.Models;
+using SolutionNugetPackagesUpdater.Core.Services;
 
 namespace SolutionNugetPackagesUpdater
 {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SolutionNugetPackagesUpdater.Models;
+using SolutionNugetPackagesUpdater.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Services
+namespace SolutionNugetPackagesUpdater.Core.Services
 {
 	public class PackageConfigFileFinder
 	{

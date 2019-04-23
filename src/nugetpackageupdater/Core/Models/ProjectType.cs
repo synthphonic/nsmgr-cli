@@ -1,4 +1,4 @@
-﻿namespace NugetPckgUpdater.Models
+﻿namespace NugetPckgUpdater.Core.Models
 {
     public enum ProjectType
     {

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using NugetPckgUpdater.Services;
-using SolutionNugetPackagesUpdater.Models;
-using SolutionNugetPackagesUpdater.Utils;
+using NugetPckgUpdater.Core.Services;
+using SolutionNugetPackagesUpdater.Core.Models;
+using SolutionNugetPackagesUpdater.Core.Utils;
 using System;
 using Console = Colorful.Console;
 
-namespace SolutionNugetPackagesUpdater.Services
+namespace SolutionNugetPackagesUpdater.Core.Services
 {
     public class FinderService : IDisposable
     {
