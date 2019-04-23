@@ -16,19 +16,30 @@ namespace SolutionNugetPackagesUpdater
 				})
 				.WithParsed<FindConflict>((obj) =>
 				{
-					Console.WriteLine($"FindConflict : {obj.Path}");
+					Console.WriteLine($"FindConflict : {obj.FileName}");
 				})
 
 				.WithNotParsed(errs =>
 				{
-					var sb = new StringBuilder();
-					foreach (var item in errs)
-					{
-						sb.AppendFormat($"{item.ToString()}");
-					}
+					//var sb = new StringBuilder();
+					//foreach (var item in errs)
+					//{
+					//	sb.AppendFormat($"{item.ToString()}");
+					//}
 
-					Console.WriteLine(sb.ToString());
+					//Console.WriteLine(sb.ToString());
 				});
 		}
+
+		public const string Name = "mycli";
+
+		//public static readonly string Name
+		//{
+		//	get
+		//	{
+		//		var asmName = new FindConflict().GetType().Assembly.GetName();
+		//		return asmName.Name;
+		//	}
+		//}
 	}
 }

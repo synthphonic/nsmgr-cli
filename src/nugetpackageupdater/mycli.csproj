@@ -4,6 +4,23 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>mycli</AssemblyName>
+    <Copyright>(c) FiftyOneLab Technologies</Copyright>
+    <RootNamespace>SolutionNugetPackagesUpdater</RootNamespace>
+    <Version>0.0.0.1</Version>
+    <Authors>Shah Z. S</Authors>
+    <Company>FiftyOne Lab</Company>
+    <Product>My CLI</Product>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>MyCLI description</Description>
+    <PackageLicenseUrl>License URL</PackageLicenseUrl>
+    <!-- <PackageProjectUrl>Project URL</PackageProjectUrl> -->
+    <!-- <PackageIconUrl>Icon URL</PackageIconUrl> -->
+    <!-- <RepositoryUrl>Repo URL</RepositoryUrl> -->
+    <!-- <RepositoryType>Repo type</RepositoryType> -->
+    <!-- <PackageTags>Tags</PackageTags> -->
+    <!-- <PackageReleaseNotes>Release</PackageReleaseNotes>     -->
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
