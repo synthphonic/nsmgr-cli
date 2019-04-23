@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 using SolutionNugetPackagesUpdater.Abstraction;
 using SolutionNugetPackagesUpdater.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Core.Services.FileReaders
+namespace SolutionNugetPackagesUpdater.Core.FileReaders
 {
     public class PackageConfigFileReader : IFileReader
     {

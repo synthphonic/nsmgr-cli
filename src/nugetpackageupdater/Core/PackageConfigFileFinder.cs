@@ -2,7 +2,7 @@
 using System.Linq;
 using SolutionNugetPackagesUpdater.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Core.Services
+namespace SolutionNugetPackagesUpdater.Core
 {
 	public class PackageConfigFileFinder
 	{

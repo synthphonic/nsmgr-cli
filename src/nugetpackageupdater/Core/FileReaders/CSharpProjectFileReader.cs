@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using SolutionNugetPackagesUpdater.Abstraction;
 using SolutionNugetPackagesUpdater.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Core.Services.FileReaders
+namespace SolutionNugetPackagesUpdater.Core.FileReaders
 {
     public class CSharpProjectFileReader : IFileReader
     {

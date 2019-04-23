@@ -37,5 +37,8 @@
     <Folder Include="Core\Utils\" />
     <Folder Include="Core\Configurations\" />
     <Folder Include="Core\Models\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Commands\FindConflict\" />
+    <Folder Include="Core\FileReaders\" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@ using System.Xml;
 using NugetPckgUpdater.Core.Configurations;
 using NugetPckgUpdater.Core.Models;
 
-namespace NugetPckgUpdater.Core.Services
+namespace NugetPckgUpdater.Core
 {
     public class ProjectTypeManager
     {

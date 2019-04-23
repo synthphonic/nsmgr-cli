@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Core.Services.FileReaders;
+using SolutionNugetPackagesUpdater.Core.FileReaders;
 
-namespace SolutionNugetPackagesUpdater.Core.Services
+namespace SolutionNugetPackagesUpdater.Core
 {
-    public class FileReader
+	public class FileReader
     {
         private readonly string _file;
         private readonly Dictionary<string, IFileReader> _fileReaders;

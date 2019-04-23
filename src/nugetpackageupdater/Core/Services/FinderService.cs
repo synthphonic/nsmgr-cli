@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using NugetPckgUpdater.Core.Services;
 using SolutionNugetPackagesUpdater.Core.Models;
 using SolutionNugetPackagesUpdater.Core.Utils;
 using System;
 using Console = Colorful.Console;
+using NugetPckgUpdater.Core;
 
 namespace SolutionNugetPackagesUpdater.Core.Services
 {
-    public class FinderService : IDisposable
+	public class FinderService : IDisposable
     {
         private readonly ConfigurationService _configurationService;
         private bool disposedValue = false; // To detect redundant calls        

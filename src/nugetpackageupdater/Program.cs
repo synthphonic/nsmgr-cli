@@ -2,6 +2,7 @@
 using Colorful;
 using CommandLine;
 using NugetPckgUpdater.CommandLine;
+using SolutionNugetPackagesUpdater.Core.Services;
 
 namespace SolutionNugetPackagesUpdater
 {
@@ -10,15 +11,15 @@ namespace SolutionNugetPackagesUpdater
 		static void Main(string[] args)
 		{
 			Parser.Default.ParseArguments<ReportOptions, FindConflict>(args)
-				.WithParsed<ReportOptions>((obj) =>
+				.WithParsed<ReportOptions>((command) =>
 				{
-					Console.WriteLine($"ReportOptions : {obj.Path}");
+					Console.WriteLine($"ReportOptions : {command.Path}");
 				})
-				.WithParsed<FindConflict>((obj) =>
+				.WithParsed<FindConflict>((command) =>
 				{
-					Console.WriteLine($"FindConflict : {obj.FileName}");
+					var service = new FindConflictService(command.FileName);
+					service.Run();
 				})
-
 				.WithNotParsed(errs =>
 				{
 					//var sb = new StringBuilder();
