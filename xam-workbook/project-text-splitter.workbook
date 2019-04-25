@@ -1,0 +1,29 @@
+---
+uti: com.xamarin.workbook
+id: 85508cb5-0de0-4ebf-bbf0-31f0f270b466
+title: project-text-splitter
+platforms:
+- Console
+---
+
+```csharp
+// Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storiveo.UnitTests", "Storiveo\Storiveo.UnitTests\Storiveo.UnitTests.csproj", "{37DF5F99-DA45-4D54-A8DA-F3EE97703A6E}"
+const string Template = @"Project(""{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"") = ""Storiveo.UnitTests"", ""Storiveo\Storiveo.UnitTests\Storiveo.UnitTests.csproj"", ""{37DF5F99-DA45-4D54-A8DA-F3EE97703A6E}""";
+
+var split = Template.Split(',');
+var cleanup = split[0].Replace("Project(\"{", string.Empty);
+cleanup = cleanup.Replace("}\") =", string.Empty);
+cleanup = cleanup.Substring(0,cleanup.Length-1);
+
+var secondTemplate = cleanup;
+var projectTypeGuid = cleanup.Substring(0,36);
+var projectName = cleanup.Replace($"{projectTypeGuid} \"",string.Empty);
+
+Console.WriteLine(secondTemplate);
+Console.WriteLine($"ProjectTypeGuid : {projectTypeGuid}");
+Console.WriteLine($"ProjectName : {projectName}" );
+
+
+
+// secondTemplate.Replace(projectTypeGuid,string.Empty);
+```
