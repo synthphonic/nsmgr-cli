@@ -30,6 +30,7 @@ namespace SolutionNugetPackagesUpdater.Core.Models
 		{
 			var projectGuid = split[2].Trim().Replace("{", string.Empty).Replace("}", string.Empty);
 			projectGuid = projectGuid.Replace("\"", string.Empty);
+
 			return projectGuid;
 		}
 
@@ -37,6 +38,8 @@ namespace SolutionNugetPackagesUpdater.Core.Models
 		{
 			var projectPath = split[1].Trim();
 			projectPath = projectPath.Replace("\"", string.Empty);
+			projectPath = projectPath.Replace("\\","/");
+
 			return projectPath;
 		}
 
