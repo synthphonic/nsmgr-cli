@@ -38,31 +38,5 @@ namespace SolutionNugetPackagesUpdater.Core.FileReaders
 
             return fileContents;
         }
-
-        private IEnumerable<string> ReadSolutionFile2()
-        {
-            var fileName = Path.GetFileName(_file);
-
-            var fileContents = new List<string>();
-            using (var fs = File.OpenRead(_file))
-            {
-                using (var sr = new StreamReader(fs))
-                {
-                    var s = sr.ReadLine();
-                    s = sr.ReadLine();
-                    while (!string.IsNullOrWhiteSpace(s))
-                    {
-                        fileContents.Add(s);
-                        s = sr.ReadLine();
-                    }
-                    
-                    sr.Close();
-                }
-
-                fs.Close();
-            }
-
-            return fileContents;
-        }
     }
 }
