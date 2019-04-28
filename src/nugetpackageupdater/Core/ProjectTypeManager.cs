@@ -28,6 +28,11 @@ namespace NugetPckgUpdater.Core
 
         private TargetFramework CheckForNativeProject()
         {
+			if (!File.Exists(_file))
+			{
+				return TargetFramework.Unknown;
+			}
+
             var xmlContent = string.Empty;
             using (var fs = File.OpenRead(_file))
             {
@@ -48,7 +53,11 @@ namespace NugetPckgUpdater.Core
             if (iosProject)
                 return TargetFramework.NativeiOS;
 
-            var androidProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.AndroidTypeGuid);
+			var iosNativeProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.iOSBindingTypeGuid);
+			if (iosNativeProject)
+				return TargetFramework.NativeiOSBinding;
+
+			var androidProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.AndroidTypeGuid);
             if (androidProject)
                 return TargetFramework.NativeAndroid;
 
@@ -56,8 +65,13 @@ namespace NugetPckgUpdater.Core
 		}
 
         private TargetFramework CheckForNETStandardProject()
-        {
-            var xmlContent = string.Empty;
+		{
+			if (!File.Exists(_file))
+			{
+				return TargetFramework.Unknown;
+			}
+
+			var xmlContent = string.Empty;
             using (var fs = File.OpenRead(_file))
             {
                 using (var sr = new StreamReader(fs))
