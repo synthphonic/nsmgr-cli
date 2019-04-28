@@ -20,6 +20,7 @@ namespace NugetPckgUpdater.Core.Configurations
         public const string AndroidTypeGuid = "EFBA0AD7-5A72-4C68-AF49-83D382785DCF";
         public const string iOSTypeGuid = "FEACFBD2-3405-455C-9665-78FE426C6842";
 		public const string VirtualFolderGuid = "2150E333-8FDC-42A3-9474-1A3956D46DE8";
+		public const string iOSBindingTypeGuid = "8FFB629D-F513-41CE-95D2-7ECE97B6EEEC";
 
 		static VisualStudioProjectSetting()
 		{
