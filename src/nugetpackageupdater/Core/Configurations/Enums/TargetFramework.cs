@@ -4,11 +4,11 @@
 	{
 		Unknown = -1,
 		NETStandard20,
-		NativeiOS,
-		NativeAndroid,
 		NETCoreApp20,
 		NETCoreApp21,
-		NETCoreApp22
+		NETCoreApp22,
+		NativeiOS,
+		NativeiOSBinding,
+		NativeAndroid,
 	}
-
 }
