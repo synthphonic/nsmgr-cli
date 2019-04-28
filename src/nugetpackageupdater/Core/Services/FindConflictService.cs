@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NugetPckgUpdater.Core;
 using NugetPckgUpdater.Core.Configurations;
 using SolutionNugetPackagesUpdater.Core.FileReaders;
 using SolutionNugetPackagesUpdater.Core.Models;
+using SolutionNugetPackagesUpdater.Core.Utils;
 
 namespace SolutionNugetPackagesUpdater.Core.Services
 {
@@ -42,11 +44,24 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 
 		private void Output()
 		{
+			var parentPath = FileUtil.GetFullPath(_fileName);
+
 			foreach (var item in _spiList)
 			{
 				var projectType = VisualStudioProjectSetting.GetProjectType(item.ProjectTypeGuid);
+				string projectFile = FileUtil.PathCombine(parentPath, item.ProjectPath);
 
-				Console.WriteLine($"{item.ProjectName} [{projectType.ToString()}]");
+				var prjTypeMgr = new ProjectTypeManager(projectFile);
+				var targetFramework = prjTypeMgr.ProjectType();
+
+				var outputString = string.Empty;
+
+				outputString = targetFramework == Configurations.Enums.TargetFramework.Unknown
+					? $"{item.ProjectName} [{projectType.ToString()}] [{targetFramework.ToString()}] [{item.ProjectTypeGuid}]"
+					: $"{item.ProjectName} [{projectType.ToString()}] [{targetFramework.ToString()}]";
+
+
+				Console.WriteLine(outputString);
 			}
 		}
 	}
