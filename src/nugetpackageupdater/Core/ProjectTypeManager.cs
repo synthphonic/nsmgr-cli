@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Xml;
 using NugetPckgUpdater.Core.Configurations;
-using NugetPckgUpdater.Core.Models;
+using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
 
 namespace NugetPckgUpdater.Core
 {
-    public class ProjectTypeManager
+	public class ProjectTypeManager
     {
         private string _file;
 
@@ -14,19 +14,19 @@ namespace NugetPckgUpdater.Core
             _file = file;
         }
 
-        public ProjectType ProjectType()
+        public TargetFramework ProjectType()
         {
             var projectType = CheckForNativeProject();
 
-            if (projectType == Models.ProjectType.Unknown)
-            {
-                projectType = CheckForNETStandardroject();
+            if (projectType == TargetFramework.Unknown)
+			{
+                projectType = CheckForNETStandardProject();
             }
 
             return projectType;
         }
 
-        private ProjectType CheckForNativeProject()
+        private TargetFramework CheckForNativeProject()
         {
             var xmlContent = string.Empty;
             using (var fs = File.OpenRead(_file))
@@ -41,21 +41,21 @@ namespace NugetPckgUpdater.Core
             doc.LoadXml(xmlContent);
 
             var foundTaggedElements = doc.DocumentElement.GetElementsByTagName("ProjectTypeGuids");
-            if (foundTaggedElements.Count == 0)
-                return Models.ProjectType.Unknown;
+			if (foundTaggedElements.Count == 0)
+				return TargetFramework.Unknown;
 
-            var iosProject = foundTaggedElements[0].InnerText.Contains(VisualStudioSettings.iOSTypeGuid);
+            var iosProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.iOSTypeGuid);
             if (iosProject)
-                return Models.ProjectType.NativeiOS;
+                return TargetFramework.NativeiOS;
 
-            var androidProject = foundTaggedElements[0].InnerText.Contains(VisualStudioSettings.AndroidTypeGuid);
+            var androidProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.AndroidTypeGuid);
             if (androidProject)
-                return Models.ProjectType.NativeAndroid;
+                return TargetFramework.NativeAndroid;
 
-            return Models.ProjectType.Unknown;
-        }
+			return TargetFramework.Unknown;
+		}
 
-        private ProjectType CheckForNETStandardroject()
+        private TargetFramework CheckForNETStandardProject()
         {
             var xmlContent = string.Empty;
             using (var fs = File.OpenRead(_file))
@@ -82,12 +82,12 @@ namespace NugetPckgUpdater.Core
                     {
                         var adsa = xmlElement.InnerText;
 
-                        return NETStandardVersion.Get(xmlElement.InnerText);
+                        return TargetFrameworkSetting.Get(xmlElement.InnerText);
                     }
                 }
             }
 
-            return Models.ProjectType.Unknown;
+            return TargetFramework.Unknown;
         }
     }
 }

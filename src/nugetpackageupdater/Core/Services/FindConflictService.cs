@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NugetPckgUpdater.Core.Configurations;
 using SolutionNugetPackagesUpdater.Core.FileReaders;
 using SolutionNugetPackagesUpdater.Core.Models;
 
@@ -43,7 +44,9 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 		{
 			foreach (var item in _spiList)
 			{
-				Console.WriteLine($"{item.ProjectName} {item.ProjectGuid}");
+				var projectType = VisualStudioProjectSetting.GetProjectType(item.ProjectTypeGuid);
+
+				Console.WriteLine($"{item.ProjectName} [{projectType.ToString()}]");
 			}
 		}
 	}
