@@ -1,7 +1,10 @@
-﻿using System.Text;
+﻿using System;
+using System.Drawing;
+using System.Text;
 using Colorful;
 using CommandLine;
 using NugetPckgUpdater.CommandLine;
+using SolutionNugetPackagesUpdater.Core.Exceptions;
 using SolutionNugetPackagesUpdater.Core.Services;
 
 namespace SolutionNugetPackagesUpdater
@@ -13,12 +16,33 @@ namespace SolutionNugetPackagesUpdater
 			Parser.Default.ParseArguments<ReportOptions, FindConflict>(args)
 				.WithParsed<ReportOptions>((command) =>
 				{
-					Console.WriteLine($"ReportOptions : {command.Path}");
+					Colorful.Console.WriteLine($"ReportOptions : {command.Path}", Color.Green);
 				})
 				.WithParsed<FindConflict>((command) =>
 				{
-					var service = new FindConflictService(command.FileName, command.Project);
-					service.Run();
+					try
+					{
+						var service = new FindConflictService(command.FileName, command.Project);
+						service.Run();
+
+						Colorful.Console.WriteLine("\nCompleted successfully\n", Color.GreenYellow);
+					}
+					catch(PackageManagerReaderException packageMgrEx)
+					{
+						System.Console.WriteLine("");
+						Colorful.Console.WriteLine(packageMgrEx.Message, Color.Red);
+						System.Console.WriteLine("");
+						Colorful.Console.WriteLine("Program has stopped", Color.Red);
+						System.Console.WriteLine("");
+					}
+					catch (Exception ex)
+					{
+						System.Console.WriteLine("");
+						Colorful.Console.WriteLine(ex.Message, Color.Red);
+						System.Console.WriteLine("");
+						Colorful.Console.WriteLine("Program has stopped", Color.Red);
+						System.Console.WriteLine("");
+					}
 				})
 				.WithNotParsed(errs =>
 				{

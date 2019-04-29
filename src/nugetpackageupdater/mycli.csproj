@@ -41,5 +41,6 @@
     <Folder Include="Commands\FindConflict\" />
     <Folder Include="Core\FileReaders\" />
     <Folder Include="Core\Configurations\Enums\" />
+    <Folder Include="Core\Exceptions\" />
   </ItemGroup>
 </Project>

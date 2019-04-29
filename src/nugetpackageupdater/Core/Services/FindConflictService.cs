@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NugetPckgUpdater.Core;
 using NugetPckgUpdater.Core.Configurations;
+using SolutionNugetPackagesUpdater.Core.Exceptions;
 using SolutionNugetPackagesUpdater.Core.FileReaders;
 using SolutionNugetPackagesUpdater.Core.Models;
 using SolutionNugetPackagesUpdater.Core.Utils;
@@ -62,7 +63,21 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 			foreach (var item in _spiList)
 			{
 				var projectType = VisualStudioProjectSetting.GetProjectType(item.ProjectTypeGuid);
-				string projectFile = FileUtil.PathCombine(parentPath, item.ProjectPath);
+				var projectFile = FileUtil.PathCombine(parentPath, item.ProjectPath);
+
+				try
+				{
+					var fileFinder = new FileReader(projectFile);
+					var fileContentObject = fileFinder.ReadFile();
+				}
+				catch (PackageManagerReaderException packageManagerEx)
+				{
+					throw new CLIException(packageManagerEx.Message, packageManagerEx);
+				}
+				catch (Exception ex)
+				{
+					throw new CLIException($"Something went wrong in {GetType().Name}", ex);
+				}
 
 				var prjTypeMgr = new ProjectTypeManager(projectFile);
 				var targetFramework = prjTypeMgr.ProjectType();

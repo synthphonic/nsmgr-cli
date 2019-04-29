@@ -2,10 +2,12 @@
  * ref: https://stackoverflow.com/questions/14110212/reading-specific-xml-elements-from-xml-file
  */
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using SolutionNugetPackagesUpdater.Abstraction;
+using SolutionNugetPackagesUpdater.Core.Exceptions;
 using SolutionNugetPackagesUpdater.Core.FileReaders;
 
 namespace SolutionNugetPackagesUpdater.Core
@@ -43,9 +45,18 @@ namespace SolutionNugetPackagesUpdater.Core
                 key = ".csproj";
             }
 
-            return _fileReaders[key].Read(_file);
+			try
+			{
+				return _fileReaders[key].Read(_file);
+			}
+			catch(KeyNotFoundException keyNotFoundEx)
+			{
+				throw new PackageManagerReaderException($"File cannot be read for '{_file}'", keyNotFoundEx);
+			}
+			catch (Exception ex)
+			{
+				throw new PackageManagerReaderException($"This is a crash. Something went wrong at '{_file}'", ex);
+			}
         }
-
-
     }
 }
