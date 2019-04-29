@@ -82,9 +82,7 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 				var prjTypeMgr = new ProjectTypeManager(projectFile);
 				var targetFramework = prjTypeMgr.ProjectType();
 
-				var outputString = string.Empty;
-
-				outputString = targetFramework == Configurations.Enums.TargetFramework.Unknown
+				var outputString = targetFramework == Configurations.Enums.TargetFramework.Unknown
 					? $"{item.ProjectName} [{projectType.ToString()}] [{targetFramework.ToString()}] [{item.ProjectTypeGuid}]"
 					: $"{item.ProjectName} [{projectType.ToString()}] [{targetFramework.ToString()}]";
 
