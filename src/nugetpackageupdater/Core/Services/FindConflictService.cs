@@ -86,7 +86,6 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 					? $"{item.ProjectName} [{projectType.ToString()}] [{targetFramework.ToString()}] [{item.ProjectTypeGuid}]"
 					: $"{item.ProjectName} [{projectType.ToString()}] [{targetFramework.ToString()}]";
 
-
 				Console.WriteLine(outputString);
 			}
 		}
