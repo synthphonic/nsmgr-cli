@@ -17,7 +17,7 @@ namespace SolutionNugetPackagesUpdater
 				})
 				.WithParsed<FindConflict>((command) =>
 				{
-					var service = new FindConflictService(command.FileName);
+					var service = new FindConflictService(command.FileName, command.Project);
 					service.Run();
 				})
 				.WithNotParsed(errs =>

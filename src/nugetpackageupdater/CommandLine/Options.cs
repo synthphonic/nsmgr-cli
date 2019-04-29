@@ -24,6 +24,9 @@ namespace NugetPckgUpdater.CommandLine
 		[Option("filename", Required = true, HelpText = "The file path to write the result. Should include file name as well")]
 		public string FileName { get; set; }
 
+		[Option("project", Required = false, Hidden = false, HelpText = "Process project files only and ignore the rest. Default is false")]
+		public bool Project { get; set; }
+
 		[Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples
 		{

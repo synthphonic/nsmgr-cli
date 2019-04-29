@@ -13,12 +13,14 @@ namespace SolutionNugetPackagesUpdater.Core.Services
     {
         private string _fileName;
         private IList<SolutionProjectInfo> _spiList;
+		private readonly bool _processProjectsOnly;
 
-        public FindConflictService(string fileName)
-        {
-            _fileName = fileName;
-            _spiList = new List<SolutionProjectInfo>();
-        }
+		public FindConflictService(string solutionFileName, bool processProjectsOnly = false)
+		{
+			_processProjectsOnly = processProjectsOnly;
+			_fileName = solutionFileName;
+			_spiList = new List<SolutionProjectInfo>();
+		}
 
         public void Run()
         {
@@ -36,11 +38,22 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 			Output();
 		}
 
-        private void Extract(string data)
-        {
-            var spi = SolutionProjectInfo.Extract(data);
-            _spiList.Add(spi);
-        }
+		private void Extract(string data)
+		{
+			var spi = SolutionProjectInfo.Extract(data);
+
+			var projectType = VisualStudioProjectSetting.GetProjectType(spi.ProjectTypeGuid);
+
+			if (_processProjectsOnly)
+			{
+				if (projectType != Configurations.Enums.ProjectType.VirtualFolder)
+					_spiList.Add(spi);
+			}
+			else
+			{
+				_spiList.Add(spi);
+			}
+		}
 
 		private void Output()
 		{
