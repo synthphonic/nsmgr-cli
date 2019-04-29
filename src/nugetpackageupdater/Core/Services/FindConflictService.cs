@@ -14,6 +14,7 @@ namespace SolutionNugetPackagesUpdater.Core.Services
     {
         private string _fileName;
         private IList<SolutionProjectInfo> _spiList;
+		private IList<Project> _projects;
 		private readonly bool _processProjectsOnly;
 
 		public FindConflictService(string solutionFileName, bool processProjectsOnly = false)
@@ -21,22 +22,54 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 			_processProjectsOnly = processProjectsOnly;
 			_fileName = solutionFileName;
 			_spiList = new List<SolutionProjectInfo>();
+			_projects = new List<Project>();
 		}
 
-        public void Run()
-        {
-            var slnFileReader = new SolutionFileReader();
-            var fileContents = slnFileReader.Read(_fileName) as IEnumerable<string>;
+		public void Run()
+		{
+			var slnFileReader = new SolutionFileReader();
+			var fileContents = slnFileReader.Read(_fileName) as IEnumerable<string>;
 
-            var f = new List<string>(fileContents);
-            var searchResults = f.Where(x => x.Contains("Project(")).ToList();
+			var f = new List<string>(fileContents);
+			var searchResults = f.Where(x => x.Contains("Project(")).ToList();
 
-            foreach (var item in searchResults)
-            {
-                Extract(item);
-            }
+			foreach (var item in searchResults)
+			{
+				Extract(item);
+			}
+
+			FindConflict();
 
 			Output();
+		}
+
+		private void FindConflict()
+		{
+			var parentPath = FileUtil.GetFullPath(_fileName);
+
+			try
+			{
+				foreach (var item in _spiList)
+				{
+					var projectType = VisualStudioProjectSetting.GetProjectType(item.ProjectTypeGuid);
+					var projectFile = FileUtil.PathCombine(parentPath, item.ProjectPath);
+
+					var fileFinder = new FileReader(projectFile);
+					var fileContentObject = fileFinder.ReadFile();
+					var packages = fileContentObject as IList<PackageReferenceItemModel>;
+
+					var project = new Project(item.ProjectGuid, item.ProjectName, packages);
+					_projects.Add(project);
+				}
+			}
+			catch (PackageManagerReaderException packageManagerEx)
+			{
+				throw new CLIException(packageManagerEx.Message, packageManagerEx);
+			}
+			catch (Exception ex)
+			{
+				throw new CLIException($"Something went wrong in {GetType().Name}", ex);
+			}
 		}
 
 		private void Extract(string data)
@@ -64,20 +97,6 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 			{
 				var projectType = VisualStudioProjectSetting.GetProjectType(item.ProjectTypeGuid);
 				var projectFile = FileUtil.PathCombine(parentPath, item.ProjectPath);
-
-				try
-				{
-					var fileFinder = new FileReader(projectFile);
-					var fileContentObject = fileFinder.ReadFile();
-				}
-				catch (PackageManagerReaderException packageManagerEx)
-				{
-					throw new CLIException(packageManagerEx.Message, packageManagerEx);
-				}
-				catch (Exception ex)
-				{
-					throw new CLIException($"Something went wrong in {GetType().Name}", ex);
-				}
 
 				var prjTypeMgr = new ProjectTypeManager(projectFile);
 				var targetFramework = prjTypeMgr.ProjectType();
