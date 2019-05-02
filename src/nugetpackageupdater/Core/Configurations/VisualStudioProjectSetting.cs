@@ -14,7 +14,7 @@ namespace NugetPckgUpdater.Core.Configurations
 	/// </remarks>
 	public static class VisualStudioProjectSetting
     {
-		private static Dictionary<ProjectType, string> _projectTypeGuidList;
+		private static Dictionary<SolutionProjectElement, string> _projectTypeGuidList;
 
         public const string CSharpTypeGuid = "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC";
         public const string AndroidTypeGuid = "EFBA0AD7-5A72-4C68-AF49-83D382785DCF";
@@ -24,20 +24,18 @@ namespace NugetPckgUpdater.Core.Configurations
 
 		static VisualStudioProjectSetting()
 		{
-			_projectTypeGuidList = new Dictionary<ProjectType, string>
+			_projectTypeGuidList = new Dictionary<SolutionProjectElement, string>
 			{
-				{ ProjectType.CSharp, CSharpTypeGuid },
-				{ ProjectType.iOS, iOSTypeGuid },
-				{ ProjectType.Android , AndroidTypeGuid },
-				{ ProjectType.VirtualFolder, VirtualFolderGuid }
+				{ SolutionProjectElement.CSharpProject, CSharpTypeGuid },
+				{ SolutionProjectElement.VirtualFolder, VirtualFolderGuid }
 			};
 		}
 
-		internal static ProjectType GetProjectType(string projectTypeGuid)
+		internal static SolutionProjectElement GetProjectType(string projectTypeGuid)
 		{
 			if (!_projectTypeGuidList.ContainsValue(projectTypeGuid))
 			{
-				return ProjectType.Unknown;
+				return SolutionProjectElement.Unknown;
 			}
 
 			var result = _projectTypeGuidList.FirstOrDefault(x => x.Value.Equals(projectTypeGuid));

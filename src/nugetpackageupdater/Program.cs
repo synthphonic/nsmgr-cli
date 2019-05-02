@@ -27,10 +27,10 @@ namespace SolutionNugetPackagesUpdater
 
 						Colorful.Console.WriteLine("\nCompleted successfully\n", Color.GreenYellow);
 					}
-					catch(PackageManagerReaderException packageMgrEx)
+					catch(CLIException cliEx)
 					{
 						System.Console.WriteLine("");
-						Colorful.Console.WriteLine(packageMgrEx.Message, Color.Red);
+						Colorful.Console.WriteLine(cliEx.Message, Color.Red);
 						System.Console.WriteLine("");
 						Colorful.Console.WriteLine("Program has stopped", Color.Red);
 						System.Console.WriteLine("");

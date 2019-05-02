@@ -1,25 +1,34 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml.Serialization;
 using SolutionNugetPackagesUpdater.Abstraction;
 using SolutionNugetPackagesUpdater.Core.Models;
+using System.Linq;
 
 namespace SolutionNugetPackagesUpdater.Core.FileReaders
 {
-    public class PackageConfigFileReader : IFileReader
+    public class PackageConfigFileReader : IProjectFilePackageReader
     {
-        private string _file;
+        private string _fileName;
+		private string _packageConfigFile;
 
-        public object Read(string file)
-        {
-            _file = file;
+		public object Read(string fileName)
+		{
+			_fileName = fileName;
+			_packageConfigFile = Path.Combine(Path.GetDirectoryName(_fileName), "packages.config");
 
-            return ReadPackageConfig();
-        }
+			var packageConfig = ReadPackageConfig();
+
+			var nugetPackageRefs = (from item in packageConfig.Packages
+									select new NugetPackageReference(item.Id, item.Version, item.TargetFramework)).ToList();
+
+			return nugetPackageRefs;
+		}
 
         private PackageConfig ReadPackageConfig()
         {
             var serializer = new XmlSerializer(typeof(PackageConfig));
-            using (var sr = new StreamReader(_file))
+            using (var sr = new StreamReader(_packageConfigFile))
             {
                 return (PackageConfig)serializer.Deserialize(sr);
             }

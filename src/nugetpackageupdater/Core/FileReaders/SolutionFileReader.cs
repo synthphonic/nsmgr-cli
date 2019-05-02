@@ -1,26 +1,71 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
-using SolutionNugetPackagesUpdater.Abstraction;
+using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
+using SolutionNugetPackagesUpdater.Core.Helpers;
+using SolutionNugetPackagesUpdater.Core.Models;
+using SolutionNugetPackagesUpdater.Core.Utils;
 
 namespace SolutionNugetPackagesUpdater.Core.FileReaders
 {
-    public class SolutionFileReader : IFileReader
+	public class SolutionFileReader
     {
-        private string _file;
+		private readonly bool _processProjectsOnly; 
+		private string _solutionFileName;
+		private IList<ProjectMetadata> _projectMetadataList;
 
-        public object Read(string file)
-        {
-            _file = file;
+		public SolutionFileReader(string solutionFileName, bool processProjectsOnly = false)
+		{
+			_solutionFileName = solutionFileName;
+			_processProjectsOnly = processProjectsOnly;
+			_projectMetadataList = new List<ProjectMetadata>();
+		}
 
-            return ReadSolutionFile();
-        }
+		public Solution Read()
+		{
+			var fileContents = ReadSolutionFile();
 
-        private IEnumerable<string> ReadSolutionFile()
+			var f = new List<string>(fileContents);
+			var searchResults = f.Where(x => x.Contains("Project(")).ToList();
+
+			var solution = new Solution();
+
+			foreach (var item in searchResults)
+			{
+				var parentPath = FileUtil.GetFullPath(_solutionFileName);
+				ExtractProjectMetadata(item, _solutionFileName);
+			}
+
+			foreach (var metadata in _projectMetadataList)
+			{
+				var project = new Project(metadata);
+				solution.AddProject(project);
+			}
+
+			return null;
+		}
+
+		private void ExtractProjectMetadata(string data, string fileName)
+		{
+			var projectMetadata = ProjectMetadataExtractor.Extract(data, fileName);
+
+			if (_processProjectsOnly)
+			{
+				if (projectMetadata.ProjectType != SolutionProjectElement.VirtualFolder)
+					_projectMetadataList.Add(projectMetadata);
+			}
+			else
+			{
+				_projectMetadataList.Add(projectMetadata);
+			}
+		}
+
+		private IEnumerable<string> ReadSolutionFile()
         {
             var fileContents = new List<string>();
 
-            using (var sr = new StreamReader(_file,Encoding.UTF8))
+            using (var sr = new StreamReader(_solutionFileName,Encoding.UTF8))
             {
                 while (string.IsNullOrEmpty(sr.ReadLine()))
                 {

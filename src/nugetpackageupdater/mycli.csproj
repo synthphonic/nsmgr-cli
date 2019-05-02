@@ -42,5 +42,6 @@
     <Folder Include="Core\FileReaders\" />
     <Folder Include="Core\Configurations\Enums\" />
     <Folder Include="Core\Exceptions\" />
+    <Folder Include="Core\Helpers\" />
   </ItemGroup>
 </Project>

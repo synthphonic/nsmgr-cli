@@ -1,0 +1,42 @@
+---
+uti: com.xamarin.workbook
+id: daa57fdf-94e0-4f7d-816c-47e4bcbe55e2
+title: xml-native-ios-reader
+platforms:
+- DotNetCore
+---
+
+```csharp
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+
+var _file = @"/Users/shahz.macbook/projects/Sapura/mobile-pos-xamforms-alpha/Storiveo/Storiveo.iOS/Storiveo.iOS.csproj";
+
+// var _file = @"/Users/shahz.macbook/projects/Sapura/mobile-pos-xamforms-alpha/Storiveo/Storiveo/Storiveo.csproj";
+
+var xmlContent = string.Empty;
+using (var fs = File.OpenRead(_file))
+{
+    using (var sr = new StreamReader(fs))
+    {
+        xmlContent = sr.ReadToEnd();
+    }
+}
+
+var xmlDoc = new XmlDocument();
+xmlDoc.LoadXml(xmlContent);
+
+var xmlNsManager = new XmlNamespaceManager(xmlDoc.NameTable);
+xmlNsManager.AddNamespace("x","http://schemas.microsoft.com/developer/msbuild/2003");
+
+foreach (XmlNode xmlNode in xmlDoc.SelectNodes("//x:PackageReference", xmlNsManager))
+{
+    var packageName = xmlNode.Attributes["Include"].Value;
+    var packageVersion = xmlNode.InnerText;
+    Console.WriteLine($"{packageName} {packageVersion}");
+}
+
+```

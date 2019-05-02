@@ -7,16 +7,16 @@ namespace NugetPckgUpdater.Core.Configurations
 {
 	public static class TargetFrameworkSetting
     {
-        private static Dictionary<string, TargetFramework> _versions;
+        private static Dictionary<string, ProjectTarget> _versions;
 
 		static TargetFrameworkSetting()
 		{
-			_versions = new Dictionary<string, TargetFramework>
+			_versions = new Dictionary<string, ProjectTarget>
 			{
-				["netstandard2.0"] = TargetFramework.NETStandard20,
-				["netcoreapp2.2"] = TargetFramework.NETCoreApp22,
-				["netcoreapp2.1"] = TargetFramework.NETCoreApp21,
-				["netcoreapp2.0"] = TargetFramework.NETCoreApp20
+				["netstandard2.0"] = ProjectTarget.NETStandard20,
+				["netcoreapp2.2"] = ProjectTarget.NETCoreApp22,
+				["netcoreapp2.1"] = ProjectTarget.NETCoreApp21,
+				["netcoreapp2.0"] = ProjectTarget.NETCoreApp20
 			};
 		}
 
@@ -29,7 +29,7 @@ namespace NugetPckgUpdater.Core.Configurations
 		/// </summary>
 		/// <returns>The get.</returns>
 		/// <param name="stringValue">Inner text.</param>
-		internal static TargetFramework Get(string stringValue)
+		internal static ProjectTarget Get(string stringValue)
         {
 			try
 			{
@@ -37,7 +37,7 @@ namespace NugetPckgUpdater.Core.Configurations
 			}
 			catch (ArgumentNullException)
 			{
-				return TargetFramework.Unknown;
+				return ProjectTarget.Unknown;
 			}
 
 

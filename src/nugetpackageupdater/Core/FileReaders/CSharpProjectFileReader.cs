@@ -7,24 +7,23 @@ using SolutionNugetPackagesUpdater.Core.Models;
 
 namespace SolutionNugetPackagesUpdater.Core.FileReaders
 {
-    public class CSharpProjectFileReader : IFileReader
+    public class CSharpProjectFileReader : IProjectFilePackageReader
     {
-        private string _file;
+        private string _fileName;
 
-        public object Read(string file)
+		public object Read(string fileName)
         {
-            _file = file;
-
+			_fileName = fileName;
             return ReadCsharpProjectFile();
         }
 
-        private IList<PackageReferenceItemModel> ReadCsharpProjectFile()
+        private IList<NugetPackageReference> ReadCsharpProjectFile()
         {
-            var fileName = Path.GetFileName(_file);
-            List<PackageReferenceItemModel> packageReferenceList = null;
+            var fileName = Path.GetFileName(_fileName);
+            List<NugetPackageReference> packageReferenceList = null;
 
             var xmlContent = string.Empty;
-            using (var fs = File.OpenRead(_file))
+            using (var fs = File.OpenRead(_fileName))
             {
                 using (var sr = new StreamReader(fs))
                 {
@@ -37,13 +36,13 @@ namespace SolutionNugetPackagesUpdater.Core.FileReaders
             var itemGroups = xElement.Elements("ItemGroup").ToList();
             var packageReferences = itemGroups.Elements("PackageReference").ToList();
 
-            packageReferenceList = new List<PackageReferenceItemModel>();
+            packageReferenceList = new List<NugetPackageReference>();
             foreach (var item in packageReferences)
             {
                 var include = item.FirstAttribute.Value;
                 var version = item.FirstAttribute.NextAttribute.Value;
 
-                var packageRefItem = new PackageReferenceItemModel(include, version);
+                var packageRefItem = new NugetPackageReference(include, version);
                 packageReferenceList.Add(packageRefItem);
             }
 

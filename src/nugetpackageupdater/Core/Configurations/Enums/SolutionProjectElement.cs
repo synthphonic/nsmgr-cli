@@ -1,12 +1,10 @@
 ﻿namespace SolutionNugetPackagesUpdater.Core.Configurations.Enums
 {
-	public enum ProjectType
+	// SHAH: TO REFACTOR THIS AND ProjectTarget
+	public enum SolutionProjectElement
 	{
 		Unknown = -1,
 		VirtualFolder = 1,
-		CSharp = 10,
-		iOS,
-		Android,
+		CSharpProject = 10,
 	}
-
 }

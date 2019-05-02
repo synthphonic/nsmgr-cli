@@ -1,29 +1,40 @@
 ﻿using System.Diagnostics;
+using System.IO;
+using NugetPckgUpdater.Core.Configurations;
+using SolutionNugetPackagesUpdater.Core.Models;
+using SolutionNugetPackagesUpdater.Core.Utils;
 
-namespace SolutionNugetPackagesUpdater.Core.Models
+namespace SolutionNugetPackagesUpdater.Core.Helpers
 {
-	public class SolutionProjectInfo
-    {
-        internal static SolutionProjectInfo Extract(string data)
+	public static class ProjectMetadataExtractor
+	{
+		internal static ProjectMetadata Extract(string data, string solutionFileName)
 		{
 			Debug.WriteLine(data);
 
 			var split = data.Split(',');
-
-			var projectPath = GetProjectPath(split);
+			var relativeProjectPath = GetProjectPath(split);
 			var projectGuid = GetProjectGuid(split);
 			var projectTypeGuid = GetProjectTypeGuid(split[0]);
 			var projectName = GetProjectName(split[0], projectTypeGuid);
+			var projectFileName = FileUtil.GetFileName(relativeProjectPath);
+			var parentPath = FileUtil.GetFullPath(solutionFileName);
+			var projectFullPath = Path.Combine(parentPath, relativeProjectPath);
 
-			var spi = new SolutionProjectInfo
+			var metadata = new ProjectMetadata
 			{
+				ProjectFileName = projectFileName,
+				SolutionFileName = solutionFileName,
+				ParentPath = FileUtil.GetFullPath(solutionFileName),
 				ProjectTypeGuid = projectTypeGuid,
 				ProjectName = projectName,
-				ProjectPath = projectPath,
-				ProjectGuid = projectGuid
+				RelativeProjectPath = relativeProjectPath,
+				ProjectGuid = projectGuid,
+				ProjectFullPath = projectFullPath,
+				ProjectType = VisualStudioProjectSetting.GetProjectType(projectTypeGuid)
 			};
 
-			return spi;
+			return metadata;
 		}
 
 		private static string GetProjectGuid(string[] split)
@@ -38,18 +49,18 @@ namespace SolutionNugetPackagesUpdater.Core.Models
 		{
 			var projectPath = split[1].Trim();
 			projectPath = projectPath.Replace("\"", string.Empty);
-			projectPath = projectPath.Replace("\\","/");
+			projectPath = projectPath.Replace("\\", "/");
 
 			return projectPath;
 		}
 
 		private static string GetProjectTypeGuid(string zeroIndexString)
-        {
+		{
 			var cleanedString = ExtractAndCleanStringAtZeroIndex(zeroIndexString);
 			var projectTypeGuid = cleanedString.Substring(0, 36);
 
 			return projectTypeGuid;
-        }
+		}
 
 		private static string GetProjectName(string zeroIndexString, string projectTypeGuid)
 		{
@@ -69,9 +80,5 @@ namespace SolutionNugetPackagesUpdater.Core.Models
 			return extractedString;
 		}
 
-		public string ProjectName { get; internal set; }
-        public string ProjectTypeGuid { get; internal set; }
-        public string ProjectPath { get; internal set; }
-        public string ProjectGuid { get; internal set; }
-    }
+	}
 }

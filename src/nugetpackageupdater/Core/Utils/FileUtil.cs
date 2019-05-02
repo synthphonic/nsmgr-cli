@@ -1,11 +1,15 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 
 namespace SolutionNugetPackagesUpdater.Core.Utils
 {
 	public static class FileUtil
 	{
+		internal static string GetFileName(string fullFilePath)
+		{
+			return Path.GetFileName(fullFilePath);
+		}
+
 		internal static string GetFullPath(string fullFilePath)
 		{
 			var fullDirectory = Path.GetDirectoryName(fullFilePath);

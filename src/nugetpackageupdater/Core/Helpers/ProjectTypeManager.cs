@@ -3,7 +3,7 @@ using System.Xml;
 using NugetPckgUpdater.Core.Configurations;
 using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
 
-namespace NugetPckgUpdater.Core
+namespace SolutionNugetPackagesUpdater.Core.Helpers
 {
 	public class ProjectTypeManager
     {
@@ -14,23 +14,68 @@ namespace NugetPckgUpdater.Core
             _file = file;
         }
 
-        public TargetFramework ProjectType()
+        public ProjectTarget GetTargetFramework()
         {
             var projectType = CheckForNativeProject();
 
-            if (projectType == TargetFramework.Unknown)
+            if (projectType == ProjectTarget.Unknown)
 			{
                 projectType = CheckForNETStandardProject();
             }
 
+			if (projectType == ProjectTarget.Unknown)
+			{
+				projectType = CheckForNETFrameworkProject();
+			}
+
             return projectType;
         }
 
-        private TargetFramework CheckForNativeProject()
+		private ProjectTarget CheckForNETFrameworkProject()
+		{
+			if (!File.Exists(_file))
+			{
+				return ProjectTarget.Unknown;
+			}
+
+			var xmlContent = string.Empty;
+			using (var fs = File.OpenRead(_file))
+			{
+				using (var sr = new StreamReader(fs))
+				{
+					xmlContent = sr.ReadToEnd();
+				}
+			}
+
+			var xmlDoc = new XmlDocument();
+			xmlDoc.LoadXml(xmlContent);
+
+			var xmlNsManager = new XmlNamespaceManager(xmlDoc.NameTable);
+			xmlNsManager.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
+
+			var xmlNode = xmlDoc.SelectSingleNode("//x:TargetFrameworkVersion", xmlNsManager);
+			var frameworkVersion = xmlNode.InnerText;
+
+			if (!string.IsNullOrWhiteSpace(frameworkVersion))
+			{
+				if (frameworkVersion.Contains("4.5"))
+					return ProjectTarget.NETFramework45;
+				if (frameworkVersion.Contains("4.6"))
+					return ProjectTarget.NETFramework46;
+				if (frameworkVersion.Contains("4.7"))
+					return ProjectTarget.NETFramework47;
+				if (frameworkVersion.Contains("4.8"))
+					return ProjectTarget.NETFramework48;
+			}
+
+			return ProjectTarget.Unknown;
+		}
+
+        private ProjectTarget CheckForNativeProject()
         {
 			if (!File.Exists(_file))
 			{
-				return TargetFramework.Unknown;
+				return ProjectTarget.Unknown;
 			}
 
             var xmlContent = string.Empty;
@@ -42,33 +87,33 @@ namespace NugetPckgUpdater.Core
                 }
             }
 
-            var doc = new XmlDocument();
-            doc.LoadXml(xmlContent);
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlContent);
 
-            var foundTaggedElements = doc.DocumentElement.GetElementsByTagName("ProjectTypeGuids");
+            var foundTaggedElements = xmlDoc.DocumentElement.GetElementsByTagName("ProjectTypeGuids");
 			if (foundTaggedElements.Count == 0)
-				return TargetFramework.Unknown;
+				return ProjectTarget.Unknown;
 
             var iosProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.iOSTypeGuid);
             if (iosProject)
-                return TargetFramework.NativeiOS;
+                return ProjectTarget.NativeiOS;
 
 			var iosNativeProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.iOSBindingTypeGuid);
 			if (iosNativeProject)
-				return TargetFramework.NativeiOSBinding;
+				return ProjectTarget.NativeiOSBinding;
 
 			var androidProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.AndroidTypeGuid);
             if (androidProject)
-                return TargetFramework.NativeAndroid;
+                return ProjectTarget.NativeAndroid;
 
-			return TargetFramework.Unknown;
+			return ProjectTarget.Unknown;
 		}
 
-        private TargetFramework CheckForNETStandardProject()
+        private ProjectTarget CheckForNETStandardProject()
 		{
 			if (!File.Exists(_file))
 			{
-				return TargetFramework.Unknown;
+				return ProjectTarget.Unknown;
 			}
 
 			var xmlContent = string.Empty;
@@ -80,10 +125,10 @@ namespace NugetPckgUpdater.Core
                 }
             }
 
-            var doc = new XmlDocument();
-            doc.LoadXml(xmlContent);
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlContent);
 
-            var root = doc.DocumentElement;
+            var root = xmlDoc.DocumentElement;
             var sdkValue = root.GetAttribute("Sdk");
             if (sdkValue.Equals("Microsoft.NET.Sdk"))
             {
@@ -101,7 +146,7 @@ namespace NugetPckgUpdater.Core
                 }
             }
 
-            return TargetFramework.Unknown;
+            return ProjectTarget.Unknown;
         }
     }
 }
