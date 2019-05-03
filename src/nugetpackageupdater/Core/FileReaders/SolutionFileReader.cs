@@ -43,7 +43,8 @@ namespace SolutionNugetPackagesUpdater.Core.FileReaders
 				solution.AddProject(project);
 			}
 
-			return null;
+			solution.Done();
+			return solution;
 		}
 
 		private void ExtractProjectMetadata(string data, string fileName)
