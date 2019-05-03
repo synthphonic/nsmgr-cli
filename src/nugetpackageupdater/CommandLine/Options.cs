@@ -21,8 +21,8 @@ namespace NugetPckgUpdater.CommandLine
 	[Verb("findconflict",  HelpText = "Finds the conflicting nuget package versions installed in the solution")]
 	class FindConflict
 	{
-		[Option("filename", Required = true, HelpText = "The file path to write the result. Should include file name as well")]
-		public string FileName { get; set; }
+		[Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file")]
+		public string SolutionFileName { get; set; }
 
 		[Option("project", Required = false, Hidden = false, HelpText = "Process project files only and ignore the rest. Default is false")]
 		public bool Project { get; set; }
@@ -44,7 +44,7 @@ namespace NugetPckgUpdater.CommandLine
 
 				return new List<Example>
 				{
-					new Example("Finds any conflicting nuget package versions in the solution",new FindConflict{ FileName=platformPathSample} )
+					new Example("Finds any conflicting nuget package versions in the solution",new FindConflict{ SolutionFileName=platformPathSample} )
 				};
 			}
 		}

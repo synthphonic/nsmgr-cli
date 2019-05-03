@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Text;
-using Colorful;
 using CommandLine;
 using NugetPckgUpdater.CommandLine;
 using SolutionNugetPackagesUpdater.Core.Exceptions;
@@ -13,7 +11,7 @@ namespace SolutionNugetPackagesUpdater
 	{
 		static void Main(string[] args)
 		{
-			Parser.Default.ParseArguments<ReportOptions, FindConflict>(args)
+			_ = Parser.Default.ParseArguments<ReportOptions, FindConflict>(args)
 				.WithParsed<ReportOptions>((command) =>
 				{
 					Colorful.Console.WriteLine($"ReportOptions : {command.Path}", Color.Green);
@@ -22,26 +20,34 @@ namespace SolutionNugetPackagesUpdater
 				{
 					try
 					{
-						var service = new FindConflictService(command.FileName, command.Project);
+						var service = new FindConflictService(command.SolutionFileName, command.Project);
 						service.Run();
 
 						Colorful.Console.WriteLine("\nCompleted successfully\n", Color.GreenYellow);
 					}
-					catch(CLIException cliEx)
+					catch (SolutionFileException solutionFileEx)
 					{
-						System.Console.WriteLine("");
-						Colorful.Console.WriteLine(cliEx.Message, Color.Red);
-						System.Console.WriteLine("");
+						Console.WriteLine("");
+						Colorful.Console.WriteLine(solutionFileEx.Message, Color.Red);
+						Console.WriteLine("");
 						Colorful.Console.WriteLine("Program has stopped", Color.Red);
-						System.Console.WriteLine("");
+						Console.WriteLine("");
+					}
+					catch (CLIException cliEx)
+					{
+						Console.WriteLine("");
+						Colorful.Console.WriteLine(cliEx.Message, Color.Red);
+						Console.WriteLine("");
+						Colorful.Console.WriteLine("Program has stopped", Color.Red);
+						Console.WriteLine("");
 					}
 					catch (Exception ex)
 					{
-						System.Console.WriteLine("");
+						Console.WriteLine("");
 						Colorful.Console.WriteLine(ex.Message, Color.Red);
-						System.Console.WriteLine("");
+						Console.WriteLine("");
 						Colorful.Console.WriteLine("Program has stopped", Color.Red);
-						System.Console.WriteLine("");
+						Console.WriteLine("");
 					}
 				})
 				.WithNotParsed(errs =>

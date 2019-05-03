@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
+using SolutionNugetPackagesUpdater.Core.Utils;
 
 namespace SolutionNugetPackagesUpdater.Core.Models
 {
 	public class Solution
-    {
+	{
 		private IList<Project> _projects;
 
-		public Solution()
+		public Solution(string solutionFullPath)
 		{
+			SolutionFullPath = solutionFullPath;
+			SolutionFileName = FileUtil.GetFileName(solutionFullPath);
+
 			_projects = new List<Project>();
 		}
 
@@ -23,13 +26,8 @@ namespace SolutionNugetPackagesUpdater.Core.Models
 			_projects.Add(project);
 		}
 
-		public string ParentPath { get; internal set; }
-		public string SolutionFileName { get; internal set; }
-		public string ProjectName { get; internal set; }
-		public string ProjectFileName { get; internal set; }
-		public string ProjectTypeGuid { get; internal set; }
-        public string RelativeProjectPath { get; internal set; }
-        public string ProjectGuid { get; internal set; }
-		public ReadOnlyCollection<Project> Projects { get; internal set; }
+		public string SolutionFileName { get; private set; }
+		public string SolutionFullPath { get; private set; }
+		public ReadOnlyCollection<Project> Projects { get; private set; }
 	}
 }

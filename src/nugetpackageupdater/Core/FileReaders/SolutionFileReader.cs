@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
+using SolutionNugetPackagesUpdater.Core.Exceptions;
 using SolutionNugetPackagesUpdater.Core.Helpers;
 using SolutionNugetPackagesUpdater.Core.Models;
 using SolutionNugetPackagesUpdater.Core.Utils;
@@ -24,12 +25,17 @@ namespace SolutionNugetPackagesUpdater.Core.FileReaders
 
 		public Solution Read()
 		{
-			var fileContents = ReadSolutionFile();
+			if (!File.Exists(_solutionFileName))
+			{
+				throw new SolutionFileException($"Solution file '{_solutionFileName}' is invalid", "solutionFileName");
+			}
 
-			var f = new List<string>(fileContents);
+			var solutionFileContents = ReadSolutionFile();
+
+			var f = new List<string>(solutionFileContents);
 			var searchResults = f.Where(x => x.Contains("Project(")).ToList();
 
-			var solution = new Solution();
+			var solution = new Solution(_solutionFileName);
 
 			foreach (var item in searchResults)
 			{

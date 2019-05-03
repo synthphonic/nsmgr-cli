@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using NugetPckgUpdater.Core.Configurations;
 using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
 using SolutionNugetPackagesUpdater.Core.FileReaders;
@@ -11,23 +13,31 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 {
 	public class FindConflictService
     {
-        private string _fileName;
+        private string _solutionFileName;
         private IList<ProjectMetadata> _spiList;
-		private IList<Project> _projects;
 		private readonly bool _processProjectsOnly;
 
 		public FindConflictService(string solutionFileName, bool processProjectsOnly = false)
 		{
 			_processProjectsOnly = processProjectsOnly;
-			_fileName = solutionFileName;
+			_solutionFileName = solutionFileName;
 			_spiList = new List<ProjectMetadata>();
-			_projects = new List<Project>();
 		}
 
 		public void Run()
 		{
-			var slnFileReader = new SolutionFileReader(_fileName, _processProjectsOnly);
+			var slnFileReader = new SolutionFileReader(_solutionFileName, _processProjectsOnly);
 			var solution = slnFileReader.Read();
+
+			var projectCounter = 1;
+			foreach (var project in solution.Projects)
+			{
+				Colorful.Console.WriteLine($"{projectCounter}. {project.ProjectName}", Color.YellowGreen);
+				Colorful.Console.WriteLine($"Found {project.Packages.Count()} nuget packages", Color.YellowGreen);
+				Colorful.Console.WriteLine();
+
+				projectCounter++;
+			}
 
 			//FindConflict();
 
@@ -36,7 +46,7 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 
 		private void Output()
 		{
-			var parentPath = FileUtil.GetFullPath(_fileName);
+			var parentPath = FileUtil.GetFullPath(_solutionFileName);
 
 			foreach (var item in _spiList)
 			{
