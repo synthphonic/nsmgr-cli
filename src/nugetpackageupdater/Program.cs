@@ -2,6 +2,8 @@
 using System.Drawing;
 using CommandLine;
 using NugetPckgUpdater.CommandLine;
+using SolutionNugetPackagesUpdater.Core;
+using SolutionNugetPackagesUpdater.Core.Components;
 using SolutionNugetPackagesUpdater.Core.Exceptions;
 using SolutionNugetPackagesUpdater.Core.Services;
 
@@ -11,6 +13,9 @@ namespace SolutionNugetPackagesUpdater
 	{
 		static void Main(string[] args)
 		{
+
+			RegisterApplicationComponents();
+
 			_ = Parser.Default.ParseArguments<ReportOptions, FindConflict>(args)
 				.WithParsed<ReportOptions>((command) =>
 				{
@@ -60,6 +65,11 @@ namespace SolutionNugetPackagesUpdater
 
 					//Console.WriteLine(sb.ToString());
 				});
+		}
+
+		private static void RegisterApplicationComponents()
+		{
+			AppFactory.Register<NugetPackageConflictFinder>(AppComponentType.NugetConflicts.ToString());
 		}
 
 		public const string Name = "mycli";

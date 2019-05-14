@@ -50,6 +50,7 @@ namespace SolutionNugetPackagesUpdater.Core.FileReaders
 			}
 
 			solution.Done();
+
 			return solution;
 		}
 

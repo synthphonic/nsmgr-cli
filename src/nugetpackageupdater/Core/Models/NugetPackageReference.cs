@@ -12,6 +12,24 @@
 		public string PackageName { get; private set; }
 		public string Version { get; private set; }
 		public string TargetFramework { get; private set; }
+	}
 
+	public class NugetPackageReferenceExtended : NugetPackageReference
+	{
+		public NugetPackageReferenceExtended(string projectName, NugetPackageReference nugetPackage) 
+			: base(nugetPackage.PackageName, nugetPackage.Version, nugetPackage.TargetFramework)
+		{
+			ProjectName = projectName;
+		}
+
+		public string ProjectName { get; private set; }
+
+		public string PackageVersionName
+		{
+			get
+			{
+				return $"{PackageName}-{Version}";
+			}
+		}
 	}
 }
