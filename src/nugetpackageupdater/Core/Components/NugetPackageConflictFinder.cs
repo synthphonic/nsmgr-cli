@@ -44,10 +44,10 @@ namespace SolutionNugetPackagesUpdater.Core.Components
 		private Dictionary<string, IList<NugetPackageReferenceExtended>> FindConflictPackages(List<NugetPackageReferenceExtended> flatList)
 		{
 			#region To test same package but different version
-			var debugFound = flatList.FirstOrDefault(x => x.PackageName.Contains("Xamarin.Forms"));
-			var packageRef = new NugetPackageReference(debugFound.PackageName, "4.3.1.221222");
-			var newDebug = new NugetPackageReferenceExtended("Storiveo.ShaZee.Core", packageRef);
-			flatList.Add(newDebug);
+			//var debugFound = flatList.FirstOrDefault(x => x.PackageName.Contains("Xamarin.Forms"));
+			//var packageRef = new NugetPackageReference(debugFound.PackageName, "4.3.1.221222");
+			//var newDebug = new NugetPackageReferenceExtended("Storiveo.ShaZee.Core", packageRef);
+			//flatList.Add(newDebug);
 			#endregion
 
 			var distincts = flatList.DistinctBy(x => x.PackageVersionName).OrderBy(x => x.PackageVersionName).ToList();
