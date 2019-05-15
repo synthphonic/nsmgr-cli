@@ -33,7 +33,7 @@ namespace SolutionNugetPackagesUpdater.Core.Components
 				var packages = project.Packages.ToList();
 				foreach (var package in packages)
 				{
-					var extended = new NugetPackageReferenceExtended(project.ProjectName, package);
+					var extended = new NugetPackageReferenceExtended(project, package);
 					flatNugetPackageList.Add(extended);
 				}
 			}
