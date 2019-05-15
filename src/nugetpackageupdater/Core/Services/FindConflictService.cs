@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using SolutionNugetPackagesUpdater.Core.FileReaders;
-using SolutionNugetPackagesUpdater.Core.Helpers;
 using SolutionNugetPackagesUpdater.Core.Models;
 
 namespace SolutionNugetPackagesUpdater.Core.Services
