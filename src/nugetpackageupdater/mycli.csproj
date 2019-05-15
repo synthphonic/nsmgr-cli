@@ -50,5 +50,6 @@
     <Folder Include="Core\Exceptions\" />
     <Folder Include="Core\Helpers\" />
     <Folder Include="Core\Components\" />
+    <Folder Include="TestData\" />
   </ItemGroup>
 </Project>
