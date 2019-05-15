@@ -33,7 +33,7 @@ namespace SolutionNugetPackagesUpdater
 						var sw = new Stopwatch();
 						sw.Start();
 
-						var service = new FindConflictService(command.SolutionFileName, command.Project);
+						var service = new FindConflictService(command.SolutionFileName, command.Project, command.DebugData);
 						service.Run();
 						sw.Stop();
 

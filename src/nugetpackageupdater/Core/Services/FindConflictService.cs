@@ -12,10 +12,11 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 		private string _solutionFileName;
 		private readonly bool _processProjectsOnly;
 
-		public FindConflictService(string solutionFileName, bool processProjectsOnly = false)
+		public FindConflictService(string solutionFileName, bool processProjectsOnly = false, bool debugData = false)
 		{
 			_processProjectsOnly = processProjectsOnly;
 			_solutionFileName = solutionFileName;
+			TestData.TestDataHelper.UseTestData = debugData;
 		}
 
 		public void Run()
