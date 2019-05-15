@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
 using SolutionNugetPackagesUpdater.Core.Helpers;
+using SolutionNugetPackagesUpdater.TestData;
 
 namespace SolutionNugetPackagesUpdater.Core.Models
 {
@@ -11,6 +12,12 @@ namespace SolutionNugetPackagesUpdater.Core.Models
 		public Project(ProjectMetadata metadata)
 		{
 			_metadata = metadata;
+
+			if (TestDataHelper.UseTestData)
+			{
+				_metadata.ProjectName = _metadata.ProjectName.Replace("Storiveo", "FourtyNineLabs");
+				_metadata.ProjectName = _metadata.ProjectName.Replace("Niu", "FourtyNineLabs");
+			}
 
 			var projectTypeManager = new ProjectTypeManager(_metadata.ProjectFullPath);
 			TargetFramework = projectTypeManager.GetTargetFramework();
