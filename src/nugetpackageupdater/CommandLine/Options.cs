@@ -24,7 +24,7 @@ namespace NugetPckgUpdater.CommandLine
 		[Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file")]
 		public string SolutionFileName { get; set; }
 
-		[Option("project", Required = false, Hidden = false, HelpText = "Process project files only and ignore the rest. Default is false")]
+		[Option("project", Default = true,  Required = false, Hidden = true, HelpText = "Process project files only and ignore the rest. Default is false")]
 		public bool Project { get; set; }
 
 		[Option("debugdata", Required = false, Hidden = true, HelpText = "")]
