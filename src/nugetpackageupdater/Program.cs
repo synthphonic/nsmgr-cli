@@ -38,7 +38,7 @@ namespace SolutionNugetPackagesUpdater
 						sw.Stop();
 
 						Colorful.Console.WriteLine("\nCompleted successfully", Color.GreenYellow);
-						Colorful.Console.WriteLine($"run for {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
+						Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
 					}
 					catch (SolutionFileException solutionFileEx)
 					{
