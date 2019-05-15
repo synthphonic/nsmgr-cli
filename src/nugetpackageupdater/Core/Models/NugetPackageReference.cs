@@ -1,4 +1,6 @@
-﻿namespace SolutionNugetPackagesUpdater.Core.Models
+﻿using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
+
+namespace SolutionNugetPackagesUpdater.Core.Models
 {
 	public class NugetPackageReference
 	{
@@ -16,13 +18,16 @@
 
 	public class NugetPackageReferenceExtended : NugetPackageReference
 	{
-		public NugetPackageReferenceExtended(string projectName, NugetPackageReference nugetPackage) 
+		public NugetPackageReferenceExtended(Project project, NugetPackageReference nugetPackage)
 			: base(nugetPackage.PackageName, nugetPackage.Version, nugetPackage.TargetFramework)
 		{
-			ProjectName = projectName;
+			ProjectName = project.ProjectName;
+			ProjectTargetFramework = project.TargetFramework;
 		}
 
 		public string ProjectName { get; private set; }
+
+		public ProjectTarget ProjectTargetFramework { get; private set; }
 
 		public string PackageVersionName
 		{
