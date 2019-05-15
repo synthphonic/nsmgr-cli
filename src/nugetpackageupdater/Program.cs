@@ -16,6 +16,10 @@ namespace SolutionNugetPackagesUpdater
 
 			RegisterApplicationComponents();
 
+#if DEBUG
+			TestData.TestDataHelper.UseTestData = true;
+#endif
+
 			_ = Parser.Default.ParseArguments<ReportOptions, FindConflict>(args)
 				.WithParsed<ReportOptions>((command) =>
 				{

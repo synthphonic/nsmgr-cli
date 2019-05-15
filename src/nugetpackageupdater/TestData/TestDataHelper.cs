@@ -1,10 +1,7 @@
-﻿using System;
-namespace SolutionNugetPackagesUpdater.TestData
+﻿namespace SolutionNugetPackagesUpdater.TestData
 {
-	public class TestDataHelper
+	public static class TestDataHelper
 	{
-		public TestDataHelper()
-		{
-		}
+		public static bool UseTestData { get; internal set; }
 	}
 }
