@@ -27,8 +27,8 @@ namespace NugetPckgUpdater.CommandLine
 		[Option("project", Default = true,  Required = false, Hidden = true, HelpText = "Process project files only and ignore the rest. Default is false")]
 		public bool Project { get; set; }
 
-		[Option("debugdata", Required = false, Hidden = true, HelpText = "")]
-		public bool DebugData { get; set; }
+		[Option("usedebugdata", Required = false, Hidden = true, HelpText = "")]
+		public bool UseDebugData { get; set; }
 
 		[Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples
