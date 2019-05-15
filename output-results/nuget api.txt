@@ -1,0 +1,7 @@
+NUGET API
+=========
+https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+
+
+
+https://api-v2v3search-0.nuget.org/query?q=Xamarin.Forms&prerelease=false
