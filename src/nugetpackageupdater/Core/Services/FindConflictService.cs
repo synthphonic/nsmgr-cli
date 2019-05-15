@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using SolutionNugetPackagesUpdater.Core.FileReaders;
+using SolutionNugetPackagesUpdater.Core.Helpers;
 using SolutionNugetPackagesUpdater.Core.Models;
 
 namespace SolutionNugetPackagesUpdater.Core.Services
@@ -49,9 +50,10 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 				foreach (var item in conflict.Value)
 				{
 					Colorful.Console.Write($"In Project ");
-					Colorful.Console.Write($"[{item.ProjectName}], ", Color.Azure);
-					Colorful.Console.Write($"found version ");
-					Colorful.Console.Write($"{item.Version}", Color.Azure);
+					Colorful.Console.Write("{0,-30}", Color.Azure, item.ProjectName);
+					Colorful.Console.Write("[{0,-16}]", Color.Azure, item.ProjectTargetFramework);
+					Colorful.Console.Write(" found version ");
+					Colorful.Console.Write("{0}", Color.Azure, item.Version);
 					Colorful.Console.WriteLine();
 				}
 
