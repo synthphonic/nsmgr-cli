@@ -25,6 +25,12 @@ namespace SolutionNugetPackagesUpdater.Core.Models
 			ProjectTargetFramework = project.TargetFramework;
 		}
 
+		public NugetPackageReferenceExtended(string projectName, NugetPackageReference nugetPackage)
+			: base(nugetPackage.PackageName, nugetPackage.Version, nugetPackage.TargetFramework)
+		{
+			ProjectName = projectName;
+		}
+
 		public string ProjectName { get; private set; }
 
 		public ProjectTarget ProjectTargetFramework { get; private set; }
