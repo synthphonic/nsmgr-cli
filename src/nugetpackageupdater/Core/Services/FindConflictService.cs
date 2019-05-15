@@ -27,18 +27,24 @@ namespace SolutionNugetPackagesUpdater.Core.Services
 
 			var foundConflicts = FindConflicts(solution);
 
-			WriteOutput(foundConflicts);
+			WriteOutput(foundConflicts, solution.SolutionFileName, solution.Projects.Count());
 		}
 
-		private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> foundConflicts)
+		private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> foundConflicts, string solutionFileName, int totalProjects)
 		{
+			Colorful.Console.WriteLine();
+			Colorful.Console.Write("{0,-15}", "Solution ");
+			Colorful.Console.WriteLine($": {solutionFileName}", Color.PapayaWhip);
+			Colorful.Console.Write("Total Projects : ");
+			Colorful.Console.WriteLine($"{totalProjects}", Color.PapayaWhip);
+
 			if (!foundConflicts.Any())
 				Console.WriteLine("Great! No conflict found for this solution");
 
 			Colorful.Console.WriteLine();
-			Colorful.Console.Write("Found ");
+			Colorful.Console.Write("Found ", Color.PapayaWhip);
 			Colorful.Console.Write($"{foundConflicts.Count()} ", Color.Aqua);
-			Colorful.Console.WriteLine("Nuget Package conflicts...");
+			Colorful.Console.WriteLine("Nuget Package conflicts...", Color.PapayaWhip);
 			Colorful.Console.WriteLine();
 
 			foreach (var conflict in foundConflicts)
