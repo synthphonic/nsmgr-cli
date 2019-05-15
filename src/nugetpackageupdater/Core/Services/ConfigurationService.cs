@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
-using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Core.Models;
-using SolutionNugetPackagesUpdater.Core.Utils;
+using NautilusCLI.Abstraction;
+using NautilusCLI.Core.Models;
+using NautilusCLI.Core.Utils;
 
-namespace SolutionNugetPackagesUpdater.Core.Services
+namespace NautilusCLI.Core.Services
 {
     public class ConfigurationService : IConfigurationService
 	{

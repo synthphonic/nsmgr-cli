@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
-using SolutionNugetPackagesUpdater.Core.Helpers;
-using SolutionNugetPackagesUpdater.TestData;
+using NautilusCLI.Core.Configurations.Enums;
+using NautilusCLI.Core.Helpers;
+using NautilusCLI.TestData;
 
-namespace SolutionNugetPackagesUpdater.Core.Models
+namespace NautilusCLI.Core.Models
 {
 	public class Project
 	{

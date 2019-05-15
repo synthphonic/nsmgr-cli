@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using NugetPckgUpdater.Core.Configurations;
-using SolutionNugetPackagesUpdater.Core.Models;
-using SolutionNugetPackagesUpdater.Core.Utils;
+using NautilusCLI.Core.Models;
+using NautilusCLI.Core.Utils;
 
-namespace SolutionNugetPackagesUpdater.Core.Helpers
+namespace NautilusCLI.Core.Helpers
 {
 	public static class ProjectMetadataExtractor
 	{

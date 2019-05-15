@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Core.Models;
+using NautilusCLI.Abstraction;
+using NautilusCLI.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Core.FileReaders
+namespace NautilusCLI.Core.FileReaders
 {
 	public class CSharpNativeProjectFileReader : IProjectFilePackageReader
     {

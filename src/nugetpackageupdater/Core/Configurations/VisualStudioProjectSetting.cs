@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
+using NautilusCLI.Core.Configurations.Enums;
 
 namespace NugetPckgUpdater.Core.Configurations
 {

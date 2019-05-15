@@ -1,4 +1,4 @@
-﻿namespace SolutionNugetPackagesUpdater.Core.Configurations.Enums
+﻿namespace NautilusCLI.Core.Configurations.Enums
 {
 	// SHAH: TO REFACTOR THIS AND SolutionProjectElement
 	public enum ProjectTarget

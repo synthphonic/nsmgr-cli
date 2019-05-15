@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Xml;
 using NugetPckgUpdater.Core.Configurations;
-using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
+using NautilusCLI.Core.Configurations.Enums;
 
-namespace SolutionNugetPackagesUpdater.Core.Helpers
+namespace NautilusCLI.Core.Helpers
 {
 	public class ProjectTypeManager
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SolutionNugetPackagesUpdater.Core.Exceptions
+namespace NautilusCLI.Core.Exceptions
 {
 	public class CLIException : Exception
 	{

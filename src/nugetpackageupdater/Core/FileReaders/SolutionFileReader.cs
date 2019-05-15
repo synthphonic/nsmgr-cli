@@ -2,13 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
-using SolutionNugetPackagesUpdater.Core.Exceptions;
-using SolutionNugetPackagesUpdater.Core.Helpers;
-using SolutionNugetPackagesUpdater.Core.Models;
-using SolutionNugetPackagesUpdater.Core.Utils;
+using NautilusCLI.Core.Configurations.Enums;
+using NautilusCLI.Core.Exceptions;
+using NautilusCLI.Core.Helpers;
+using NautilusCLI.Core.Models;
+using NautilusCLI.Core.Utils;
 
-namespace SolutionNugetPackagesUpdater.Core.FileReaders
+namespace NautilusCLI.Core.FileReaders
 {
 	public class SolutionFileReader
     {

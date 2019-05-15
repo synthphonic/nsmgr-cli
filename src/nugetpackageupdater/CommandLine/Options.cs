@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
-using SolutionNugetPackagesUpdater;
+using NautilusCLI;
 
 namespace NugetPckgUpdater.CommandLine
 {

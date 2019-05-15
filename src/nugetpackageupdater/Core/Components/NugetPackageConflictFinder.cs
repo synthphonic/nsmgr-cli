@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
-using SolutionNugetPackagesUpdater.Core.Models;
+using NautilusCLI.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Core.Components
+namespace NautilusCLI.Core.Components
 {
 	public class NugetPackageConflictFinder : IApplicationComponent
 	{

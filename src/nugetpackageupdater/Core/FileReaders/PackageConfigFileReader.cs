@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Core.Models;
+using NautilusCLI.Abstraction;
+using NautilusCLI.Core.Models;
 using System.Linq;
 
-namespace SolutionNugetPackagesUpdater.Core.FileReaders
+namespace NautilusCLI.Core.FileReaders
 {
     public class PackageConfigFileReader : IProjectFilePackageReader
     {

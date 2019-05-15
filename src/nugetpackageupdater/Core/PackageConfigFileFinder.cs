@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SolutionNugetPackagesUpdater.Core.Models;
+using NautilusCLI.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Core
+namespace NautilusCLI.Core
 {
 	public class PackageConfigFileFinder
 	{

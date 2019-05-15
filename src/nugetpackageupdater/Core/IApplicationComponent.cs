@@ -1,5 +1,5 @@
 ﻿
-namespace SolutionNugetPackagesUpdater.Core
+namespace NautilusCLI.Core
 {
 	public interface IApplicationComponent
 	{

@@ -3,12 +3,12 @@ using System.Diagnostics;
 using System.Drawing;
 using CommandLine;
 using NugetPckgUpdater.CommandLine;
-using SolutionNugetPackagesUpdater.Core;
-using SolutionNugetPackagesUpdater.Core.Components;
-using SolutionNugetPackagesUpdater.Core.Exceptions;
-using SolutionNugetPackagesUpdater.Core.Services;
+using NautilusCLI.Core;
+using NautilusCLI.Core.Components;
+using NautilusCLI.Core.Exceptions;
+using NautilusCLI.Core.Services;
 
-namespace SolutionNugetPackagesUpdater
+namespace NautilusCLI
 {
 	class Program
 	{

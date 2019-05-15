@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SolutionNugetPackagesUpdater.Core.Utils;
+using NautilusCLI.Core.Utils;
 
-namespace SolutionNugetPackagesUpdater.Core.Models
+namespace NautilusCLI.Core.Models
 {
 	public class Solution
 	{

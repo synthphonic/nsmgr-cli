@@ -3,13 +3,13 @@
 //using System.IO;
 //using System.Linq;
 //using System.Threading;
-//using SolutionNugetPackagesUpdater.Core.Models;
-//using SolutionNugetPackagesUpdater.Core.Utils;
+//using NautilusCLI.Core.Models;
+//using NautilusCLI.Core.Utils;
 //using System;
 //using Console = Colorful.Console;
 //using NugetPckgUpdater.Core;
 
-//namespace SolutionNugetPackagesUpdater.Core.Services
+//namespace NautilusCLI.Core.Services
 //{
 //	public class FinderService : IDisposable
 //    {

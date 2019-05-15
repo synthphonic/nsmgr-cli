@@ -5,13 +5,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SolutionNugetPackagesUpdater.Abstraction;
-using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
-using SolutionNugetPackagesUpdater.Core.Exceptions;
-using SolutionNugetPackagesUpdater.Core.FileReaders;
-using SolutionNugetPackagesUpdater.Core.Models;
+using NautilusCLI.Abstraction;
+using NautilusCLI.Core.Configurations.Enums;
+using NautilusCLI.Core.Exceptions;
+using NautilusCLI.Core.FileReaders;
+using NautilusCLI.Core.Models;
 
-namespace SolutionNugetPackagesUpdater.Core
+namespace NautilusCLI.Core
 {
 	public class FileReader
 	{

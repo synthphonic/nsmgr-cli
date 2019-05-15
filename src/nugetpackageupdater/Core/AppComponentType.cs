@@ -1,4 +1,4 @@
-﻿namespace SolutionNugetPackagesUpdater.Core
+﻿namespace NautilusCLI.Core
 {
 	public enum AppComponentType
 	{

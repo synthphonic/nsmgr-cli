@@ -1,4 +1,4 @@
-﻿namespace SolutionNugetPackagesUpdater.Abstraction
+﻿namespace NautilusCLI.Abstraction
 {
     public interface IProjectFilePackageReader
     {

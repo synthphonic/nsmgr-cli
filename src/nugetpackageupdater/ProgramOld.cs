@@ -1,9 +1,9 @@
 ﻿//using System.Drawing;
 //using Colorful;
-//using SolutionNugetPackagesUpdater.Core.Models;
-//using SolutionNugetPackagesUpdater.Core.Services;
+//using NautilusCLI.Core.Models;
+//using NautilusCLI.Core.Services;
 
-//namespace SolutionNugetPackagesUpdater
+//namespace NautilusCLI
 //{
 //	class ProgramOld
 //	{

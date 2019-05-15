@@ -1,4 +1,4 @@
-﻿namespace SolutionNugetPackagesUpdater.Core.Models
+﻿namespace NautilusCLI.Core.Models
 {
     public class Configuration
     {

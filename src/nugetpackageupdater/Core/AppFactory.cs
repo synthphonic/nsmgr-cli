@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SolutionNugetPackagesUpdater.Core
+namespace NautilusCLI.Core
 {
 	public class AppFactory
 	{

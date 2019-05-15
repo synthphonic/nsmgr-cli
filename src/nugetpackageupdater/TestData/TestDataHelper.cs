@@ -1,4 +1,4 @@
-﻿namespace SolutionNugetPackagesUpdater.TestData
+﻿namespace NautilusCLI.TestData
 {
 	public static class TestDataHelper
 	{

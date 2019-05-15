@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace SolutionNugetPackagesUpdater.Core.Utils
+namespace NautilusCLI.Core.Utils
 {
 	public static class DirectoryUtil
 	{

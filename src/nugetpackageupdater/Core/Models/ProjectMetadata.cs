@@ -1,6 +1,6 @@
-﻿using SolutionNugetPackagesUpdater.Core.Configurations.Enums;
+﻿using NautilusCLI.Core.Configurations.Enums;
 
-namespace SolutionNugetPackagesUpdater.Core.Models
+namespace NautilusCLI.Core.Models
 {
 	public class ProjectMetadata
 	{

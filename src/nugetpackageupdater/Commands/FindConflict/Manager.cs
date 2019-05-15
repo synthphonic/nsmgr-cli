@@ -1,5 +1,5 @@
 ﻿using System;
-namespace SolutionNugetPackagesUpdater.Commands.FindConflict
+namespace NautilusCLI.Commands.FindConflict
 {
 	public class Manager
 	{
