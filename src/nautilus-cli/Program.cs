@@ -2,11 +2,11 @@
 using System.Diagnostics;
 using System.Drawing;
 using CommandLine;
-using NugetPckgUpdater.CommandLine;
 using NautilusCLI.Core;
 using NautilusCLI.Core.Components;
 using NautilusCLI.Core.Exceptions;
 using NautilusCLI.CLIServices;
+using NautilusCLI.CommandLine;
 
 namespace NautilusCLI
 {
@@ -18,53 +18,78 @@ namespace NautilusCLI
 			RegisterApplicationComponents();
 
 #if DEBUG
-			TestData.TestDataHelper.UseTestData = true;
+			TestData.TestDataHelper.UseTestData = false;
 #endif
 
-			_ = Parser.Default.ParseArguments<ReportOptions, FindConflict>(args)
-				.WithParsed<ReportOptions>((command) =>
+			_ = Parser.Default.ParseArguments<ListProjects, FindConflict>(args)
+				.WithParsed((Action<ListProjects>)((command) =>
 				{
-					Colorful.Console.WriteLine($"ReportOptions : {command.Path}", Color.Green);
-				})
-				.WithParsed<FindConflict>((command) =>
-				{
+					var sw = new Stopwatch();
+					sw.Start();
+
+					var service = new ListProjectsService(command.SolutionFileName, command.ProjectsOnly, command.ShowNugetPackages);
+
 					try
 					{
-						var sw = new Stopwatch();
-						sw.Start();
-
-						var service = new FindConflictService(command.SolutionFileName, command.Project, command.UseDebugData);
 						service.Run();
-						sw.Stop();
-
-						Colorful.Console.WriteLine("\nCompleted successfully", Color.GreenYellow);
-						Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
 					}
 					catch (SolutionFileException solutionFileEx)
 					{
-						Console.WriteLine("");
-						Colorful.Console.WriteLine(solutionFileEx.Message, Color.Red);
-						Console.WriteLine("");
-						Colorful.Console.WriteLine("Program has stopped", Color.Red);
-						Console.WriteLine("");
-					}
-					catch (CLIException cliEx)
-					{
-						Console.WriteLine("");
-						Colorful.Console.WriteLine(cliEx.Message, Color.Red);
-						Console.WriteLine("");
-						Colorful.Console.WriteLine("Program has stopped", Color.Red);
-						Console.WriteLine("");
+						SolutionFileExceptionMessageFormat(solutionFileEx);
+
+						sw.Stop();
+						DisplayFinishingMessage(sw);
 					}
 					catch (Exception ex)
 					{
-						Console.WriteLine("");
-						Colorful.Console.WriteLine(ex.Message, Color.Red);
-						Console.WriteLine("");
-						Colorful.Console.WriteLine("Program has stopped", Color.Red);
-						Console.WriteLine("");
+						DisplayGeneralExceptionMessageFormat(ex);
+
+						sw.Stop();
+						DisplayFinishingMessage(sw);
 					}
-				})
+					finally
+					{
+						if (sw.IsRunning)
+						{
+							sw.Stop();
+							DisplayFinishingMessage(sw);
+						}
+					}
+				}))
+				.WithParsed((Action<FindConflict>)((command) =>
+				{
+					var sw = new Stopwatch();
+					sw.Start();
+
+					var service = new FindConflictService(command.SolutionFileName, command.Project, command.UseDebugData);
+
+					try
+					{
+						service.Run();
+					}
+					catch (SolutionFileException solutionFileEx)
+					{
+						SolutionFileExceptionMessageFormat(solutionFileEx);
+
+						sw.Stop();
+						DisplayFinishingMessage(sw);
+					}
+					catch (Exception ex)
+					{
+						DisplayGeneralExceptionMessageFormat(ex);
+
+						sw.Stop();
+						DisplayFinishingMessage(sw);
+					}
+					finally
+					{
+						if (sw.IsRunning)
+						{
+							sw.Stop();
+							DisplayFinishingMessage(sw);
+						}
+					}
+				}))
 				.WithNotParsed(errs =>
 				{
 					//var sb = new StringBuilder();
@@ -75,6 +100,39 @@ namespace NautilusCLI
 
 					//Console.WriteLine(sb.ToString());
 				});
+		}
+
+		private static void DisplayGeneralExceptionMessageFormat(Exception ex)
+		{
+			Console.WriteLine("");
+			Colorful.Console.WriteLine(ex.Message, Color.Red);
+			Console.WriteLine("");
+			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+			Console.WriteLine("");
+		}
+
+		private static void DisplayCLIExceptionMessageFormat(CLIException cliEx)
+		{
+			Console.WriteLine("");
+			Colorful.Console.WriteLine(cliEx.Message, Color.Red);
+			Console.WriteLine("");
+			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+			Console.WriteLine("");
+		}
+
+		private static void SolutionFileExceptionMessageFormat(SolutionFileException solutionFileEx)
+		{
+			Console.WriteLine("");
+			Colorful.Console.WriteLine(solutionFileEx.Message, Color.Red);
+			Console.WriteLine("");
+			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+			Console.WriteLine("");
+		}
+
+		private static void DisplayFinishingMessage(Stopwatch sw)
+		{
+			Colorful.Console.WriteLine("\nCompleted successfully", Color.GreenYellow);
+			Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
 		}
 
 		private static void RegisterApplicationComponents()

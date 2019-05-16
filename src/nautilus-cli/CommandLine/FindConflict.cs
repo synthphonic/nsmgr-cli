@@ -7,17 +7,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
-using NautilusCLI;
 
-namespace NugetPckgUpdater.CommandLine
+namespace NautilusCLI.CommandLine
 {
-	[Verb("solutionreport", HelpText = "The solution report to display")]
-	class ReportOptions
-	{
-		[Option("path", HelpText = "The file path to write the result. Should include file name as well", Separator = ':')]
-		public string Path { get; set; }
-	}
-
 	[Verb("findconflict",  HelpText = "Finds the conflicting nuget package versions installed in the solution")]
 	class FindConflict
 	{

@@ -25,8 +25,6 @@ namespace NautilusCLI.CLIServices
 			var slnFileReader = new SolutionFileReader(_solutionFileName, _processProjectsOnly);
 			var solution = slnFileReader.Read();
 
-			//WriteToScreen(solution);
-
 			var foundConflicts = FindConflicts(solution);
 
 			WriteOutput(foundConflicts, solution.SolutionFileName, solution.Projects.Count());
@@ -75,24 +73,6 @@ namespace NautilusCLI.CLIServices
 			var result = instance.Execute();
 
 			return result as Dictionary<string, IList<NugetPackageReferenceExtended>>;
-		}
-
-		private static void WriteToScreen(Solution solution)
-		{
-			var projectCounter = 1;
-			foreach (var project in solution.Projects)
-			{
-				Colorful.Console.WriteLine($"{projectCounter}. {project.ProjectName} {project.GetHashCode()}", Color.YellowGreen);
-				Colorful.Console.WriteLine($"Found {project.Packages.Count()} nuget packages", Color.YellowGreen);
-
-				foreach (var package in project.Packages)
-				{
-					Colorful.Console.WriteLine($"{package.PackageName} {package.Version}", Color.Chocolate);
-				}
-
-				projectCounter++;
-				Colorful.Console.WriteLine();
-			}
 		}
 	}
 }
