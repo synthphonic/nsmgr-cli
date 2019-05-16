@@ -6,7 +6,7 @@ using NugetPckgUpdater.CommandLine;
 using NautilusCLI.Core;
 using NautilusCLI.Core.Components;
 using NautilusCLI.Core.Exceptions;
-using NautilusCLI.Core.Services;
+using NautilusCLI.CLIServices;
 
 namespace NautilusCLI
 {

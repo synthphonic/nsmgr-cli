@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using NautilusCLI.Core;
 using NautilusCLI.Core.FileReaders;
 using NautilusCLI.Core.Models;
 
-namespace NautilusCLI.Core.Services
+namespace NautilusCLI.CLIServices
 {
 	public class FindConflictService
 	{

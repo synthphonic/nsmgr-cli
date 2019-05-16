@@ -39,17 +39,15 @@
     <Folder Include="Abstraction\" />
     <Folder Include="CommandLine\" />
     <Folder Include="Core\" />
-    <Folder Include="Core\Services\" />
     <Folder Include="Core\Utils\" />
     <Folder Include="Core\Configurations\" />
     <Folder Include="Core\Models\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Commands\FindConflict\" />
     <Folder Include="Core\FileReaders\" />
     <Folder Include="Core\Configurations\Enums\" />
     <Folder Include="Core\Exceptions\" />
     <Folder Include="Core\Helpers\" />
     <Folder Include="Core\Components\" />
     <Folder Include="TestData\" />
+    <Folder Include="CLIServices\" />
   </ItemGroup>
 </Project>
