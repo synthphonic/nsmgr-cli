@@ -41,37 +41,6 @@
     <Folder Include="CLIServices\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Core\AppComponentType.cs" />
-    <Compile Remove="Core\AppFactory.cs" />
-    <Compile Remove="Core\FileReader.cs" />
-    <Compile Remove="Core\IApplicationComponent.cs" />
-    <Compile Remove="Core\PackageConfigFileFinder.cs" />
-    <Compile Remove="Core\Exceptions\PackageManagerReaderException.cs" />
-    <Compile Remove="Core\Exceptions\SolutionFileException.cs" />
-    <Compile Remove="Core\FileReaders\CSharpNativeProjectFileReader.cs" />
-    <Compile Remove="Core\FileReaders\CSharpProjectFileReader.cs" />
-    <Compile Remove="Core\FileReaders\PackageConfigFileReader.cs" />
-    <Compile Remove="Core\FileReaders\SolutionFileReader.cs" />
-    <Compile Remove="Core\Helpers\ProjectMetadataExtractor.cs" />
-    <Compile Remove="Core\Helpers\ProjectTypeManager.cs" />
-    <Compile Remove="Core\Http\NugetPackageClient.cs" />
-    <Compile Remove="Core\Models\Configuration.cs" />
-    <Compile Remove="Core\Models\NugetPackageReference.cs" />
-    <Compile Remove="Core\Models\PackageConfig.cs" />
-    <Compile Remove="Core\Models\Project.cs" />
-    <Compile Remove="Core\Models\ProjectMetadata.cs" />
-    <Compile Remove="Core\Models\Solution.cs" />
-    <Compile Remove="Core\Utils\DirectoryUtil.cs" />
-    <Compile Remove="Core\Utils\FileUtil.cs" />
-    <Compile Remove="TestData\TestDataHelper.cs" />
-    <Compile Remove="Core\Configurations\Enums\ProjectTarget.cs" />
-    <Compile Remove="Core\Configurations\Enums\SolutionProjectElement.cs" />
-    <Compile Remove="Core\Components\NugetPackageConflictFinder.cs" />
-    <Compile Remove="Core\Configurations\TargetFrameworkSetting.cs" />
-    <Compile Remove="Abstraction\IConfigurationService.cs" />
-    <Compile Remove="Abstraction\IProjectFilePackageReader.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Nautilus.Cli.Core\Nautilus.Cli.Core.csproj" />
   </ItemGroup>
 </Project>
