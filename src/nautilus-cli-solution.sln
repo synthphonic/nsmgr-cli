@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nautilus-cli", "nautilus-cli\nautilus-cli.csproj", "{B1B9BF8C-6EC7-44CE-B7F9-E82CD460CEEB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{51685194-062E-4561-A7C1-D76CC6FCEAE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NautilusCli.Test", "NautilusCli.Test\NautilusCli.Test.csproj", "{5326A1B8-0F12-420B-9143-0FA81CD9BCD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.Cli.Core", "Nautilus.Cli.Core\Nautilus.Cli.Core.csproj", "{8939C0BC-5B8A-41FD-A244-E9F51F23B712}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +19,16 @@ Global
 		{B1B9BF8C-6EC7-44CE-B7F9-E82CD460CEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1B9BF8C-6EC7-44CE-B7F9-E82CD460CEEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1B9BF8C-6EC7-44CE-B7F9-E82CD460CEEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5326A1B8-0F12-420B-9143-0FA81CD9BCD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5326A1B8-0F12-420B-9143-0FA81CD9BCD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5326A1B8-0F12-420B-9143-0FA81CD9BCD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5326A1B8-0F12-420B-9143-0FA81CD9BCD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8939C0BC-5B8A-41FD-A244-E9F51F23B712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8939C0BC-5B8A-41FD-A244-E9F51F23B712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8939C0BC-5B8A-41FD-A244-E9F51F23B712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8939C0BC-5B8A-41FD-A244-E9F51F23B712}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5326A1B8-0F12-420B-9143-0FA81CD9BCD0} = {51685194-062E-4561-A7C1-D76CC6FCEAE0}
 	EndGlobalSection
 EndGlobal

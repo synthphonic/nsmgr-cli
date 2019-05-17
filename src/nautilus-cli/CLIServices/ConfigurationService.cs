@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
-using NautilusCLI.Abstraction;
-using NautilusCLI.Core.Models;
-using NautilusCLI.Core.Utils;
+using Nautilus.Cli.Core.Models;
+using Nautilus.Cli.Core.Utils;
+using Nautilus.Cli.Core.Abstraction;
 
 namespace NautilusCLI.CLIServices
 {
-    public class ConfigurationService : IConfigurationService
+	public class ConfigurationService : IConfigurationService
 	{
 		private readonly Assembly _asm;
 		private Configuration _config;

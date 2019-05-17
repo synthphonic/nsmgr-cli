@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using NautilusCLI.Core;
-using NautilusCLI.Core.FileReaders;
-using NautilusCLI.Core.Models;
+using Nautilus.Cli.Core;
+using Nautilus.Cli.Core.FileReaders;
+using Nautilus.Cli.Core.Models;
+using Nautilus.Cli.Core.TestData;
 
 namespace NautilusCLI.CLIServices
 {
 	public class FindConflictService
 	{
+		private const string Format = "{0,-40}";
 		private string _solutionFileName;
 		private readonly bool _processProjectsOnly;
 
@@ -17,7 +19,7 @@ namespace NautilusCLI.CLIServices
 		{
 			_processProjectsOnly = processProjectsOnly;
 			_solutionFileName = solutionFileName;
-			TestData.TestDataHelper.UseTestData = debugData;
+			TestDataHelper.UseTestData = debugData;
 		}
 
 		public void Run()
@@ -55,7 +57,7 @@ namespace NautilusCLI.CLIServices
 				foreach (var item in conflict.Value)
 				{
 					Colorful.Console.Write($"In Project ");
-					Colorful.Console.Write("{0,-40}", Color.Azure, item.ProjectName);
+					Colorful.Console.Write(Format, Color.Azure, item.ProjectName);
 					Colorful.Console.Write("[{0,-16}]", Color.Azure, item.ProjectTargetFramework);
 					Colorful.Console.Write(" found version ");
 					Colorful.Console.Write("{0}", Color.Azure, item.Version);

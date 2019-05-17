@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Abstraction\" />
+    <Folder Include="Components\" />
+    <Folder Include="Configurations\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="FileReaders\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Http\" />
+    <Folder Include="Models\" />
+    <Folder Include="Utils\" />
+    <Folder Include="TestData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="morelinq" Version="3.1.1" />
+  </ItemGroup>
+</Project>

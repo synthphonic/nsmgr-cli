@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.Drawing;
 using CommandLine;
-using NautilusCLI.Core;
-using NautilusCLI.Core.Components;
-using NautilusCLI.Core.Exceptions;
 using NautilusCLI.CLIServices;
 using NautilusCLI.CommandLine;
+using Nautilus.Cli.Core.Exceptions;
+using Nautilus.Cli.Core;
+using Nautilus.Cli.Core.TestData;
+using Nautilus.Cli.Core.Components;
 
 namespace NautilusCLI
 {
@@ -18,7 +19,7 @@ namespace NautilusCLI
 			RegisterApplicationComponents();
 
 #if DEBUG
-			TestData.TestDataHelper.UseTestData = false;
+			TestDataHelper.UseTestData = false;
 #endif
 
 			_ = Parser.Default.ParseArguments<ListProjects, FindConflict>(args)

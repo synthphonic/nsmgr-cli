@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using NautilusCLI.Core.Exceptions;
-using NautilusCLI.Core.FileReaders;
-using NautilusCLI.Core.Models;
+using Nautilus.Cli.Core.Configurations.Enums;
+using Nautilus.Cli.Core.Exceptions;
+using Nautilus.Cli.Core.FileReaders;
+using Nautilus.Cli.Core.Models;
 
 namespace NautilusCLI.CLIServices
 {
@@ -11,6 +12,7 @@ namespace NautilusCLI.CLIServices
 	{
 		delegate void ShowNugetPackages(Project project);
 
+		private const string Format = "{0,-45}";
 		private readonly string _solutionFileName;
 		private readonly bool _processProjectsOnly;
 		private readonly bool _showNugetPackages;
@@ -62,9 +64,9 @@ namespace NautilusCLI.CLIServices
 			foreach (var project in solution.Projects)
 			{
 				Colorful.Console.Write("{0,-2}. ",projectCounter);
-				Colorful.Console.Write("{0,-45}", Color.YellowGreen, project.ProjectName);
+				Colorful.Console.Write(Format, Color.YellowGreen, project.ProjectName);
 
-				if (project.TargetFramework == Core.Configurations.Enums.ProjectTarget.Unknown)
+				if (project.TargetFramework == ProjectTarget.Unknown)
 				{
 					Colorful.Console.Write("[{0,-7}-", Color.Chocolate, project.TargetFramework);
 					Colorful.Console.WriteLine("{0,-9}]", Color.Chocolate, project.ProjectType);
