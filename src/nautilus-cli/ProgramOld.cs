@@ -3,7 +3,7 @@
 //using NautilusCLI.Core.Models;
 //using NautilusCLI.Core.Services;
 
-//namespace NautilusCLI
+//namespace Nautilus.Cli.Client
 //{
 //	class ProgramOld
 //	{

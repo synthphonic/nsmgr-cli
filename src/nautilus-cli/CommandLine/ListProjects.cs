@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
 
-namespace NautilusCLI.CommandLine
+namespace Nautilus.Cli.Client.CommandLine
 {
 	[Verb("list-projects", HelpText = "The solution report to display")]
 	class ListProjects

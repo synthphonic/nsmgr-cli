@@ -7,7 +7,7 @@ using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.TestData;
 
-namespace NautilusCLI.CLIServices
+namespace Nautilus.Cli.Client.CLIServices
 {
 	public class FindConflictService
 	{

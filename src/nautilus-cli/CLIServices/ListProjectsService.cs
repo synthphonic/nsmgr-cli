@@ -6,7 +6,7 @@ using Nautilus.Cli.Core.Exceptions;
 using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
 
-namespace NautilusCLI.CLIServices
+namespace Nautilus.Cli.Client.CLIServices
 {
 	public class ListProjectsService
 	{

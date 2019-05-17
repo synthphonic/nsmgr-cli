@@ -9,7 +9,7 @@
 //using Console = Colorful.Console;
 //using NugetPckgUpdater.Core;
 
-//namespace NautilusCLI.CLIServices
+//namespace Nautilus.Cli.Client.CLIServices
 //{
 //	public class FinderService : IDisposable
 //    {

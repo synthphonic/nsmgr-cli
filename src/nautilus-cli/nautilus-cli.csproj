@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>nautilus-cli</AssemblyName>
     <Copyright>Copyright (c) FiftyOneLab Technologies</Copyright>
-    <RootNamespace>NautilusCLI</RootNamespace>
+    <RootNamespace>Nautilus.Cli.Client</RootNamespace>
     <Version>0.0.0.1</Version>
     <Authors>Shah Z. S</Authors>
     <Company>FiftyOne Lab</Company>
@@ -13,7 +13,7 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
-    <Description>Nautilus CLI	</Description>
+    <Description>Nautilus CLI Client</Description>
     <PackageLicenseUrl>License URL</PackageLicenseUrl>
     <!-- <PackageProjectUrl>Project URL</PackageProjectUrl> -->
     <!-- <PackageIconUrl>Icon URL</PackageIconUrl> -->
