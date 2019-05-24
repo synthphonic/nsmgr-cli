@@ -4,8 +4,18 @@ using Newtonsoft.Json;
 
 namespace Nautilus.Cli.Core.Models.Http
 {
-	public class QueryPackageResponse
+	public class QueryPackageResponse : BaseHttpResponse
 	{
+		public QueryPackageResponse()
+		{
+
+		}
+
+		public QueryPackageResponse(Exception ex) : base(ex)
+		{
+
+		}
+
 		[JsonProperty("@context")]
 		public Context Context { get; set; }
 

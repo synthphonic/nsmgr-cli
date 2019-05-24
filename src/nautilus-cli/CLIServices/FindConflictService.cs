@@ -38,7 +38,7 @@ namespace Nautilus.Cli.Client.CLIServices
 				packageNames.Add(item.Key);
 			}
 
-			var latestPackages = await QueryOnlineNugetPackageAsync(packageNames.ToArray());
+			var latestPackages = await QueryNugetPackageOnlineAsync(packageNames.ToArray());
 
 			WriteOutput(foundConflicts, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
 		}
@@ -76,7 +76,15 @@ namespace Nautilus.Cli.Client.CLIServices
 				}
 
 				var latestVersion = latestPackages[conflict.Key];
-				Colorful.Console.WriteLine("*Latest nuget package online : {0}", Color.Goldenrod, latestVersion);
+				if (latestVersion.Contains("Unable"))
+				{
+					Colorful.Console.Write("Latest nuget package online : ", Color.Goldenrod);
+					Colorful.Console.WriteLine("{0}", Color.Red, latestVersion);
+				}
+				else
+				{
+					Colorful.Console.WriteLine("*Latest nuget package online : {0}", Color.Goldenrod, latestVersion);
+				}
 
 				Colorful.Console.WriteLine();
 			}
@@ -91,18 +99,24 @@ namespace Nautilus.Cli.Client.CLIServices
 			return result as Dictionary<string, IList<NugetPackageReferenceExtended>>;
 		}
 
-		private async Task<Dictionary<string,string>> QueryOnlineNugetPackageAsync(string[] packageNameList)
+		private async Task<Dictionary<string, string>> QueryNugetPackageOnlineAsync(string[] packageNameList)
 		{
 			var result = new Dictionary<string, string>();
 
 			foreach (var packageName in packageNameList)
 			{
 				var request = NugetPackageHttpClient.QueryRequest(packageName, false);
-				var respons = await request.ExecuteAsync();
+				var response = await request.ExecuteAsync();
 
-				var packageVersion = respons.GetCurrentVersion(packageName);
-
-				result[packageName] = packageVersion;
+				if (response.Exception != null)
+				{
+					result[packageName] = "Unable to connect to the internet";
+				}
+				else
+				{
+					var packageVersion = response.GetCurrentVersion(packageName);
+					result[packageName] = packageVersion;
+				}
 			}
 
 			return result;

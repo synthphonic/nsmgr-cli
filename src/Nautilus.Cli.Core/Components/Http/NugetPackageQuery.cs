@@ -36,22 +36,20 @@ namespace Nautilus.Cli.Core.Components.Http
 			}
 			catch (ArgumentNullException argNullEx)
 			{
-				Console.WriteLine(argNullEx.Message);
+				return new QueryPackageResponse(argNullEx);
 			}
 			catch (InvalidOperationException invalidOpEx)
 			{
-				Console.WriteLine(invalidOpEx.Message);
+				return new QueryPackageResponse(invalidOpEx);
 			}
-			catch (HttpRequestException httpREx)
+			catch (HttpRequestException httpReqEx)
 			{
-				Console.WriteLine(httpREx.Message);
+				return new QueryPackageResponse(httpReqEx);
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.Message);
+				return new QueryPackageResponse(ex);
 			}
-
-			return null;
 		}
 	}
 }
