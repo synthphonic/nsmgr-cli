@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Nautilus.Cli.Core.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using Nautilus.Cli.Core;
+using Nautilus.Cli.Core.Components.Http;
 using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.TestData;
@@ -22,17 +25,25 @@ namespace Nautilus.Cli.Client.CLIServices
 			TestDataHelper.UseTestData = debugData;
 		}
 
-		public void Run()
+		public async Task Run()
 		{
 			var slnFileReader = new SolutionFileReader(_solutionFileName, _processProjectsOnly);
 			var solution = slnFileReader.Read();
 
 			var foundConflicts = FindConflicts(solution);
 
-			WriteOutput(foundConflicts, solution.SolutionFileName, solution.Projects.Count());
+			var packageNames = new List<string>();
+			foreach (var item in foundConflicts)
+			{
+				packageNames.Add(item.Key);
+			}
+
+			var latestPackages = await QueryOnlineNugetPackageAsync(packageNames.ToArray());
+
+			WriteOutput(foundConflicts, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
 		}
 
-		private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> foundConflicts, string solutionFileName, int totalProjects)
+		private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> foundConflicts, string solutionFileName, int totalProjects, Dictionary<string, string> latestPackages)
 		{
 			Colorful.Console.WriteLine();
 			Colorful.Console.Write("{0,-15}", "Solution ");
@@ -64,7 +75,10 @@ namespace Nautilus.Cli.Client.CLIServices
 					Colorful.Console.WriteLine();
 				}
 
-				Console.WriteLine();
+				var latestVersion = latestPackages[conflict.Key];
+				Colorful.Console.WriteLine("*Latest nuget package online : {0}", Color.Goldenrod, latestVersion);
+
+				Colorful.Console.WriteLine();
 			}
 		}
 
@@ -75,6 +89,23 @@ namespace Nautilus.Cli.Client.CLIServices
 			var result = instance.Execute();
 
 			return result as Dictionary<string, IList<NugetPackageReferenceExtended>>;
+		}
+
+		private async Task<Dictionary<string,string>> QueryOnlineNugetPackageAsync(string[] packageNameList)
+		{
+			var result = new Dictionary<string, string>();
+
+			foreach (var packageName in packageNameList)
+			{
+				var request = NugetPackageHttpClient.QueryRequest(packageName, false);
+				var respons = await request.ExecuteAsync();
+
+				var packageVersion = respons.GetCurrentVersion(packageName);
+
+				result[packageName] = packageVersion;
+			}
+
+			return result;
 		}
 	}
 }

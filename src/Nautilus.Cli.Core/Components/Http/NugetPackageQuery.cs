@@ -2,24 +2,19 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Nautilus.Cli.Core.Models.Http;
+using Nautilus.Net.Http;
+using Newtonsoft.Json;
 
-namespace Nautilus.Cli.Core.Http
+namespace Nautilus.Cli.Core.Components.Http
 {
-	public class NugetPackageClient
-	{
-		public QueryRequest QueryRequest(string packageName, bool preRelease)
-		{
-			return new QueryRequest(packageName, preRelease);
-		}
-	}
-
-	public class QueryRequest
+	public class NugetPackageQuery
 	{
 		private readonly string _packageName;
 		private readonly bool _preRelease;
 		private string _apiTemplate = @"https://api-v2v3search-0.nuget.org/query?q={packageName}&prerelease={preRelease}";
 
-		public QueryRequest(string packageName, bool preRelease)
+		internal NugetPackageQuery(string packageName, bool preRelease)
 		{
 			_packageName = packageName;
 			_preRelease = preRelease;
@@ -28,16 +23,16 @@ namespace Nautilus.Cli.Core.Http
 			_apiTemplate = _apiTemplate.Replace("{prerelease}", _preRelease.ToString());
 		}
 
-		public async Task ExecuteAsync(CancellationToken cancellationToken = default)
+		public async Task<QueryPackageResponse> ExecuteAsync(CancellationToken cancellationToken = default)
 		{
-			var httpClient = new HttpClient();
-			var requestMessage = new HttpRequestMessage(HttpMethod.Get, _apiTemplate);
-
-			HttpResponseMessage response = null;
-
 			try
 			{
-				response = await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseContentRead, cancellationToken);
+				var httpClient = new HttpClientManager();
+				var response = await httpClient.GetAsync(_apiTemplate, false, cancellationToken);
+
+				var deserialized = JsonConvert.DeserializeObject<QueryPackageResponse>(response);
+
+				return deserialized;
 			}
 			catch (ArgumentNullException argNullEx)
 			{
@@ -55,6 +50,8 @@ namespace Nautilus.Cli.Core.Http
 			{
 				Console.WriteLine(ex.Message);
 			}
+
+			return null;
 		}
 	}
 }

@@ -8,6 +8,7 @@ using Nautilus.Cli.Core.TestData;
 using Nautilus.Cli.Core.Components;
 using Nautilus.Cli.Client.CommandLine;
 using Nautilus.Cli.Client.CLIServices;
+using System.Threading.Tasks;
 
 namespace Nautilus.Cli.Client
 {
@@ -34,18 +35,25 @@ namespace Nautilus.Cli.Client
 					{
 						service.Run();
 					}
+					catch(CLIException cliEx)
+					{
+						sw.Stop();
+
+						DisplayCLIExceptionMessageFormat(cliEx);
+						DisplayFinishingMessage(sw);
+					}
 					catch (SolutionFileException solutionFileEx)
 					{
-						SolutionFileExceptionMessageFormat(solutionFileEx);
-
 						sw.Stop();
+
+						SolutionFileExceptionMessageFormat(solutionFileEx);
 						DisplayFinishingMessage(sw);
 					}
 					catch (Exception ex)
 					{
-						DisplayGeneralExceptionMessageFormat(ex);
+						sw.Stop(); 
 
-						sw.Stop();
+						DisplayGeneralExceptionMessageFormat(ex);
 						DisplayFinishingMessage(sw);
 					}
 					finally
@@ -66,7 +74,7 @@ namespace Nautilus.Cli.Client
 
 					try
 					{
-						service.Run();
+						service.Run().Wait();
 					}
 					catch (SolutionFileException solutionFileEx)
 					{
@@ -141,7 +149,7 @@ namespace Nautilus.Cli.Client
 			AppFactory.Register<NugetPackageConflictFinder>(AppComponentType.NugetConflicts.ToString());
 		}
 
-		public const string Name = "mycli";
+		public const string Name = "nautilus-cli";
 
 		//public static readonly string Name
 		//{
