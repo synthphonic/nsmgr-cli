@@ -10,7 +10,7 @@ using CommandLine.Text;
 
 namespace Nautilus.Cli.Client.CommandLine
 {
-	[Verb("findconflict",  HelpText = "Finds the conflicting nuget package versions installed in the solution")]
+	[Verb("find-conflict",  HelpText = "Finds the conflicting nuget package versions installed in the solution")]
 	class FindConflict
 	{
 		[Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file")]
