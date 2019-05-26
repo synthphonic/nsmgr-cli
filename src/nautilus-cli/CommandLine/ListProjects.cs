@@ -13,6 +13,8 @@ namespace Nautilus.Cli.Client.CommandLine
 	[Verb("list-projects", HelpText = "The solution report to display")]
 	class ListProjects
 	{
+		private const string Example_Text = "List out all projects under the solution";
+
 		[Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file.")]
 		public string SolutionFileName { get; set; }
 
@@ -39,7 +41,7 @@ namespace Nautilus.Cli.Client.CommandLine
 
 				return new List<Example>
 				{
-					new Example("List out all projects under the solution.",new ListProjects{ SolutionFileName=platformPathSample} )
+					new Example(Example_Text, new ListProjects{ SolutionFileName=platformPathSample} )
 				};
 			}
 		}

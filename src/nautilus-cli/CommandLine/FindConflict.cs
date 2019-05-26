@@ -13,6 +13,8 @@ namespace Nautilus.Cli.Client.CommandLine
 	[Verb("find-conflict",  HelpText = "Finds the conflicting nuget package versions installed in the solution")]
 	class FindConflict
 	{
+		private const string Example_Text = "Finds any conflicting nuget package versions in the solution";
+
 		[Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file")]
 		public string SolutionFileName { get; set; }
 
@@ -39,7 +41,7 @@ namespace Nautilus.Cli.Client.CommandLine
 
 				return new List<Example>
 				{
-					new Example("Finds any conflicting nuget package versions in the solution",new FindConflict{ SolutionFileName=platformPathSample} )
+					new Example(Example_Text, new FindConflict{ SolutionFileName=platformPathSample} )
 				};
 			}
 		}
