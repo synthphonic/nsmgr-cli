@@ -94,5 +94,13 @@ var xpathString = "//namespace:PackageReference[@Include='System.Reactive']";
 XmlNode node = xmlDoc.DocumentElement.SelectSingleNode(xpathString,nsMgr);
 XmlNode versionNode = node.FirstChild.FirstChild;
 versionNode.Value = "4.3.1221211.12";
-xmlDoc.Save(_file2);
+// xmlDoc.Save(_file2);
+
+var f = new FileInfo(_file);
+Console.WriteLine(f.DirectoryName);
+var backupFileName = $"{f.Name}.backup";
+Console.WriteLine(f.Name);
+Console.WriteLine(backupFileName);
+Console.WriteLine(Path.Combine(f.DirectoryName,f.Name));
+Console.WriteLine(Path.Combine(f.DirectoryName,backupFileName));
 ```
