@@ -37,9 +37,9 @@ namespace Nautilus.Cli.Client.CLIServices
 			{
 				throw;
 			}
-			catch(Exception ex)
+			catch(Exception)
 			{
-				throw ex;
+				throw;
 			}
 
 			Action<Project> writeToScreenAction = null;

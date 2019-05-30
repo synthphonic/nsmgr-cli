@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
-using Nautilus.Cli.Core;
 using Nautilus.Cli.Core.Models;
 
 namespace Nautilus.Cli.Core.Components

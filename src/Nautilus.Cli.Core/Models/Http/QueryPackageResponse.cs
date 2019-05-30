@@ -101,6 +101,6 @@ namespace Nautilus.Cli.Core.Models.Http
 		public bool Verified { get; set; }
 
 		[JsonProperty("versions")]
-		public IList<Version> Versions { get; set; }
+		public IList<VersionInfo> Versions { get; set; }
 	}
 }

@@ -8,7 +8,6 @@ using Nautilus.Cli.Core.TestData;
 using Nautilus.Cli.Core.Components;
 using Nautilus.Cli.Client.CommandLine;
 using Nautilus.Cli.Client.CLIServices;
-using System.Threading.Tasks;
 
 namespace Nautilus.Cli.Client
 {
@@ -23,7 +22,62 @@ namespace Nautilus.Cli.Client
 			TestDataHelper.UseTestData = false;
 #endif
 
-			_ = Parser.Default.ParseArguments<ListProjects, FindConflict>(args)
+			_ = Parser.Default.ParseArguments<ListProjects, FindConflict, UpdateNugetPackage>(args)
+				.WithParsed((Action<UpdateNugetPackage>)((command) =>
+				{
+					var sw = new Stopwatch();
+					sw.Start();
+
+					var service = new UpdateNugetPackageService(command.SolutionFileName, command.ProjectName, command.NugetPackage, command.NugetVersion);
+
+					try
+					{
+						service.Run().Wait();
+					}
+					catch(ProjectNotFoundException prjNotFoundEx)
+					{
+						sw.Stop();
+
+						DisplayProjectNotFoundMessageFormat(prjNotFoundEx);
+						DisplayFinishingMessage(sw);
+					}
+					catch (NugetPackageNotFoundException nugetPackageNotFoundEx)
+					{
+						sw.Stop();
+
+						DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx);
+						DisplayFinishingMessage(sw);
+					}
+					catch (CLIException cliEx)
+					{
+						sw.Stop();
+
+						DisplayCLIExceptionMessageFormat(cliEx);
+						DisplayFinishingMessage(sw);
+					}
+					catch (SolutionFileException solutionFileEx)
+					{
+						sw.Stop();
+
+						SolutionFileExceptionMessageFormat(solutionFileEx);
+						DisplayFinishingMessage(sw);
+					}
+					catch (Exception ex)
+					{
+						sw.Stop();
+
+						DisplayGeneralExceptionMessageFormat(ex);
+						DisplayFinishingMessage(sw);
+					}
+					finally
+					{
+						if (sw.IsRunning)
+						{
+							sw.Stop();
+							DisplayFinishingMessage(sw);
+						}
+					}
+				}))
 				.WithParsed((Action<ListProjects>)((command) =>
 				{
 					var sw = new Stopwatch();
@@ -109,6 +163,26 @@ namespace Nautilus.Cli.Client
 
 					//Console.WriteLine(sb.ToString());
 				});
+		}
+
+		private static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex)
+		{
+			Console.WriteLine("");
+			Colorful.Console.WriteLine(ex.Message, Color.Red);
+			Console.WriteLine("");
+			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+			Console.WriteLine("");
+
+		}
+
+		private static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex)
+		{
+			Console.WriteLine("");
+			Colorful.Console.WriteLine(ex.Message, Color.Red);
+			Console.WriteLine("");
+			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+			Console.WriteLine("");
+
 		}
 
 		private static void DisplayGeneralExceptionMessageFormat(Exception ex)

@@ -31,5 +31,19 @@ namespace Nautilus.Cli.Core.Utils
 		{
 			return Path.Combine(path1, path2);
 		}
+
+		public static string ReadFileContent(string fileName)
+		{
+			var xmlContent = string.Empty;
+			using (var fs = File.OpenRead(fileName))
+			{
+				using (var sr = new StreamReader(fs))
+				{
+					xmlContent = sr.ReadToEnd();
+				}
+			}
+
+			return xmlContent;
+		}
 	}
 }

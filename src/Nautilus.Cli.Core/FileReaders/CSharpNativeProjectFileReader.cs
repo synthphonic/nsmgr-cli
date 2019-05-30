@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 using Nautilus.Cli.Core.Abstraction;
 using Nautilus.Cli.Core.Models;
+using Nautilus.Cli.Core.Utils;
 
 namespace Nautilus.Cli.Core.FileReaders
 {
@@ -14,29 +14,22 @@ namespace Nautilus.Cli.Core.FileReaders
         {
             _fileName = fileName;
 
-            return ReadCsharpProjectFile();
+            return ReadCSharpProjectFile();
         }
 
-        private IList<NugetPackageReference> ReadCsharpProjectFile()
+        private IList<NugetPackageReference> ReadCSharpProjectFile()
         {
 			var nugetPackages = new List<NugetPackageReference>();
 
-            var xmlContent = string.Empty;
-            using (var fs = File.OpenRead(_fileName))
-            {
-                using (var sr = new StreamReader(fs))
-                {
-                    xmlContent = sr.ReadToEnd();
-                }
-            }
+			var xmlContent = FileUtil.ReadFileContent(_fileName);
 
 			var xmlDoc = new XmlDocument();
 			xmlDoc.LoadXml(xmlContent);
 
-			var xmlNsManager = new XmlNamespaceManager(xmlDoc.NameTable);
-			xmlNsManager.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
+			var nsMgr = new XmlNamespaceManager(xmlDoc.NameTable);
+			nsMgr.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
 
-			foreach (XmlNode xmlNode in xmlDoc.SelectNodes("//x:PackageReference", xmlNsManager))
+			foreach (XmlNode xmlNode in xmlDoc.SelectNodes("//x:PackageReference", nsMgr))
 			{
 				var packageName = xmlNode.Attributes["Include"].Value;
 				var packageVersion = xmlNode.InnerText;

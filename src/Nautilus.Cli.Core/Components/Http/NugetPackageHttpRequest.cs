@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.Cli.Core.Components.Http
 {
-	public class NugetPackageHttpClient
+	public static class NugetPackageHttpRequest
 	{
 		public static NugetPackageQuery QueryRequest(string packageName, bool preRelease)
 		{

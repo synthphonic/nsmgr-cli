@@ -19,7 +19,7 @@ namespace Tests
 		{
 			//
 			// Arrange
-			var request = NugetPackageHttpClient.QueryRequest(packageName, preRelease);
+			var request = NugetPackageHttpRequest.QueryRequest(packageName, preRelease);
 
 			// 
 			// Act

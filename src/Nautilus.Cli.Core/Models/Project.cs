@@ -7,40 +7,39 @@ namespace Nautilus.Cli.Core.Models
 {
 	public class Project
 	{
-		private ProjectMetadata _metadata;
-
 		public Project(ProjectMetadata metadata)
 		{
-			_metadata = metadata;
+			Metadata = metadata;
 
 			if (TestDataHelper.UseTestData)
 			{
-				_metadata.ProjectName = _metadata.ProjectName.Replace("Storiveo", "FourtyNineLabs");
-				_metadata.ProjectName = _metadata.ProjectName.Replace("Niu", "FourtyNineLabs");
+				Metadata.ProjectName = Metadata.ProjectName.Replace("Storiveo", "FourtyNineLabs");
+				Metadata.ProjectName = Metadata.ProjectName.Replace("Niu", "FourtyNineLabs");
 			}
 
-			if (_metadata.ProjectType == SolutionProjectElement.CSharpProject)
+			if (Metadata.ProjectType == SolutionProjectElement.CSharpProject)
 			{
-				var projectTypeManager = new ProjectTypeManager(_metadata.ProjectFullPath);
+				var projectTypeManager = new ProjectTypeManager(Metadata.ProjectFullPath);
 				TargetFramework = projectTypeManager.GetTargetFramework();
-				ProjectType = _metadata.ProjectType;
+				ProjectType = Metadata.ProjectType;
 
-				var fileFinder = new FileReader(TargetFramework, _metadata);
+				var fileFinder = new FileReader(TargetFramework, Metadata);
 				var fileContentObject = fileFinder.ReadFile();
 				Packages = fileContentObject as IEnumerable<NugetPackageReference>;
 			}
-			else if (_metadata.ProjectType == SolutionProjectElement.VirtualFolder)
+			else if (Metadata.ProjectType == SolutionProjectElement.VirtualFolder)
 			{
 				TargetFramework = ProjectTarget.Unknown;
 			}
 
-			ProjectType = _metadata.ProjectType;
+			ProjectType = Metadata.ProjectType;
 		}
 
-		public string ProjectGuid { get { return _metadata.ProjectGuid; } }
-		public string ProjectName { get { return _metadata.ProjectName; } }
+		public string ProjectGuid { get { return Metadata.ProjectGuid; } }
+		public string ProjectName { get { return Metadata.ProjectName; } }
 		public ProjectTarget TargetFramework { get; private set; }
 		public IEnumerable<NugetPackageReference> Packages { get; private set; }
 		public SolutionProjectElement ProjectType { get; private set; }
+		public ProjectMetadata Metadata { get; private set; }
 	}
 }

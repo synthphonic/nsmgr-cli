@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Nautilus.Cli.Core.Abstraction;
 using Nautilus.Cli.Core.Models;
+using Nautilus.Cli.Core.Utils;
 
 namespace Nautilus.Cli.Core.FileReaders
 {
@@ -19,24 +19,14 @@ namespace Nautilus.Cli.Core.FileReaders
 
         private IList<NugetPackageReference> ReadCsharpProjectFile()
         {
-            var fileName = Path.GetFileName(_fileName);
-            List<NugetPackageReference> packageReferenceList = null;
-
-            var xmlContent = string.Empty;
-            using (var fs = File.OpenRead(_fileName))
-            {
-                using (var sr = new StreamReader(fs))
-                {
-                    xmlContent = sr.ReadToEnd();
-                }
-            }
+			var xmlContent = FileUtil.ReadFileContent(_fileName);
 
             var xElement = XElement.Parse(xmlContent);
 
             var itemGroups = xElement.Elements("ItemGroup").ToList();
             var packageReferences = itemGroups.Elements("PackageReference").ToList();
 
-            packageReferenceList = new List<NugetPackageReference>();
+            var packageReferenceList = new List<NugetPackageReference>();
             foreach (var item in packageReferences)
             {
                 var include = item.FirstAttribute.Value;

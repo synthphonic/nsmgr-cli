@@ -105,7 +105,7 @@ namespace Nautilus.Cli.Client.CLIServices
 
 			foreach (var packageName in packageNameList)
 			{
-				var request = NugetPackageHttpClient.QueryRequest(packageName, false);
+				var request = NugetPackageHttpRequest.QueryRequest(packageName, false);
 				var response = await request.ExecuteAsync();
 
 				if (response.Exception != null)

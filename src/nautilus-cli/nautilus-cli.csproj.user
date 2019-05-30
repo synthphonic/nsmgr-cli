@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <StartAction>Project</StartAction>
-    <StartArguments>list-projects --solutionfilename=/Users/shahz.macbook/projects/RND/some-awesome-mobile-app/MyFinance.sln --projects-only=false</StartArguments>
+    <StartArguments>update-nuget-package --solutionfilename=/Users/shahz.macbook/projects/RND/some-awesome-mobile-app/MyFinance.sln --nugetpackage=Xamarin.Forms --nugetversion=4.0.0.394984-pre10 --project=Storiveo.iOS</StartArguments>
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
 </Project>

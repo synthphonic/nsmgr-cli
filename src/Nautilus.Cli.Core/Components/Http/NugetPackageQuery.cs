@@ -20,7 +20,7 @@ namespace Nautilus.Cli.Core.Components.Http
 			_preRelease = preRelease;
 
 			_apiTemplate = _apiTemplate.Replace("{packageName}", _packageName);
-			_apiTemplate = _apiTemplate.Replace("{prerelease}", _preRelease.ToString());
+			_apiTemplate = _apiTemplate.Replace("{preRelease}", _preRelease.ToString().ToLower());
 		}
 
 		public async Task<QueryPackageResponse> ExecuteAsync(CancellationToken cancellationToken = default)

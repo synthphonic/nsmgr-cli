@@ -4,21 +4,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Nautilus.Cli.Core.Abstraction;
 using Nautilus.Cli.Core.Configurations.Enums;
 using Nautilus.Cli.Core.Exceptions;
 using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
+using Nautilus.Cli.Core.Utils;
 
 namespace Nautilus.Cli.Core
 {
 	public class FileReader
 	{
-		//private readonly string _file;
 		private readonly Dictionary<ProjectTarget, IProjectFilePackageReader> _fileReaders;
-		private ProjectMetadata _metadata;
-		private ProjectTarget _targetFramework;
+		private readonly ProjectMetadata _metadata;
+		private readonly ProjectTarget _targetFramework;
+
+		public FileReader(Project project) : this()
+		{
+			_metadata = project.Metadata;
+			_targetFramework = project.TargetFramework;
+		}
 
 		public FileReader(ProjectTarget targetFramework, ProjectMetadata projectMetadata) : this()
 		{
@@ -65,6 +74,43 @@ namespace Nautilus.Cli.Core
 				exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
 				exceptionMessage.AppendFormat($"Reason:{ex.Message}");
 				throw new CLIException(exceptionMessage.ToString(), ex);
+			}
+		}
+
+		public string GetPackageVersion(string packageName)
+		{
+			XNamespace ns = "http://schemas.microsoft.com/developer/msbuild/2003";
+
+			var xmlContent = FileUtil.ReadFileContent(_metadata.ProjectFullPath);
+			var xDoc = XDocument.Parse(xmlContent);
+			var element = xDoc.Descendants(ns + "PackageReference").Single(e => e.Attribute("Include").Value.Equals(packageName));
+
+			return null;
+		}
+
+		public bool TryGetPackageVersion(string packageName, out string version)
+		{
+			version = string.Empty;
+			XNamespace ns = "http://schemas.microsoft.com/developer/msbuild/2003";
+
+			var xmlContent = FileUtil.ReadFileContent(_metadata.ProjectFullPath);
+			var xDoc = XDocument.Parse(xmlContent);
+			XElement element = null;
+
+			try
+			{
+				element = xDoc.Descendants(ns + "PackageReference").Single(e => e.Attribute("Include").Value.Equals(packageName));
+				version = element.Value;
+
+				return true;
+			}
+			catch(InvalidOperationException)
+			{
+				return false;
+			}
+			catch (Exception)
+			{
+				return false;
 			}
 		}
 	}
