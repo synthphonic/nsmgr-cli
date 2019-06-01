@@ -9,6 +9,7 @@ using Nautilus.Cli.Core.Components.Http;
 using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.TestData;
+using System.Threading;
 
 namespace Nautilus.Cli.Client.CLIServices
 {
@@ -27,6 +28,9 @@ namespace Nautilus.Cli.Client.CLIServices
 
 		public async Task Run()
 		{
+			Colorful.Console.WriteLine();
+			Colorful.Console.Write("Working. Please wait...", Color.DeepSkyBlue);
+
 			var slnFileReader = new SolutionFileReader(_solutionFileName, _processProjectsOnly);
 			var solution = slnFileReader.Read();
 
@@ -39,6 +43,11 @@ namespace Nautilus.Cli.Client.CLIServices
 			}
 
 			var latestPackages = await QueryNugetPackageOnlineAsync(packageNames.ToArray());
+
+			Colorful.Console.Write("Done.", Color.DeepSkyBlue);
+			Thread.Sleep(500);
+
+			Colorful.Console.WriteLine();
 
 			WriteOutput(foundConflicts, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
 		}
