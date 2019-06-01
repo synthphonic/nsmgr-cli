@@ -60,14 +60,16 @@ namespace Nautilus.Cli.Client.CLIServices
 			Colorful.Console.Write("Total Projects : ");
 			Colorful.Console.WriteLine($"{totalProjects}", Color.PapayaWhip);
 
-			if (!foundConflicts.Any())
-				Console.WriteLine("Great! No conflict found for this solution");
-
 			Colorful.Console.WriteLine();
 			Colorful.Console.Write("Found ", Color.PapayaWhip);
 			Colorful.Console.Write($"{foundConflicts.Count()} ", Color.Aqua);
 			Colorful.Console.WriteLine("Nuget Package conflicts...", Color.PapayaWhip);
 			Colorful.Console.WriteLine();
+
+			if (!foundConflicts.Any())
+			{
+				Colorful.Console.WriteLine("** Great! No conflict found for this solution **", Color.DeepSkyBlue);
+			}
 
 			foreach (var conflict in foundConflicts)
 			{
