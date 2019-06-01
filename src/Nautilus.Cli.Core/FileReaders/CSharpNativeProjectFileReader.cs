@@ -33,6 +33,24 @@ namespace Nautilus.Cli.Core.FileReaders
 			{
 				var packageName = xmlNode.Attributes["Include"].Value;
 				var packageVersion = xmlNode.InnerText;
+
+				//
+				// SHAH: NOTE on PackageReference "Version" data in .csproj file
+				/* We need this since there were some modification to the .csproj file structure 
+				 * Old strucutre:
+				 * <PackageReference Include="Xamarin.Forms">
+				 * 	<Version>4.0.0.425677</Version>
+				 * </PackageReference>	
+				 * 
+				 * New structure:
+				 * <PackageReference Include="Xamarin.Forms" Version="4.0.0.425677" />  
+				 */
+
+				if (string.IsNullOrWhiteSpace(packageVersion))
+				{
+					packageVersion = xmlNode.Attributes["Version"].Value;
+				}
+
 				var package = new NugetPackageReference(packageName, packageVersion);
 
 				nugetPackages.Add(package);
