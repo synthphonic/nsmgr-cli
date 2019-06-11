@@ -83,11 +83,11 @@ namespace Nautilus.Cli.Client
 					var sw = new Stopwatch();
 					sw.Start();
 
-					var service = new ListProjectsService(command.SolutionFileName, command.ProjectsOnly, command.ShowNugetPackages);
+					var service = new ListProjectsService(command.SolutionFileName, command.ProjectsOnly, command.ShowNugetPackages, command.NugetPackageUpdates);
 
 					try
 					{
-						service.Run();
+						service.Run().Wait();
 					}
 					catch(CLIException cliEx)
 					{

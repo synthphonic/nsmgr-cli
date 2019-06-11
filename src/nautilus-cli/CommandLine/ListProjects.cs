@@ -21,8 +21,11 @@ namespace Nautilus.Cli.Client.CommandLine
 		[Option("projects-only", HelpText = "Process project files only and ignore the rest.")]
 		public bool ProjectsOnly { get; set; }
 
-		[Option("show-nuget-packages", Default = false, Required = false, Hidden = false, HelpText = "Display nuget packages for each project.")]
+		[Option("nuget-packages", Default = false, Required = false, Hidden = false, HelpText = "Display nuget packages for each project.")]
 		public bool ShowNugetPackages { get; set; }
+
+		[Option("nuget-package-updates", Default = false, Required = false, Hidden = false, HelpText = "Query and display if there's any new nuget package update version online.")]
+		public bool NugetPackageUpdates { get; set; }
 
 		[Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples

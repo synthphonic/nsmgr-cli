@@ -12,14 +12,15 @@ namespace Nautilus.Cli.Core.FileReaders
 {
 	public class SolutionFileReader
     {
-		private readonly bool _processProjectsOnly; 
-		private string _solutionFileName;
-		private IList<ProjectMetadata> _projectMetadataList;
+		private readonly bool _processProjectsOnly;
+		private readonly string _solutionFileName;
+		private readonly IList<ProjectMetadata> _projectMetadataList;
 
 		public SolutionFileReader(string solutionFileName, bool processProjectsOnly = false)
 		{
 			_solutionFileName = solutionFileName;
 			_processProjectsOnly = processProjectsOnly;
+
 			_projectMetadataList = new List<ProjectMetadata>();
 		}
 
