@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -42,21 +43,46 @@ namespace Nautilus.Cli.Core
 				//[SolutionProjectElement.PackageConfig] = new PackageConfigFileReader(),
 				//[SolutionProjectElement.iOS] = new CSharpNativeProjectFileReader(),
 				//[SolutionProjectElement.Android] = new CSharpNativeProjectFileReader()
+				[ProjectTarget.NETFramework] = new CSharpNETFrameworkProjectFileReader(),
 				[ProjectTarget.NETFramework46] = new PackageConfigFileReader(),
 				[ProjectTarget.NETStandard20] = new CSharpProjectFileReader(),
 				[ProjectTarget.NETCoreApp20] = new CSharpProjectFileReader(),
 				[ProjectTarget.NETCoreApp21] = new CSharpProjectFileReader(),
-				[ProjectTarget.NativeiOS] = new CSharpNativeProjectFileReader(),
-				[ProjectTarget.NativeiOSBinding] = new CSharpNativeProjectFileReader(),
-				[ProjectTarget.NativeAndroid] = new CSharpNativeProjectFileReader()
+				[ProjectTarget.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
+				[ProjectTarget.NativeiOSBinding] = new CSharpNETFrameworkProjectFileReader(),
+				[ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileReader()
 			};
 		}
 
 		public object ReadFile()
 		{
+			//
+			// SOME NOTES:
+			// for ProjectTarget.NETFramework46, we need to check the following:
+			// 1. check if packages.json file exists. if yes, then read from it
+			// 2. if packages.json does not exists, then read from C# project file
+			//
+
 			try
 			{
-				var returnedObject = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath);
+				var packageConfigExists = false;
+
+				object returnedObject = null;
+
+				if (_targetFramework == ProjectTarget.NETFramework46)
+				{
+					var projectFileName = _metadata.ProjectFullPath;
+					var packageConfigFile = Path.Combine(Path.GetDirectoryName(projectFileName), "packages.config");
+					packageConfigExists = File.Exists(packageConfigFile);
+
+					returnedObject = packageConfigExists
+						? _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath)
+						: _fileReaders[ProjectTarget.NETFramework].Read(_metadata.ProjectFullPath);
+				}
+				else
+				{
+					returnedObject = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath);
+				}
 
 				return returnedObject;
 			}
@@ -67,6 +93,13 @@ namespace Nautilus.Cli.Core
 				exceptionMessage.AppendFormat($"Reason:{keyNotFoundEx.Message}");
 				throw new CLIException(exceptionMessage.ToString(), keyNotFoundEx);
 
+			}
+			catch (FileNotFoundException fileNotFoundEx)
+			{
+				var exceptionMessage = new StringBuilder();
+				exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
+				exceptionMessage.AppendFormat($"Reason:{fileNotFoundEx.Message}");
+				throw new CLIException(exceptionMessage.ToString(), fileNotFoundEx);
 			}
 			catch (Exception ex)
 			{
