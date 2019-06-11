@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Nautilus.Cli.Core.Components.Http;
 using Nautilus.Cli.Core.Models;
@@ -36,7 +37,9 @@ namespace Nautilus.Cli.Core.Components
 			{
 				var requestor = NugetPackageHttpRequest.QueryRequest(package.PackageName, false);
 				var response = await requestor.ExecuteAsync();
-				projectPackages.Add(new NugetPackageInformationComparer(package, response.Data[0]));
+				var selectedDatum = response.Data.FirstOrDefault(x => x.Id.Equals(package.PackageName));
+
+				projectPackages.Add(new NugetPackageInformationComparer(package, selectedDatum));
 
 				_writeProgressHandler();
 			}
