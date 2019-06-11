@@ -8,6 +8,7 @@
 		NETCoreApp20,
 		NETCoreApp21,
 		NETCoreApp22,
+		NETFramework,
 		NETFramework45,
 		NETFramework46,
 		NETFramework47,
