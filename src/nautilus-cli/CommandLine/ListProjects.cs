@@ -10,7 +10,7 @@ using CommandLine.Text;
 
 namespace Nautilus.Cli.Client.CommandLine
 {
-	[Verb("list-projects", HelpText = "The solution report to display")]
+	[Verb("list-projects", HelpText = "List out all projects that exists under a solution (.sln) file")]
 	class ListProjects
 	{
 		private const string Example_Text = "List out all projects under the solution";

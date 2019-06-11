@@ -12,7 +12,14 @@ namespace Nautilus.Cli.Client.CLIServices
 	{
 		delegate void ShowNugetPackages(Project project);
 
-		private const string Format = "{0,-45}";
+		private const string Format1 = "{0,-1}";
+		private const string Format7 = "{0,-7}";
+		private const string Format9 = "{0,-9}";
+		private const string Format5 = "{0,-5}";
+		private const string Format15 = "{0,-15}";
+		private const string Format40 = "{0,-40}";
+		private const string Format45 = "{0,-45}";
+		private const string Format50 = "{0,-50}";
 		private readonly string _solutionFileName;
 		private readonly bool _processProjectsOnly;
 		private readonly bool _showNugetPackages;
@@ -37,7 +44,7 @@ namespace Nautilus.Cli.Client.CLIServices
 			{
 				throw;
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				throw;
 			}
@@ -49,31 +56,30 @@ namespace Nautilus.Cli.Client.CLIServices
 			}
 
 			WriteToScreen(solution, writeToScreenAction);
-
 		}
 
 		private static void WriteToScreen(Solution solution, Action<Project> executeAction = null)
 		{
 			Colorful.Console.WriteLine();
-			Colorful.Console.Write("{0,-15}", "Solution ");
+			Colorful.Console.Write($"{Format15}", "Solution ");
 			Colorful.Console.WriteLine($": {solution.SolutionFileName}", Color.PapayaWhip);
 			Colorful.Console.Write("Total Projects : ");
-			Colorful.Console.WriteLine($"{solution.Projects.Count()}", Color.PapayaWhip);
+			Colorful.Console.WriteLine($"{solution.Projects.Count()}\n", Color.PapayaWhip);
 
 			var projectCounter = 1;
 			foreach (var project in solution.Projects)
 			{
-				Colorful.Console.Write("{0,-2}. ",projectCounter);
-				Colorful.Console.Write(Format, Color.YellowGreen, project.ProjectName);
+				Colorful.Console.Write($"{Format1}. ", projectCounter);
+				Colorful.Console.Write(Format45, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
 
 				if (project.TargetFramework == ProjectTarget.Unknown)
 				{
-					Colorful.Console.Write("[{0,-7}-", Color.Chocolate, project.TargetFramework);
-					Colorful.Console.WriteLine("{0,-9}]", Color.Chocolate, project.ProjectType);
+					Colorful.Console.Write($"[{Format7}-", Color.Chocolate, project.TargetFramework);
+					Colorful.Console.WriteLine($"{Format9}]", Color.Chocolate, project.ProjectType);
 				}
 				else
 				{
-					Colorful.Console.WriteLine("[{0,-5}]", project.TargetFramework);
+					Colorful.Console.WriteLine($"[{Format5}]", project.TargetFramework);
 				}
 
 				executeAction?.Invoke(project);
@@ -84,11 +90,10 @@ namespace Nautilus.Cli.Client.CLIServices
 
 		private static void ListNugetPackages(Project project)
 		{
-			Colorful.Console.WriteLine($"\tFound {project.Packages.Count()} nuget packages", Color.YellowGreen);
-
 			foreach (var package in project.Packages)
 			{
-				Colorful.Console.WriteLine($"\t{package.PackageName} {package.Version}", Color.Chocolate);
+				Colorful.Console.Write($"\t{Format50}", Color.Chocolate, package.PackageName);
+				Colorful.Console.WriteLine($"{Format40}", Color.YellowGreen, package.Version);
 			}
 		}
 	}
