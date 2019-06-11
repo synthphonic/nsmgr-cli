@@ -6,7 +6,7 @@ using Nautilus.Cli.Core.Utils;
 
 namespace Nautilus.Cli.Core.FileReaders
 {
-	public class CSharpNativeProjectFileReader : IProjectFilePackageReader
+	public class CSharpNETFrameworkProjectFileReader : IProjectFilePackageReader
     {
         private string _fileName;
 
