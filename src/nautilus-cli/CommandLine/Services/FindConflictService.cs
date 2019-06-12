@@ -12,7 +12,7 @@ using System.Threading;
 using Nautilus.Cli.Client.CommandLine.Layout;
 using System;
 
-namespace Nautilus.Cli.Client.CLIServices
+namespace Nautilus.Cli.Client.CommandLine.Services
 {
 	public class FindConflictService
 	{

@@ -6,8 +6,8 @@ using Nautilus.Cli.Core.Exceptions;
 using Nautilus.Cli.Core;
 using Nautilus.Cli.Core.TestData;
 using Nautilus.Cli.Core.Components;
-using Nautilus.Cli.Client.CommandLine;
-using Nautilus.Cli.Client.CLIServices;
+using Nautilus.Cli.Client.CommandLine.Verbs;
+using Nautilus.Cli.Client.CommandLine.Services;
 
 namespace Nautilus.Cli.Client
 {

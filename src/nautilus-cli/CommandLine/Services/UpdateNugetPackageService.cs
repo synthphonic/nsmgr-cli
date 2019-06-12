@@ -8,7 +8,7 @@ using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.Models.Http;
 
-namespace Nautilus.Cli.Client.CLIServices
+namespace Nautilus.Cli.Client.CommandLine.Services
 {
 	public class UpdateNugetPackageService
 	{

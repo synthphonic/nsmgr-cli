@@ -5,7 +5,7 @@ using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.Utils;
 using Nautilus.Cli.Core.Abstraction;
 
-namespace Nautilus.Cli.Client.CLIServices
+namespace Nautilus.Cli.Client.CommandLine.Services
 {
 	public class ConfigurationService : IConfigurationService
 	{

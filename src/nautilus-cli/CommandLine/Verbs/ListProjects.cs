@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
 
-namespace Nautilus.Cli.Client.CommandLine
+namespace Nautilus.Cli.Client.CommandLine.Verbs
 {
 	[Verb("list-projects", HelpText = "List out all projects that exists under a solution (.sln) file")]
 	class ListProjects

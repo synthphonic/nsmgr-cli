@@ -10,7 +10,7 @@ using Nautilus.Cli.Core.Components;
 using System.Collections.Generic;
 using Nautilus.Cli.Client.CommandLine.Layout;
 
-namespace Nautilus.Cli.Client.CLIServices
+namespace Nautilus.Cli.Client.CommandLine.Services
 {
 	public class ListProjectsService
 	{

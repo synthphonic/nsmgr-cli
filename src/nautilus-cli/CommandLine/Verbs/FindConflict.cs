@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
 
-namespace Nautilus.Cli.Client.CommandLine
+namespace Nautilus.Cli.Client.CommandLine.Verbs
 {
 	[Verb("find-conflict",  HelpText = "Finds the conflicting nuget package versions installed in the solution")]
 	class FindConflict

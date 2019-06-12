@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <StartAction>Project</StartAction>
-    <StartArguments>update-nuget-package --solutionfilename=/Users/shahz.macbook/projects/RND/some-awesome-mobile-app/MyFinance.sln --nugetpackage=Xamarin.Forms --nugetversion=4.0.0.394984-pre10 --project=Storiveo.iOS</StartArguments>
+    <StartArguments>find-conflict --solutionfilename=/Users/shahz.macbook/projects/RND/ShellTester/ShellTesterSolution.sln --projects-only</StartArguments>
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
 </Project>
