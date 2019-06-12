@@ -18,8 +18,8 @@ namespace Nautilus.Cli.Client.CommandLine
 		[Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file")]
 		public string SolutionFileName { get; set; }
 
-		[Option("project", Default = true,  Required = false, Hidden = true, HelpText = "Process project files only and ignore the rest. Default is false")]
-		public bool Project { get; set; }
+		[Option("projects-only", Default = true,  Required = false, Hidden = true, HelpText = "Process project files only and ignore the rest. Default is false")]
+		public bool ProjectsOnly { get; set; }
 
 		[Option("usedebugdata", Required = false, Hidden = true, HelpText = "")]
 		public bool UseDebugData { get; set; }
