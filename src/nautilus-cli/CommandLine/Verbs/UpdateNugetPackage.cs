@@ -21,10 +21,10 @@ namespace Nautilus.Cli.Client.CommandLine.Verbs
 		[Option("project", Required = true, HelpText = "The name of the project to update the nuget packages involved.")]
 		public string ProjectName { get; set; }
 
-		[Option("nugetpackage", Required = true, HelpText = "The nuget package name to update.")]
+		[Option("package", Required = true, HelpText = "The nuget package name to update.")]
 		public string NugetPackage { get; set; }
 
-		[Option("nugetversion", Required = true, HelpText = "The version number to upate to.")]
+		[Option("version", Required = true, HelpText = "The version number to upate to.")]
 		public string NugetVersion { get; set; }
 
 		[Usage(ApplicationAlias = Program.Name)]
