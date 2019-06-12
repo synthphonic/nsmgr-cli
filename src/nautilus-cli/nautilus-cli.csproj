@@ -38,8 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CommandLine\" />
-    <Folder Include="CLIServices\" />
     <Folder Include="CommandLine\Layout\" />
+    <Folder Include="CommandLine\Verbs\" />
+    <Folder Include="CommandLine\Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nautilus.Cli.Core\Nautilus.Cli.Core.csproj" />
