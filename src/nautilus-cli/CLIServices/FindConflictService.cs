@@ -10,12 +10,12 @@ using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.TestData;
 using System.Threading;
+using Nautilus.Cli.Client.CommandLine.Layout;
 
 namespace Nautilus.Cli.Client.CLIServices
 {
 	public class FindConflictService
 	{
-		private const string Format = "{0,-40}";
 		private string _solutionFileName;
 		private readonly bool _processProjectsOnly;
 
@@ -79,7 +79,7 @@ namespace Nautilus.Cli.Client.CLIServices
 				foreach (var item in conflict.Value)
 				{
 					Colorful.Console.Write($"In Project ");
-					Colorful.Console.Write(Format, Color.Azure, item.ProjectName);
+					Colorful.Console.Write(CliStringFormatter.Format40, Color.Azure, item.ProjectName);
 					Colorful.Console.Write("[{0,-16}]", Color.Azure, item.ProjectTargetFramework);
 					Colorful.Console.Write(" found version ");
 					Colorful.Console.Write("{0}", Color.Azure, item.Version);
