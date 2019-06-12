@@ -55,7 +55,7 @@ namespace Nautilus.Cli.Client.CLIServices
 			NugetPackageOnlineComparer comparer = null;
 			if (_showNugetPackageUpdates)
 			{
-				comparer = new NugetPackageOnlineComparer(solution, WriteOnlinePackageProgressHandler);
+				comparer = new NugetPackageOnlineComparer(solution, CliStringFormatter.WriteOnlinePackageProgressHandler);
 				await comparer.Run();
 			}
 
@@ -64,10 +64,10 @@ namespace Nautilus.Cli.Client.CLIServices
 			WriteToScreen(solution,comparer?.Result);
 		}
 
-		private static void WriteOnlinePackageProgressHandler()
-		{
-			Task.Run(() => Colorful.Console.Write(".", Color.DeepSkyBlue));
-		}
+		//private static void WriteOnlinePackageProgressHandler()
+		//{
+		//	Task.Run(() => Colorful.Console.Write(".", Color.DeepSkyBlue));
+		//}
 
 		private void WriteToScreen(Solution solution, Dictionary<string, IList<NugetPackageInformationComparer>> packageVersionComparer)
 		{

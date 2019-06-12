@@ -10,6 +10,7 @@ using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.TestData;
 using System.Threading;
 using Nautilus.Cli.Client.CommandLine.Layout;
+using System;
 
 namespace Nautilus.Cli.Client.CLIServices
 {
@@ -28,7 +29,7 @@ namespace Nautilus.Cli.Client.CLIServices
 		public async Task Run()
 		{
 			Colorful.Console.WriteLine();
-			Colorful.Console.Write("Working. Please wait...", Color.DeepSkyBlue);
+			Colorful.Console.WriteLine("Working. Please wait...", Color.DeepSkyBlue);
 
 			var slnFileReader = new SolutionFileReader(_solutionFileName, _processProjectsOnly);
 			var solution = slnFileReader.Read();
@@ -41,10 +42,9 @@ namespace Nautilus.Cli.Client.CLIServices
 				packageNames.Add(item.Key);
 			}
 
-			var latestPackages = await QueryNugetPackageOnlineAsync(packageNames.ToArray());
+			var latestPackages = await QueryNugetPackageOnlineAsync(packageNames.ToArray(), CliStringFormatter.WriteOnlinePackageProgressHandler);
 
-			Colorful.Console.Write("Done.", Color.DeepSkyBlue);
-			Thread.Sleep(500);
+			//Colorful.Console.Write("Done.", Color.DeepSkyBlue);
 
 			Colorful.Console.WriteLine();
 
@@ -109,7 +109,7 @@ namespace Nautilus.Cli.Client.CLIServices
 			return result as Dictionary<string, IList<NugetPackageReferenceExtended>>;
 		}
 
-		private async Task<Dictionary<string, string>> QueryNugetPackageOnlineAsync(string[] packageNameList)
+		private async Task<Dictionary<string, string>> QueryNugetPackageOnlineAsync(string[] packageNameList, Action writeProgressHandler = null)
 		{
 			var result = new Dictionary<string, string>();
 
@@ -127,6 +127,8 @@ namespace Nautilus.Cli.Client.CLIServices
 					var packageVersion = response.GetCurrentVersion(packageName);
 					result[packageName] = packageVersion;
 				}
+
+				writeProgressHandler?.Invoke();
 			}
 
 			return result;

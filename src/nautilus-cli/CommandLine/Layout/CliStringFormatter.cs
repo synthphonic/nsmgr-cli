@@ -1,4 +1,7 @@
-﻿namespace Nautilus.Cli.Client.CommandLine.Layout
+﻿using System.Drawing;
+using System.Threading.Tasks;
+
+namespace Nautilus.Cli.Client.CommandLine.Layout
 {
 	internal static class CliStringFormatter
 	{
@@ -11,5 +14,10 @@
 		internal const string Format40 = "{0,-40}";
 		internal const string Format45 = "{0,-45}";
 		internal const string Format50 = "{0,-50}";
+
+		internal static void WriteOnlinePackageProgressHandler()
+		{
+			Task.Run(() => Colorful.Console.Write(".", Color.DeepSkyBlue));
+		}
 	}
 }

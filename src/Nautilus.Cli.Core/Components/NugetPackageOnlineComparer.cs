@@ -41,7 +41,8 @@ namespace Nautilus.Cli.Core.Components
 
 				projectPackages.Add(new NugetPackageInformationComparer(package, selectedDatum));
 
-				_writeProgressHandler();
+				_writeProgressHandler?.Invoke();
+				//_writeProgressHandler();
 			}
 
 			Result[project.ProjectName] = projectPackages;
