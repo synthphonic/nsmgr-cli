@@ -72,7 +72,7 @@ namespace Nautilus.Cli.Client.CLIServices
 
 			foreach (var conflict in foundConflicts)
 			{
-				Colorful.Console.Write($"Nuget Package : ");
+				//Colorful.Console.Write($"Nuget Package : ");
 				Colorful.Console.WriteLine($"{conflict.Key}", Color.Aqua);
 
 				foreach (var item in conflict.Value)
