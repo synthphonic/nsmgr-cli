@@ -1,0 +1,38 @@
+---
+uti: com.xamarin.workbook
+id: 85e947da-859e-4bf2-8a9c-b3a894ae44f6
+title: xml-netstandard-writer
+platforms:
+- DotNetCore
+---
+
+```csharp
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+
+var _file = @"/Users/shahz.macbook/projects/RND/ShellTester/ShellTester/ShellTester.csproj";
+var xmlDoc = new XmlDocument();
+xmlDoc.Load(_file);
+
+// var nsMgr = new XmlNamespaceManager(xmlDoc.NameTable);
+// nsMgr.AddNamespace("namespace", XmlNameSpace);
+var packageName = "Xamarin.Forms";
+var newVersion = "1.2.3.4";
+
+var xpathString = $"//PackageReference[@Include='{packageName}']";
+var node = xmlDoc.DocumentElement.SelectSingleNode(xpathString);
+var versionNode = node.Attributes["Version"];
+versionNode.Value = newVersion;
+
+var fileInfo = new FileInfo(_file);
+var fullBackupFile = Path.Combine(fileInfo.DirectoryName, $"{fileInfo.Name}.backup");
+
+// Copy original file as backup
+File.Copy(_file, fullBackupFile, true);
+
+// save edited content to original file
+xmlDoc.Save(_file);
+```
