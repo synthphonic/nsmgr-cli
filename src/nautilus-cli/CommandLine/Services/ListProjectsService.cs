@@ -64,11 +64,6 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 			WriteToScreen(solution,comparer?.Result);
 		}
 
-		//private static void WriteOnlinePackageProgressHandler()
-		//{
-		//	Task.Run(() => Colorful.Console.Write(".", Color.DeepSkyBlue));
-		//}
-
 		private void WriteToScreen(Solution solution, Dictionary<string, IList<NugetPackageInformationComparer>> packageVersionComparer)
 		{
 			Colorful.Console.WriteLine();
