@@ -32,13 +32,20 @@ namespace Nautilus.Cli.Core
 		{
 			IProjectFilePackageWriter fileWriter = null;
 
-			if (_project.PackagesConfigFileExist)
+			if (_project.TargetFramework == ProjectTarget.NETFramework46)
 			{
-				fileWriter = _fileWriters[_project.TargetFramework];
+				if (_project.PackagesConfigFileExist)
+				{
+					fileWriter = _fileWriters[_project.TargetFramework];
+				}
+				else
+				{
+					fileWriter = _fileWriters[ProjectTarget.NETFramework];
+				}
 			}
 			else
 			{
-				fileWriter = _fileWriters[ProjectTarget.NETFramework];
+				fileWriter = _fileWriters[_project.TargetFramework];
 			}
 
 			fileWriter.Initialize(_project.TargetFramework, _project.Metadata);

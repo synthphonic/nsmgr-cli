@@ -120,16 +120,25 @@ namespace Nautilus.Cli.Core
 				IList<NugetPackageReference> packageReferences = null;
 				NugetPackageReference found = null;
 
-				if (_packagesConfigFileExist)
+				if (_targetFramework == ProjectTarget.NETFramework46)
 				{
-					packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+					if (_packagesConfigFileExist)
+					{
+						packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+						found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
+						version = found.Version;
+
+						return !string.IsNullOrWhiteSpace(found.Version);
+					}
+
+					packageReferences = _fileReaders[ProjectTarget.NETFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
 					found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
 					version = found.Version;
 
 					return !string.IsNullOrWhiteSpace(found.Version);
 				}
 
-				packageReferences = _fileReaders[ProjectTarget.NETFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+				packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
 				found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
 				version = found.Version;
 
