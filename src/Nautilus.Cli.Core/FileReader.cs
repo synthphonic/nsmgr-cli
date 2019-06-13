@@ -22,14 +22,16 @@ namespace Nautilus.Cli.Core
 		private readonly Dictionary<ProjectTarget, IProjectFilePackageReader> _fileReaders;
 		private readonly ProjectMetadata _metadata;
 		private readonly ProjectTarget _targetFramework;
+		private readonly bool _packagesConfigFileExist;
 
 		public FileReader(Project project) : this()
 		{
 			_metadata = project.Metadata;
 			_targetFramework = project.TargetFramework;
+			_packagesConfigFileExist = project.PackagesConfigFileExist;
 		}
 
-		public FileReader(ProjectTarget targetFramework, ProjectMetadata projectMetadata) : this()
+		internal FileReader(ProjectTarget targetFramework, ProjectMetadata projectMetadata) : this()
 		{
 			_metadata = projectMetadata;
 			_targetFramework = targetFramework;
@@ -109,27 +111,28 @@ namespace Nautilus.Cli.Core
 			}
 		}
 
-		public string GetPackageVersion(string packageName)
-		{
-			XNamespace ns = "http://schemas.microsoft.com/developer/msbuild/2003";
-
-			var xmlContent = FileUtil.ReadFileContent(_metadata.ProjectFullPath);
-			var xDoc = XDocument.Parse(xmlContent);
-			var element = xDoc.Descendants(ns + "PackageReference").Single(e => e.Attribute("Include").Value.Equals(packageName));
-
-			return null;
-		}
-
 		public bool TryGetPackageVersion(string packageName, out string version)
 		{
-			version = "";
+			version = string.Empty;
 
 			try
 			{
-				var packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
-				var found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
+				IList<NugetPackageReference> packageReferences = null;
+				NugetPackageReference found = null;
 
+				if (_packagesConfigFileExist)
+				{
+					packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+					found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
+					version = found.Version;
+
+					return !string.IsNullOrWhiteSpace(found.Version);
+				}
+
+				packageReferences = _fileReaders[ProjectTarget.NETFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+				found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
 				version = found.Version;
+
 				return !string.IsNullOrWhiteSpace(found.Version);
 			}
 			catch (InvalidOperationException)
@@ -141,33 +144,5 @@ namespace Nautilus.Cli.Core
 				return false;
 			}
 		}
-
-		//public bool TryGetPackageVersion(string packageName, out string version)
-		//{
-		//	var s = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath);
-
-		//	version = string.Empty;
-		//	XNamespace ns = "http://schemas.microsoft.com/developer/msbuild/2003";
-
-		//	var xmlContent = FileUtil.ReadFileContent(_metadata.ProjectFullPath);
-		//	var xDoc = XDocument.Parse(xmlContent);
-		//	XElement element = null;
-
-		//	try
-		//	{
-		//		element = xDoc.Descendants(ns + "PackageReference").Single(e => e.Attribute("Include").Value.Equals(packageName));
-		//		version = element.Value;
-
-		//		return true;
-		//	}
-		//	catch(InvalidOperationException)
-		//	{
-		//		return false;
-		//	}
-		//	catch (Exception)
-		//	{
-		//		return false;
-		//	}
-		//}
 	}
 }
