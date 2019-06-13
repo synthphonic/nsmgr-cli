@@ -62,7 +62,7 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 
 		private void UpdateProjectNugetPackage(Project foundProject)
 		{
-			var reader = new FileReader(foundProject);
+			var reader = new FileReader(foundProject.TargetFramework, foundProject.Metadata);
 			bool found = reader.TryGetPackageVersion(_packageName, out string packageVersion);
 
 			if (found)

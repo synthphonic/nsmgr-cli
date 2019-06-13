@@ -24,6 +24,7 @@
     <Folder Include="Components\Http\" />
     <Folder Include="Models\Http\" />
     <Folder Include="Extensions\" />
+    <Folder Include="FileWriters\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.1.1" />

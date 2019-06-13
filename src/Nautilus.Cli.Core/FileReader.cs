@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -123,21 +122,17 @@ namespace Nautilus.Cli.Core
 
 		public bool TryGetPackageVersion(string packageName, out string version)
 		{
-			version = string.Empty;
-			XNamespace ns = "http://schemas.microsoft.com/developer/msbuild/2003";
-
-			var xmlContent = FileUtil.ReadFileContent(_metadata.ProjectFullPath);
-			var xDoc = XDocument.Parse(xmlContent);
-			XElement element = null;
+			version = "";
 
 			try
 			{
-				element = xDoc.Descendants(ns + "PackageReference").Single(e => e.Attribute("Include").Value.Equals(packageName));
-				version = element.Value;
+				var packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+				var found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
 
-				return true;
+				version = found.Version;
+				return !string.IsNullOrWhiteSpace(found.Version);
 			}
-			catch(InvalidOperationException)
+			catch (InvalidOperationException)
 			{
 				return false;
 			}
@@ -146,5 +141,33 @@ namespace Nautilus.Cli.Core
 				return false;
 			}
 		}
+
+		//public bool TryGetPackageVersion(string packageName, out string version)
+		//{
+		//	var s = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath);
+
+		//	version = string.Empty;
+		//	XNamespace ns = "http://schemas.microsoft.com/developer/msbuild/2003";
+
+		//	var xmlContent = FileUtil.ReadFileContent(_metadata.ProjectFullPath);
+		//	var xDoc = XDocument.Parse(xmlContent);
+		//	XElement element = null;
+
+		//	try
+		//	{
+		//		element = xDoc.Descendants(ns + "PackageReference").Single(e => e.Attribute("Include").Value.Equals(packageName));
+		//		version = element.Value;
+
+		//		return true;
+		//	}
+		//	catch(InvalidOperationException)
+		//	{
+		//		return false;
+		//	}
+		//	catch (Exception)
+		//	{
+		//		return false;
+		//	}
+		//}
 	}
 }
