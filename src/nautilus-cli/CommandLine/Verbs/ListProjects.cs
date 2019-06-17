@@ -27,7 +27,10 @@ namespace Nautilus.Cli.Client.CommandLine.Verbs
 		[Option("nuget-package-updates", Default = false, Required = false, Hidden = false, HelpText = "Query and display if there's any new nuget package update version online.")]
 		public bool NugetPackageUpdates { get; set; }
 
-		[Usage(ApplicationAlias = Program.Name)]
+        [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
+        public bool Debug { get; set; }
+
+        [Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples
 		{
 			get

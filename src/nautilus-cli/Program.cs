@@ -1,22 +1,24 @@
-﻿using System;
+﻿using CommandLine;
+using Nautilus.Cli.Client.CommandLine.Services;
+using Nautilus.Cli.Client.CommandLine.Verbs;
+using Nautilus.Cli.Core;
+using Nautilus.Cli.Core.Components;
+using Nautilus.Cli.Core.Exceptions;
+using Nautilus.Cli.Core.TestData;
+using System;
 using System.Diagnostics;
 using System.Drawing;
-using CommandLine;
-using Nautilus.Cli.Core.Exceptions;
-using Nautilus.Cli.Core;
-using Nautilus.Cli.Core.TestData;
-using Nautilus.Cli.Core.Components;
-using Nautilus.Cli.Client.CommandLine.Verbs;
-using Nautilus.Cli.Client.CommandLine.Services;
 
 namespace Nautilus.Cli.Client
 {
-	class Program
+    class Program
 	{
-		static void Main(string[] args)
-		{
+        public const string Name = "nautilus-cli";
 
+        static void Main(string[] args)
+		{
 			RegisterApplicationComponents();
+           bool _debugMode = false;
 
 #if DEBUG
 			TestDataHelper.UseTestData = false;
@@ -80,6 +82,8 @@ namespace Nautilus.Cli.Client
 				}))
 				.WithParsed((Action<ListProjects>)((command) =>
 				{
+                    _debugMode = command.Debug;
+
 					var sw = new Stopwatch();
 					sw.Start();
 
@@ -107,7 +111,7 @@ namespace Nautilus.Cli.Client
 					{
 						sw.Stop(); 
 
-						DisplayGeneralExceptionMessageFormat(ex);
+						DisplayGeneralExceptionMessageFormat(ex,_debugMode);
 						DisplayFinishingMessage(sw);
 					}
 					finally
@@ -165,40 +169,68 @@ namespace Nautilus.Cli.Client
 				});
 		}
 
-		private static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex)
-		{
+		private static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, bool debugMode = false)
+        {
 			Console.WriteLine("");
 			Colorful.Console.WriteLine(ex.Message, Color.Red);
 			Console.WriteLine("");
-			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+
+            if (debugMode)
+            {
+                Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+                Console.WriteLine("");
+            }
+
+            Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
 
 		}
 
-		private static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex)
-		{
+		private static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, bool debugMode = false)
+        {
 			Console.WriteLine("");
 			Colorful.Console.WriteLine(ex.Message, Color.Red);
 			Console.WriteLine("");
-			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+
+            if (debugMode)
+            {
+                Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+                Console.WriteLine("");
+            }
+
+            Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
 
 		}
 
-		private static void DisplayGeneralExceptionMessageFormat(Exception ex)
-		{
+		private static void DisplayGeneralExceptionMessageFormat(Exception ex, bool debugMode = false)
+        {
 			Console.WriteLine("");
 			Colorful.Console.WriteLine(ex.Message, Color.Red);
 			Console.WriteLine("");
-			Colorful.Console.WriteLine("Program has stopped", Color.Red);
+
+            if (debugMode)
+            {
+                Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+                Console.WriteLine("");
+            }
+
+            Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
 		}
 
-		private static void DisplayCLIExceptionMessageFormat(CLIException cliEx)
-		{
+		private static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
+        {
 			Console.WriteLine("");
 			Colorful.Console.WriteLine(cliEx.Message, Color.Red);
 			Console.WriteLine("");
+
+            if (debugMode)
+            {
+                Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
+                Console.WriteLine("");
+            }
+
 			Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
 		}
@@ -222,8 +254,6 @@ namespace Nautilus.Cli.Client
 		{
 			AppFactory.Register<NugetPackageConflictFinder>(AppComponentType.NugetConflicts.ToString());
 		}
-
-		public const string Name = "nautilus-cli";
 
 		//public static readonly string Name
 		//{

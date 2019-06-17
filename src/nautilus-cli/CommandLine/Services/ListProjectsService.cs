@@ -76,7 +76,14 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 			foreach (var project in solution.Projects)
 			{
 				Colorful.Console.Write($"{CliStringFormatter.Format1}. ", projectCounter);
-				Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
+                if (project.ProjectType == SolutionProjectElement.CSharpProject)
+                {
+                    Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
+                }
+                else
+                {
+                    Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName}");
+                }
 
 				if (project.TargetFramework == ProjectTarget.Unknown)
 				{
