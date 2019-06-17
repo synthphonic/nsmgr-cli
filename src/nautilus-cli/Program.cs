@@ -17,8 +17,8 @@ namespace Nautilus.Cli.Client
 
         static void Main(string[] args)
 		{
-			RegisterApplicationComponents();
-           bool _debugMode = false;
+            RegisterApplicationComponents();
+            bool _debugMode = false;
 
 #if DEBUG
 			TestDataHelper.UseTestData = false;
