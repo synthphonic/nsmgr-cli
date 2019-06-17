@@ -27,25 +27,27 @@ namespace Nautilus.Cli.Core.Components
 			}
 		}
 
-		public Dictionary<string, IList<NugetPackageInformationComparer>> Result { get; private set; }
-
 		private async Task GetOnlinePackagesAsync(Project project)
 		{
 			var projectPackages = new List<NugetPackageInformationComparer>();
 
-			foreach (var package in project.Packages)
+			if (project.ProjectType == Configurations.Enums.SolutionProjectElement.CSharpProject)
 			{
-				var requestor = NugetPackageHttpRequest.QueryRequest(package.PackageName, false);
-				var response = await requestor.ExecuteAsync();
-				var selectedDatum = response.Data.FirstOrDefault(x => x.Id.Equals(package.PackageName));
+				foreach (var package in project.Packages)
+				{
+					var requestor = NugetPackageHttpRequest.QueryRequest(package.PackageName, false);
+					var response = await requestor.ExecuteAsync();
+					var selectedDatum = response.Data.FirstOrDefault(x => x.Id.Equals(package.PackageName));
 
-				projectPackages.Add(new NugetPackageInformationComparer(package, selectedDatum));
+					projectPackages.Add(new NugetPackageInformationComparer(package, selectedDatum));
 
-				_writeProgressHandler?.Invoke();
-				//_writeProgressHandler();
+					_writeProgressHandler?.Invoke();
+				}
 			}
 
 			Result[project.ProjectName] = projectPackages;
 		}
+
+		public Dictionary<string, IList<NugetPackageInformationComparer>> Result { get; private set; }
 	}
 }

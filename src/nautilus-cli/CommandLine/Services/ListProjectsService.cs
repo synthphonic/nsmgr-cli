@@ -76,34 +76,43 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 			foreach (var project in solution.Projects)
 			{
 				Colorful.Console.Write($"{CliStringFormatter.Format1}. ", projectCounter);
+
                 if (project.ProjectType == SolutionProjectElement.CSharpProject)
                 {
-                    Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
-                }
-                else
-                {
-                    Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName}");
-                }
+					Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
+					Colorful.Console.Write($"[{CliStringFormatter.Format7}]", Color.Chocolate, project.TargetFramework);
+					Colorful.Console.WriteLine();
 
-				if (project.TargetFramework == ProjectTarget.Unknown)
-				{
-					Colorful.Console.Write($"[{CliStringFormatter.Format7}-", Color.Chocolate, project.TargetFramework);
-					Colorful.Console.WriteLine($"{CliStringFormatter.Format9}]", Color.Chocolate, project.ProjectType);
+					if (project.TargetFramework == ProjectTarget.Unknown)
+					{
+
+					}
+
+					if (_showNugetPackages)
+					{
+						DisplayNugetPackages(project, packageVersionComparer);
+						Colorful.Console.WriteLine();
+					}
 				}
 				else
 				{
-					Colorful.Console.WriteLine($"[{CliStringFormatter.Format5}]", project.TargetFramework);
-				}
+					Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName}");
 
-				if (_showNugetPackages)
-				{
-					DisplayNugetPackages(project, packageVersionComparer);
+					if (project.TargetFramework == ProjectTarget.Unknown)
+					{
+						Colorful.Console.Write($"[{CliStringFormatter.Format7}-", Color.Chocolate, project.TargetFramework);
+						Colorful.Console.WriteLine($"{CliStringFormatter.Format9}]", Color.Chocolate, project.ProjectType);
+					}
+					else
+					{
+						Colorful.Console.WriteLine($"[{CliStringFormatter.Format5}]", project.TargetFramework);
+					}
 				}
 
 				projectCounter++;
 			}
 		}
-
+		
 		private static void DisplayNugetPackages(Project project, Dictionary<string, IList<NugetPackageInformationComparer>> packageVersionComparer = null)
 		{
 			foreach (var package in project.Packages)
@@ -129,6 +138,10 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 					}
 
 					Colorful.Console.WriteLine($"{CliStringFormatter.Format5}", color, latestVersionMessage);
+				}
+				else
+				{
+					Colorful.Console.WriteLine();
 				}
 			}
 		}
