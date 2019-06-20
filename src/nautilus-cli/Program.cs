@@ -178,13 +178,13 @@ namespace Nautilus.Cli.Client
 
             if (debugMode)
             {
-                Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+                var baseEx = ex.GetBaseException();
+                Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
                 Console.WriteLine("");
             }
 
             Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
-
 		}
 
 		private static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, bool debugMode = false)
@@ -195,13 +195,13 @@ namespace Nautilus.Cli.Client
 
             if (debugMode)
             {
-                Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+                var baseEx = ex.GetBaseException();
+                Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
                 Console.WriteLine("");
             }
 
             Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
-
 		}
 
 		private static void DisplayGeneralExceptionMessageFormat(Exception ex, bool debugMode = false)
@@ -220,18 +220,6 @@ namespace Nautilus.Cli.Client
             Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
 		}
-
-        //private static void ConsolidateInnerExceptions(Exception ex)
-        //{
-        //    var sb = new StringBuilder();
-
-        //    while (ex.InnerException != null)
-        //    {
-        //        ConsolidateInnerExceptions(ex.InnerException);
-        //    }
-
-        //    sb.AppendFormat($"{ex.StackTrace}\n");
-        //}
 
         private static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
         {

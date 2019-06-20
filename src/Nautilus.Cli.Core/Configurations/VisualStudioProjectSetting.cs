@@ -1,21 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Nautilus.Cli.Core.Configurations.Enums;
+using Nautilus.Cli.Core.Models;
 
 namespace Nautilus.Cli.Core.Configurations
 {
-    internal class ProjectTypeInfo
-    {
-        public ProjectTypeInfo(SolutionProjectElement solutionProjectElement, string guid)
-        {
-            SolutionProjectElement = solutionProjectElement;
-            Guid = guid;
-        }
-
-        public SolutionProjectElement SolutionProjectElement { get; private set; }
-        public string Guid { get; private set; }
-    }
-
 	/// <summary>
 	/// Refer to the following links for more info 
 	/// </summary>
@@ -26,7 +15,6 @@ namespace Nautilus.Cli.Core.Configurations
 	/// </remarks>
 	public static class VisualStudioProjectSetting
     {
-		//private static Dictionary<SolutionProjectElement, string> _projectTypeGuidList2;
         private static IList<ProjectTypeInfo> _projectTypeGuidList;
 
         public const string CSharpTypeGuid = "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC";
@@ -43,13 +31,6 @@ namespace Nautilus.Cli.Core.Configurations
             _projectTypeGuidList.Add(new ProjectTypeInfo(SolutionProjectElement.CSharpProject, CSharpTypeGuid));
             _projectTypeGuidList.Add(new ProjectTypeInfo(SolutionProjectElement.CSharpProject, CSharpTypeGuid2));
             _projectTypeGuidList.Add(new ProjectTypeInfo(SolutionProjectElement.VirtualFolder, VirtualFolderGuid));
-
-			//_projectTypeGuidList2 = new Dictionary<SolutionProjectElement, string>
-			//{
-			//	{ SolutionProjectElement.CSharpProject, CSharpTypeGuid },
-   //             { SolutionProjectElement.CSharpProject, CSharpTypeGuid2 },
-   //             { SolutionProjectElement.VirtualFolder, VirtualFolderGuid },                
-   //         };
 		}
 
 		internal static SolutionProjectElement GetProjectType(string projectTypeGuid)
@@ -61,14 +42,6 @@ namespace Nautilus.Cli.Core.Configurations
             }
 
             return found.SolutionProjectElement;
-
-			//if (!_projectTypeGuidList2.ContainsValue(projectTypeGuid))
-			//{
-			//	return SolutionProjectElement.Unknown;
-			//}
-
-			//var result = _projectTypeGuidList2.FirstOrDefault(x => x.Value.Equals(projectTypeGuid));
-			//return result.Key;
 		}
 	}
 }
