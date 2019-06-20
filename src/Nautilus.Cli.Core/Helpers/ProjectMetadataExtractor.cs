@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using NugetPckgUpdater.Core.Configurations;
 using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.Utils;
+using Nautilus.Cli.Core.Configurations;
 
 namespace Nautilus.Cli.Core.Helpers
 {
-	public static class ProjectMetadataExtractor
+    public static class ProjectMetadataExtractor
 	{
 		internal static ProjectMetadata Extract(string data, string solutionFileName)
 		{

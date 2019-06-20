@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Xml;
-using NugetPckgUpdater.Core.Configurations;
 using Nautilus.Cli.Core.Configurations.Enums;
+using Nautilus.Cli.Core.Configurations;
 
 namespace Nautilus.Cli.Core.Helpers
 {
-	public class ProjectTypeManager
+    public class ProjectTypeManager
     {
         private string _file;
 
@@ -106,7 +106,11 @@ namespace Nautilus.Cli.Core.Helpers
             if (androidProject)
                 return ProjectTarget.NativeAndroid;
 
-			return ProjectTarget.Unknown;
+            var uwpProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.UWPTypeGuid);
+            if (uwpProject)
+                return ProjectTarget.NativeUWP;
+
+            return ProjectTarget.Unknown;
 		}
 
         private ProjectTarget CheckForNETStandardProject()

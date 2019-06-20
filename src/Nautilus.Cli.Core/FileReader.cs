@@ -51,8 +51,9 @@ namespace Nautilus.Cli.Core
 				[ProjectTarget.NETCoreApp21] = new CSharpProjectFileReader(),
 				[ProjectTarget.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
 				[ProjectTarget.NativeiOSBinding] = new CSharpNETFrameworkProjectFileReader(),
-				[ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileReader()
-			};
+				[ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileReader(),
+                [ProjectTarget.NativeUWP] = new CSharpNETFrameworkProjectFileReader()
+            };
 		}
 
 		public object ReadFile()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nautilus.Cli.Core.Configurations.Enums;
 
-namespace NugetPckgUpdater.Core.Configurations
+namespace Nautilus.Cli.Core.Configurations
 {
 	public static class TargetFrameworkSetting
     {

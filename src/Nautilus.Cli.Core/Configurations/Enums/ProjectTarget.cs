@@ -16,5 +16,6 @@
 		NativeiOS,
 		NativeiOSBinding,
 		NativeAndroid,
+        NativeUWP,
 	}
 }

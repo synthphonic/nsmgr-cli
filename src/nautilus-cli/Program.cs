@@ -8,6 +8,7 @@ using Nautilus.Cli.Core.TestData;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Text;
 
 namespace Nautilus.Cli.Client
 {
@@ -109,9 +110,9 @@ namespace Nautilus.Cli.Client
 					}
 					catch (Exception ex)
 					{
-						sw.Stop(); 
+						sw.Stop();
 
-						DisplayGeneralExceptionMessageFormat(ex,_debugMode);
+                        DisplayGeneralExceptionMessageFormat(ex, _debugMode);
 						DisplayFinishingMessage(sw);
 					}
 					finally
@@ -143,7 +144,7 @@ namespace Nautilus.Cli.Client
 					}
 					catch (Exception ex)
 					{
-						DisplayGeneralExceptionMessageFormat(ex);
+                        DisplayGeneralExceptionMessageFormat(ex);
 
 						sw.Stop();
 						DisplayFinishingMessage(sw);
@@ -211,7 +212,8 @@ namespace Nautilus.Cli.Client
 
             if (debugMode)
             {
-                Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+                var baseEx = ex.GetBaseException();
+                Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
                 Console.WriteLine("");
             }
 
@@ -219,7 +221,19 @@ namespace Nautilus.Cli.Client
 			Console.WriteLine("");
 		}
 
-		private static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
+        //private static void ConsolidateInnerExceptions(Exception ex)
+        //{
+        //    var sb = new StringBuilder();
+
+        //    while (ex.InnerException != null)
+        //    {
+        //        ConsolidateInnerExceptions(ex.InnerException);
+        //    }
+
+        //    sb.AppendFormat($"{ex.StackTrace}\n");
+        //}
+
+        private static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
         {
 			Console.WriteLine("");
 			Colorful.Console.WriteLine(cliEx.Message, Color.Red);
@@ -264,4 +278,19 @@ namespace Nautilus.Cli.Client
 		//	}
 		//}
 	}
+
+    public static class ExceptionExtension
+    {
+        public static Exception GetFirstException(this Exception ex)
+        {
+            if (ex.InnerException == null)
+            {
+                return ex;
+            } // end case
+            else
+            {
+                return GetFirstException(ex.InnerException);
+            } // recurse
+        }
+    }
 }

@@ -2,8 +2,20 @@
 using System.Linq;
 using Nautilus.Cli.Core.Configurations.Enums;
 
-namespace NugetPckgUpdater.Core.Configurations
+namespace Nautilus.Cli.Core.Configurations
 {
+    internal class ProjectTypeInfo
+    {
+        public ProjectTypeInfo(SolutionProjectElement solutionProjectElement, string guid)
+        {
+            SolutionProjectElement = solutionProjectElement;
+            Guid = guid;
+        }
+
+        public SolutionProjectElement SolutionProjectElement { get; private set; }
+        public string Guid { get; private set; }
+    }
+
 	/// <summary>
 	/// Refer to the following links for more info 
 	/// </summary>
@@ -14,32 +26,49 @@ namespace NugetPckgUpdater.Core.Configurations
 	/// </remarks>
 	public static class VisualStudioProjectSetting
     {
-		private static Dictionary<SolutionProjectElement, string> _projectTypeGuidList;
+		//private static Dictionary<SolutionProjectElement, string> _projectTypeGuidList2;
+        private static IList<ProjectTypeInfo> _projectTypeGuidList;
 
         public const string CSharpTypeGuid = "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC";
+        public const string CSharpTypeGuid2 = "9A19103F-16F7-4668-BE54-9A1E7A4F7556"; // refer to https://github.com/xamarin/mirepoix/issues/2
         public const string AndroidTypeGuid = "EFBA0AD7-5A72-4C68-AF49-83D382785DCF";
         public const string iOSTypeGuid = "FEACFBD2-3405-455C-9665-78FE426C6842";
+        public const string UWPTypeGuid = "A5A43C5B-DE2A-4C0C-9213-0A381AF9435A";
 		public const string VirtualFolderGuid = "2150E333-8FDC-42A3-9474-1A3956D46DE8";
 		public const string iOSBindingTypeGuid = "8FFB629D-F513-41CE-95D2-7ECE97B6EEEC";
-
-		static VisualStudioProjectSetting()
+        
+        static VisualStudioProjectSetting()
 		{
-			_projectTypeGuidList = new Dictionary<SolutionProjectElement, string>
-			{
-				{ SolutionProjectElement.CSharpProject, CSharpTypeGuid },
-				{ SolutionProjectElement.VirtualFolder, VirtualFolderGuid }
-			};
+            _projectTypeGuidList = new List<ProjectTypeInfo>();
+            _projectTypeGuidList.Add(new ProjectTypeInfo(SolutionProjectElement.CSharpProject, CSharpTypeGuid));
+            _projectTypeGuidList.Add(new ProjectTypeInfo(SolutionProjectElement.CSharpProject, CSharpTypeGuid2));
+            _projectTypeGuidList.Add(new ProjectTypeInfo(SolutionProjectElement.VirtualFolder, VirtualFolderGuid));
+
+			//_projectTypeGuidList2 = new Dictionary<SolutionProjectElement, string>
+			//{
+			//	{ SolutionProjectElement.CSharpProject, CSharpTypeGuid },
+   //             { SolutionProjectElement.CSharpProject, CSharpTypeGuid2 },
+   //             { SolutionProjectElement.VirtualFolder, VirtualFolderGuid },                
+   //         };
 		}
 
 		internal static SolutionProjectElement GetProjectType(string projectTypeGuid)
 		{
-			if (!_projectTypeGuidList.ContainsValue(projectTypeGuid))
-			{
-				return SolutionProjectElement.Unknown;
-			}
+            var found = _projectTypeGuidList.FirstOrDefault(x => x.Guid.Equals(projectTypeGuid));
+            if (found == null)
+            {
+                return SolutionProjectElement.Unknown;
+            }
 
-			var result = _projectTypeGuidList.FirstOrDefault(x => x.Value.Equals(projectTypeGuid));
-			return result.Key;
+            return found.SolutionProjectElement;
+
+			//if (!_projectTypeGuidList2.ContainsValue(projectTypeGuid))
+			//{
+			//	return SolutionProjectElement.Unknown;
+			//}
+
+			//var result = _projectTypeGuidList2.FirstOrDefault(x => x.Value.Equals(projectTypeGuid));
+			//return result.Key;
 		}
 	}
 }
