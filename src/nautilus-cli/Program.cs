@@ -21,7 +21,7 @@ namespace Nautilus.Cli.Client
 			TestDataHelper.UseTestData = false;
 #endif
 
-			_ = Parser.Default.ParseArguments<ListProjects, ListNugetPackages, UpdateNugetPackage>(args)
+			_ = Parser.Default.ParseArguments<FindPackage, ListProjects, ListNugetPackages, UpdateNugetPackage>(args)
 				.WithParsed((Action<UpdateNugetPackage>)((command) =>
 				{
                     _debugMode = command.Debug;
@@ -158,7 +158,43 @@ namespace Nautilus.Cli.Client
 						}
 					}
 				}))
-				.WithNotParsed(errs =>
+                .WithParsed((Action<FindPackage>)((command) =>
+                {
+                    _debugMode = command.Debug;
+
+                    var sw = new Stopwatch();
+                    sw.Start();
+
+                    var service = new FindPackageService(command.SolutionFileName,command.NugetPackage);
+
+                    try
+                    {
+                        service.Run().Wait();
+                    }
+                    catch (SolutionFileException solutionFileEx)
+                    {
+                        SolutionFileExceptionMessageFormat(solutionFileEx);
+
+                        sw.Stop();
+                        DisplayFinishingMessage(sw);
+                    }
+                    catch (Exception ex)
+                    {
+                        DisplayGeneralExceptionMessageFormat(ex, _debugMode);
+
+                        sw.Stop();
+                        DisplayFinishingMessage(sw);
+                    }
+                    finally
+                    {
+                        if (sw.IsRunning)
+                        {
+                            sw.Stop();
+                            DisplayFinishingMessage(sw);
+                        }
+                    }
+                }))
+                .WithNotParsed(errs =>
 				{
 					//var sb = new StringBuilder();
 					//foreach (var item in errs)
