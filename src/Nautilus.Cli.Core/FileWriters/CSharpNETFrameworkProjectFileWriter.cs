@@ -41,10 +41,8 @@ namespace Nautilus.Cli.Core.FileWriters
             }
             else
             {
-                var versionXpathString = $"//namespace:Version";
-                versionNode = node.SelectSingleNode(versionXpathString, nsMgr);
-                versionNode.InnerText = newVersion;
-                //versionNode.Value = newVersion;
+                versionNode = node.ChildNodes[0].ChildNodes[0];
+                versionNode.Value = newVersion;
             }
 
 			var fileInfo = new FileInfo(_projectFullPath);
