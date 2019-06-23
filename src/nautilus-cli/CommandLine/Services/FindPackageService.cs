@@ -10,13 +10,15 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 {
     public class FindPackageService
     {
-        private string _solutionFileName;
-        private string _packageName;
+        private readonly string _solutionFileName;
+        private readonly string _packageName;
+        private readonly bool _returnResults;
 
-        public FindPackageService(string solutionFileName, string packageName)
+        public FindPackageService(string solutionFileName, string packageName, bool returnResults = false)
         {
             _solutionFileName = solutionFileName;
             _packageName = packageName;
+            _returnResults = returnResults;
         }
 
 		public async Task Run()
@@ -36,8 +38,16 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 
             var projects = categorizedByPackageNameList[_packageName];
 
-            WriteOutput(projects, solution.SolutionFileName);
+            if (_returnResults)
+            {
+                Results = projects;
+            }
+            else
+            {
+                WriteOutput(projects, solution.SolutionFileName);
+            }
         }
+
         private void WriteOutput(IList<NugetPackageReferenceExtended> projects, string solutionFileName)
         {
             Colorful.Console.WriteLine();
@@ -58,5 +68,7 @@ namespace Nautilus.Cli.Client.CommandLine.Services
                 Colorful.Console.WriteLine();
             }
         }
+
+        public IList<NugetPackageReferenceExtended> Results { get; private set; }
     }
 }
