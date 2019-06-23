@@ -21,7 +21,7 @@ namespace Nautilus.Cli.Client
 			TestDataHelper.UseTestData = false;
 #endif
 
-			_ = Parser.Default.ParseArguments<ListProjects, FindConflict, UpdateNugetPackage>(args)
+			_ = Parser.Default.ParseArguments<ListProjects, ListNugetPackages, UpdateNugetPackage>(args)
 				.WithParsed((Action<UpdateNugetPackage>)((command) =>
 				{
                     _debugMode = command.Debug;
@@ -122,7 +122,7 @@ namespace Nautilus.Cli.Client
 						}
 					}
 				}))
-				.WithParsed((Action<FindConflict>)((command) =>
+				.WithParsed((Action<ListNugetPackages>)((command) =>
 				{
                     _debugMode = command.Debug;
 

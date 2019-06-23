@@ -37,9 +37,7 @@
     <PackageReference Include="morelinq" Version="3.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CommandLine\" />
     <Folder Include="CommandLine\Layout\" />
-    <Folder Include="CommandLine\Verbs\" />
     <Folder Include="CommandLine\Services\" />
   </ItemGroup>
   <ItemGroup>
