@@ -129,7 +129,7 @@ namespace Nautilus.Cli.Client
                     var sw = new Stopwatch();
 					sw.Start();
 
-					var service = new FindConflictService(command.SolutionFileName, command.ProjectsOnly, command.UseDebugData);
+					var service = new ListNugetPackagesService(command.SolutionFileName, command.ProjectsOnly, command.UseDebugData);
 
 					try
 					{
