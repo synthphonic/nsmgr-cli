@@ -28,7 +28,9 @@ namespace Nautilus.Cli.Client
 			_ = Parser.Default.ParseArguments<ListProjects, FindConflict, UpdateNugetPackage>(args)
 				.WithParsed((Action<UpdateNugetPackage>)((command) =>
 				{
-					var sw = new Stopwatch();
+                    _debugMode = command.Debug;
+
+                    var sw = new Stopwatch();
 					sw.Start();
 
 					var service = new UpdateNugetPackageService(command.SolutionFileName, command.ProjectName, command.NugetPackage, command.NugetVersion);
@@ -41,21 +43,21 @@ namespace Nautilus.Cli.Client
 					{
 						sw.Stop();
 
-						DisplayProjectNotFoundMessageFormat(prjNotFoundEx);
+						DisplayProjectNotFoundMessageFormat(prjNotFoundEx, _debugMode);
 						DisplayFinishingMessage(sw);
 					}
 					catch (NugetPackageNotFoundException nugetPackageNotFoundEx)
 					{
 						sw.Stop();
 
-						DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx);
+						DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx, _debugMode);
 						DisplayFinishingMessage(sw);
 					}
 					catch (CLIException cliEx)
 					{
 						sw.Stop();
 
-						DisplayCLIExceptionMessageFormat(cliEx);
+						DisplayCLIExceptionMessageFormat(cliEx, _debugMode);
 						DisplayFinishingMessage(sw);
 					}
 					catch (SolutionFileException solutionFileEx)
@@ -69,7 +71,7 @@ namespace Nautilus.Cli.Client
 					{
 						sw.Stop();
 
-						DisplayGeneralExceptionMessageFormat(ex);
+                        DisplayGeneralExceptionMessageFormat(ex, _debugMode);
 						DisplayFinishingMessage(sw);
 					}
 					finally
@@ -98,7 +100,7 @@ namespace Nautilus.Cli.Client
 					{
 						sw.Stop();
 
-						DisplayCLIExceptionMessageFormat(cliEx);
+						DisplayCLIExceptionMessageFormat(cliEx, _debugMode);
 						DisplayFinishingMessage(sw);
 					}
 					catch (SolutionFileException solutionFileEx)
@@ -126,7 +128,9 @@ namespace Nautilus.Cli.Client
 				}))
 				.WithParsed((Action<FindConflict>)((command) =>
 				{
-					var sw = new Stopwatch();
+                    _debugMode = command.Debug;
+
+                    var sw = new Stopwatch();
 					sw.Start();
 
 					var service = new FindConflictService(command.SolutionFileName, command.ProjectsOnly, command.UseDebugData);
@@ -144,7 +148,7 @@ namespace Nautilus.Cli.Client
 					}
 					catch (Exception ex)
 					{
-                        DisplayGeneralExceptionMessageFormat(ex);
+                        DisplayGeneralExceptionMessageFormat(ex, _debugMode);
 
 						sw.Stop();
 						DisplayFinishingMessage(sw);

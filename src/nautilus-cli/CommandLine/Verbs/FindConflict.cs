@@ -24,7 +24,10 @@ namespace Nautilus.Cli.Client.CommandLine.Verbs
 		[Option("usedebugdata", Required = false, Hidden = true, HelpText = "")]
 		public bool UseDebugData { get; set; }
 
-		[Usage(ApplicationAlias = Program.Name)]
+        [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
+        public bool Debug { get; set; }
+
+        [Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples
 		{
 			get
