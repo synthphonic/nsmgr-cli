@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using MoreLinq;
 using Nautilus.Cli.Client.CommandLine.Layout;
 using Nautilus.Cli.Core.Components.Http;
 using Nautilus.Cli.Core.Extensions;
@@ -33,10 +34,10 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 			var solution = slnFileReader.Read();
 
             var flatList = solution.ExtractNugetPackageAsFlatList();
-            var categorizedByPackageName = solution.CategorizeByPackageName(flatList);
+            var categorizedByPackageNameList = solution.CategorizeByPackageName(flatList);
 
             var packageNames = new List<string>();
-			foreach (var item in categorizedByPackageName)
+			foreach (var item in categorizedByPackageNameList)
 			{
 				packageNames.Add(item.Key);
 			}
@@ -45,7 +46,9 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 
 			Colorful.Console.WriteLine();
 
-			WriteOutput(categorizedByPackageName, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
+            categorizedByPackageNameList = categorizedByPackageNameList.OrderBy(x => x.Key).ToDictionary();
+
+			WriteOutput(categorizedByPackageNameList, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
 		}
 
 		private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> nugetPackages, string solutionFileName, int totalProjects, Dictionary<string, string> latestPackages)
@@ -71,8 +74,10 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 			{
 				Colorful.Console.WriteLine($"{package.Key}", Color.Aqua);
 
-				foreach (var item in package.Value)
-				{
+                var sortedByProjects = package.Value.OrderBy(x => x.ProjectName).ToList();
+
+				foreach (var item in sortedByProjects)
+                {
 					Colorful.Console.Write($"In Project ");
 					Colorful.Console.Write(CliStringFormatter.Format40, Color.Azure, item.ProjectName);
 					Colorful.Console.Write("[{0,-16}]", Color.Azure, item.ProjectTargetFramework);
