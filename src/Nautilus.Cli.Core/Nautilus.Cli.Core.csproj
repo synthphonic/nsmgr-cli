@@ -22,7 +22,6 @@
     <Folder Include="TestData\" />
     <Folder Include="Components\Http\" />
     <Folder Include="Models\Http\" />
-    <Folder Include="Extensions\" />
     <Folder Include="FileWriters\" />
   </ItemGroup>
   <ItemGroup>
