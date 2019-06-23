@@ -1,14 +1,11 @@
-﻿using CommandLine;
-using Nautilus.Cli.Client.CommandLine.Services;
-using Nautilus.Cli.Client.CommandLine.Verbs;
-using Nautilus.Cli.Core;
-using Nautilus.Cli.Core.Components;
-using Nautilus.Cli.Core.Exceptions;
-using Nautilus.Cli.Core.TestData;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
+using CommandLine;
+using Nautilus.Cli.Client.CommandLine.Services;
+using Nautilus.Cli.Client.CommandLine.Verbs;
+using Nautilus.Cli.Core.Exceptions;
+using Nautilus.Cli.Core.TestData;
 
 namespace Nautilus.Cli.Client
 {
@@ -18,7 +15,6 @@ namespace Nautilus.Cli.Client
 
         static void Main(string[] args)
 		{
-            RegisterApplicationComponents();
             bool _debugMode = false;
 
 #if DEBUG
@@ -254,11 +250,6 @@ namespace Nautilus.Cli.Client
 		{
 			Colorful.Console.WriteLine("\nCompleted successfully", Color.GreenYellow);
 			Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
-		}
-
-		private static void RegisterApplicationComponents()
-		{
-			AppFactory.Register<NugetPackageConflictFinder>(AppComponentType.NugetConflicts.ToString());
 		}
 
 		//public static readonly string Name
