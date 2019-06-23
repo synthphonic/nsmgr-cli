@@ -18,7 +18,7 @@ namespace Nautilus.Cli.Client.CommandLine.Verbs
 		[Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file.")]
 		public string SolutionFileName { get; set; }
 
-		[Option("project", Required = true, HelpText = "The name of the project to update the nuget packages involved.")]
+		[Option("project", Required = true, HelpText = "The name of the project to update the nuget packages involved. Use 'all' to upgrade all projects")]
 		public string ProjectName { get; set; }
 
 		[Option("package", Required = true, HelpText = "The nuget package name to update.")]

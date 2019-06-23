@@ -26,41 +26,78 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 		}
 
 		internal async Task Run()
-		{
-			var solution = ReadSolutionStructure();
+        {
+            var solution = ReadSolutionStructure();
 
-			//
-			// Validate the project existence
-			//
-			var foundProject = solution.Projects.FirstOrDefault(x => x.ProjectName.Equals(_projectName));
-			if (foundProject == null)
-			{
-				throw new ProjectNotFoundException($"Cannot find project name '{_projectName}' in this solution");
-			}
+            if (_projectName.ToUpper().Equals("ALL") || _projectName.ToLower().Equals("all"))
+            {
+               await  UpdateAllProjects(solution);
+            }
+            else
+            {
+                await UpdatePerProject(solution);
+            }
+        }
 
-			//
-			// Validate the nuget package existence
-			//
-			var foundNugetPackage = foundProject.Packages.FirstOrDefault(x => x.PackageName.Equals(_packageName));
-			if (foundNugetPackage == null)
-			{
-				throw new NugetPackageNotFoundException($"Cannot find the nuget package '{_packageName}' for project '{_projectName}'");
-			}
+        private async Task UpdateAllProjects(Solution solution)
+        {
+            var findPackage = new FindPackageService(solution.SolutionFullPath, _packageName, true);
+            await findPackage.Run();
+            var results = findPackage.Results;
 
-			//
-			// Get the intended Nuget Package information from nuget.org
-			var request = NugetPackageHttpRequest.QueryRequest(_packageName, true);
-			var result = await request.ExecuteAsync();
+            //
+            // Get the intended Nuget Package information from nuget.org
+            //var request = NugetPackageHttpRequest.QueryRequest(_packageName, true);
+            //var result = await request.ExecuteAsync();
 
-			var found = ValidateNugetPackage(result);
+            //var found = ValidateNugetPackage(result);
 
-			if (found)
-			{
-				UpdateProjectNugetPackage(foundProject);
-			}
-		}
+            foreach (var item in results)
+            {
+                var foundProject = solution.Projects.FirstOrDefault(x => x.ProjectName.Equals(item.ProjectName));
+                UpdateProjectNugetPackage(foundProject);
+            }
 
-		private void UpdateProjectNugetPackage(Project foundProject)
+            //if (found)
+            //{
+            //    UpdateProjectNugetPackage(foundProject);
+            //}
+        }
+
+        private async Task UpdatePerProject(Solution solution)
+        {
+            //
+            // Validate the project existence
+            //
+            var foundProject = solution.Projects.FirstOrDefault(x => x.ProjectName.Equals(_projectName));
+            if (foundProject == null)
+            {
+                throw new ProjectNotFoundException($"Cannot find project name '{_projectName}' in this solution");
+            }
+
+            //
+            // Validate the nuget package existence
+            //
+            var foundNugetPackage = foundProject.Packages.FirstOrDefault(x => x.PackageName.Equals(_packageName));
+            if (foundNugetPackage == null)
+            {
+                throw new NugetPackageNotFoundException($"Cannot find the nuget package '{_packageName}' for project '{_projectName}'");
+            }
+
+            //
+            // Get the intended Nuget Package information from nuget.org
+            var request = NugetPackageHttpRequest.QueryRequest(_packageName, true);
+            var result = await request.ExecuteAsync();
+
+            var found = ValidateNugetPackage(result);
+
+            if (found)
+            {
+                UpdateProjectNugetPackage(foundProject);
+            }
+        }
+
+        private void UpdateProjectNugetPackage(Project foundProject)
 		{
 			var reader = new FileReader(foundProject);
 			bool found = reader.TryGetPackageVersion(_packageName, out string packageVersion);
