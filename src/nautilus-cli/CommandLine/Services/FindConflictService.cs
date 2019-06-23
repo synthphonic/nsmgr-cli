@@ -1,20 +1,18 @@
-﻿using Nautilus.Cli.Core.Extensions;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using Nautilus.Cli.Core;
+using Nautilus.Cli.Client.CommandLine.Layout;
 using Nautilus.Cli.Core.Components.Http;
+using Nautilus.Cli.Core.Extensions;
 using Nautilus.Cli.Core.FileReaders;
 using Nautilus.Cli.Core.Models;
 using Nautilus.Cli.Core.TestData;
-using System.Threading;
-using Nautilus.Cli.Client.CommandLine.Layout;
-using System;
 
 namespace Nautilus.Cli.Client.CommandLine.Services
 {
-	public class FindConflictService
+    public class FindConflictService
 	{
 		private string _solutionFileName;
 		private readonly bool _processProjectsOnly;
@@ -34,21 +32,20 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 			var slnFileReader = new SolutionFileReader(_solutionFileName, _processProjectsOnly);
 			var solution = slnFileReader.Read();
 
-			var foundConflicts = FindConflicts(solution);
+            var flatList = solution.ExtractNugetPackageAsFlatList();
+            var categorizedByPackageName = solution.CategorizeByPackageName(flatList);
 
-			var packageNames = new List<string>();
-			foreach (var item in foundConflicts)
+            var packageNames = new List<string>();
+			foreach (var item in categorizedByPackageName)
 			{
 				packageNames.Add(item.Key);
 			}
 
 			var latestPackages = await QueryNugetPackageOnlineAsync(packageNames.ToArray(), CliStringFormatter.WriteOnlinePackageProgressHandler);
 
-			//Colorful.Console.Write("Done.", Color.DeepSkyBlue);
-
 			Colorful.Console.WriteLine();
 
-			WriteOutput(foundConflicts, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
+			WriteOutput(categorizedByPackageName, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
 		}
 
 		private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> foundConflicts, string solutionFileName, int totalProjects, Dictionary<string, string> latestPackages)
@@ -72,7 +69,6 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 
 			foreach (var conflict in foundConflicts)
 			{
-				//Colorful.Console.Write($"Nuget Package : ");
 				Colorful.Console.WriteLine($"{conflict.Key}", Color.Aqua);
 
 				foreach (var item in conflict.Value)
@@ -98,15 +94,6 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 
 				Colorful.Console.WriteLine();
 			}
-		}
-
-		private static Dictionary<string, IList<NugetPackageReferenceExtended>> FindConflicts(Solution solution)
-		{
-			var instance = AppFactory.GetRequestor<IApplicationComponent>(AppComponentType.NugetConflicts.ToString());
-			instance.Initialize(solution);
-			var result = instance.Execute();
-
-			return result as Dictionary<string, IList<NugetPackageReferenceExtended>>;
 		}
 
 		private async Task<Dictionary<string, string>> QueryNugetPackageOnlineAsync(string[] packageNameList, Action writeProgressHandler = null)
