@@ -18,7 +18,8 @@ namespace Nautilus.Cli.Core
 				[ProjectTarget.NETStandard20] = new CSharpNETStandardProjectFileWriter(),
 				[ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileWriter(),
 				[ProjectTarget.NativeiOS] = new CSharpNETFrameworkProjectFileWriter(),
-				[ProjectTarget.NETFramework] = new CSharpNETFrameworkProjectFileWriter(),
+                [ProjectTarget.NativeUWP] = new CSharpNETFrameworkProjectFileWriter(),
+                [ProjectTarget.NETFramework] = new CSharpNETFrameworkProjectFileWriter(),
 				[ProjectTarget.NETFramework46] = new PackageConfigFileWriter()
 			};
 		}

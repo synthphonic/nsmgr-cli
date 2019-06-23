@@ -31,12 +31,21 @@ namespace Nautilus.Cli.Core.FileWriters
 
 			var xpathString = $"//namespace:PackageReference[@Include='{packageName}']";
 			var node = xmlDoc.DocumentElement.SelectSingleNode(xpathString, nsMgr);
-			var versionNode = node.Attributes["Version"];
 
-			// code below is used for old csproj xml file format
-			//var versionNode = node.FirstChild.FirstChild;
-
-			versionNode.Value = newVersion;
+            // code below is used for old csproj xml file format
+            //var versionNode = node.FirstChild.FirstChild;
+            XmlNode versionNode = node.Attributes["Version"];
+            if (versionNode != null)
+            {
+                versionNode.Value = newVersion;
+            }
+            else
+            {
+                var versionXpathString = $"//namespace:Version";
+                versionNode = node.SelectSingleNode(versionXpathString, nsMgr);
+                versionNode.InnerText = newVersion;
+                //versionNode.Value = newVersion;
+            }
 
 			var fileInfo = new FileInfo(_projectFullPath);
 			var fullBackupFile = Path.Combine(fileInfo.DirectoryName, $"{fileInfo.Name}.backup");
