@@ -102,11 +102,11 @@ namespace Nautilus.Cli.Client.CommandLine.Services
 			var reader = new FileReader(foundProject);
 			bool found = reader.TryGetPackageVersion(_packageName, out string packageVersion);
 
-			if (found)
-			{
-				var writer = new FileWriter(foundProject);
-				writer.UpdateNugetPackage(_packageName, _version);
-			}
+            if (found && !_version.Equals(packageVersion))
+            {
+                var writer = new FileWriter(foundProject);
+                writer.UpdateNugetPackage(_packageName, _version);
+            }
 		}
 
 		/// <summary>
