@@ -15,7 +15,8 @@ namespace Nautilus.Cli.Core
 		{
 			_fileWriters = new Dictionary<ProjectTarget, IProjectFilePackageWriter>
 			{
-				[ProjectTarget.NETStandard20] = new CSharpNETStandardProjectFileWriter(),
+                [ProjectTarget.NETCoreApp22] = new CSharpNETStandardProjectFileWriter(),
+                [ProjectTarget.NETStandard20] = new CSharpNETStandardProjectFileWriter(),
 				[ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileWriter(),
 				[ProjectTarget.NativeiOS] = new CSharpNETFrameworkProjectFileWriter(),
                 [ProjectTarget.NativeUWP] = new CSharpNETFrameworkProjectFileWriter(),
