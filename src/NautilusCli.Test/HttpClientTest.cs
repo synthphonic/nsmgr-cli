@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Nautilus.Cli.Core.Components.Http;
 using Nautilus.Cli.Core.Extensions;
