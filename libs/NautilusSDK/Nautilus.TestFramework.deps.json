@@ -1,0 +1,219 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": "128985a750d85c743a5065b4898824eaa70e65cd"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "Nautilus.TestFramework/3.1.8.4": {
+        "dependencies": {
+          "MvvmLightLibsStd10": "5.4.1.1",
+          "NETStandard.Library": "2.0.3",
+          "Nautilus.ApplicationSetting": "3.1.8.2",
+          "Nautilus.Database": "3.1.8.2"
+        },
+        "runtime": {
+          "Nautilus.TestFramework.dll": {}
+        }
+      },
+      "Microsoft.NETCore.Platforms/1.1.0": {},
+      "MvvmLightLibsStd10/5.4.1.1": {
+        "runtime": {
+          "lib/netstandard1.0/GalaSoft.MvvmLight.dll": {
+            "assemblyVersion": "5.4.1.0",
+            "fileVersion": "5.4.1.0"
+          }
+        }
+      },
+      "NETStandard.Library/2.0.3": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "sqlite-net-sqlcipher/1.5.176-beta": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "SQLitePCLRaw.bundle_sqlcipher": "1.1.8"
+        },
+        "runtime": {
+          "lib/netstandard1.1/SQLite-net.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SQLitePCLRaw.bundle_sqlcipher/1.1.8": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "SQLitePCLRaw.core": "1.1.8"
+        },
+        "runtime": {
+          "lib/netstandard1.1/SQLitePCLRaw.batteries_sqlcipher.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          },
+          "lib/netstandard1.1/SQLitePCLRaw.batteries_v2.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SQLitePCLRaw.core/1.1.8": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3"
+        },
+        "runtime": {
+          "lib/netstandard1.1/SQLitePCLRaw.core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Xamarin.Forms/4.0.0.497661": {
+        "runtime": {
+          "lib/netstandard2.0/Xamarin.Forms.Core.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "4.0.0.146"
+          },
+          "lib/netstandard2.0/Xamarin.Forms.Platform.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "4.0.0.146"
+          },
+          "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "4.0.0.146"
+          }
+        }
+      },
+      "Nautilus/3.1.8.2": {
+        "dependencies": {
+          "Xamarin.Forms": "4.0.0.497661"
+        },
+        "runtime": {
+          "Nautilus.dll": {}
+        }
+      },
+      "Nautilus.ApplicationSetting/3.1.8.2": {
+        "dependencies": {
+          "Nautilus.Database": "3.1.8.2"
+        },
+        "runtime": {
+          "Nautilus.ApplicationSetting.dll": {}
+        }
+      },
+      "Nautilus.Database/3.1.8.2": {
+        "dependencies": {
+          "Nautilus.Extensions": "3.1.8.2",
+          "Nautilus.Shared": "3.1.8.2",
+          "Xamarin.Forms": "4.0.0.497661",
+          "sqlite-net-sqlcipher": "1.5.176-beta"
+        },
+        "runtime": {
+          "Nautilus.Database.dll": {}
+        }
+      },
+      "Nautilus.Extensions/3.1.8.2": {
+        "dependencies": {
+          "Nautilus.Shared": "3.1.8.2",
+          "Xamarin.Forms": "4.0.0.497661"
+        },
+        "runtime": {
+          "Nautilus.Extensions.dll": {}
+        }
+      },
+      "Nautilus.Shared/3.1.8.2": {
+        "dependencies": {
+          "MvvmLightLibsStd10": "5.4.1.1",
+          "Nautilus": "3.1.8.2",
+          "Xamarin.Forms": "4.0.0.497661"
+        },
+        "runtime": {
+          "Nautilus.Shared.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Nautilus.TestFramework/3.1.8.4": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.NETCore.Platforms/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
+      "path": "microsoft.netcore.platforms/1.1.0",
+      "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
+    },
+    "MvvmLightLibsStd10/5.4.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zU9KXgq8dfnzxxOvvAVtasbhaQGoDlTr8Pw2AjZ1NB905GQljrxqkgh3jo5/47Vux5duw3/faUgcZjdfomGvFw==",
+      "path": "mvvmlightlibsstd10/5.4.1.1",
+      "hashPath": "mvvmlightlibsstd10.5.4.1.1.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "path": "netstandard.library/2.0.3",
+      "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "sqlite-net-sqlcipher/1.5.176-beta": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eePlIY0J4uS4BMAUORkzTqeRATXK7rkGhEukrtLb+/SXmSrV9JLI+yzxjlf8nirOVbie2HxEAWWs8bPQ37a9bw==",
+      "path": "sqlite-net-sqlcipher/1.5.176-beta",
+      "hashPath": "sqlite-net-sqlcipher.1.5.176-beta.nupkg.sha512"
+    },
+    "SQLitePCLRaw.bundle_sqlcipher/1.1.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9NQc0zf4OofPzCSLYI8jrS+c74HID/IKoSNvn3zonrmoJJgyUdokG/fNZWtzebhY4h1MlCcfFYgQBCAPEK2uLA==",
+      "path": "sqlitepclraw.bundle_sqlcipher/1.1.8",
+      "hashPath": "sqlitepclraw.bundle_sqlcipher.1.1.8.nupkg.sha512"
+    },
+    "SQLitePCLRaw.core/1.1.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JTvlAlVHeMW9QaTcu+3iLB9ZEGtceb+uM1MOlfyAnEocShSacHEzwPNsden7MlWb0QjPX3Y3sDMW0ymGhH8Jtg==",
+      "path": "sqlitepclraw.core/1.1.8",
+      "hashPath": "sqlitepclraw.core.1.1.8.nupkg.sha512"
+    },
+    "Xamarin.Forms/4.0.0.497661": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-j2dTUhcgdqb3TwFaSWnkbKwD8rgSQtEoYiW/e+sKRV24BTxMdYp24oEKIXDBvLXjlkv8Lr+DNKBrycu1gfkI2Q==",
+      "path": "xamarin.forms/4.0.0.497661",
+      "hashPath": "xamarin.forms.4.0.0.497661.nupkg.sha512"
+    },
+    "Nautilus/3.1.8.2": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Nautilus.ApplicationSetting/3.1.8.2": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Nautilus.Database/3.1.8.2": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Nautilus.Extensions/3.1.8.2": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Nautilus.Shared/3.1.8.2": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
