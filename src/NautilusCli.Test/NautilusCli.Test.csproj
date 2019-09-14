@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
+    <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>                
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,11 @@
 
   <ItemGroup>
     <Folder Include="Integration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Nautilus.Net">
+      <HintPath>..\..\libs\NautilusSDK\Nautilus.Net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nautilus.Cli.Core\Nautilus.Cli.Core.csproj" />

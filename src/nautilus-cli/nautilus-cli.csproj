@@ -15,6 +15,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <Description>Nautilus CLI Client</Description>
     <PackageLicenseUrl>License URL</PackageLicenseUrl>
+    <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>        
     <!-- <PackageProjectUrl>Project URL</PackageProjectUrl> -->
     <!-- <PackageIconUrl>Icon URL</PackageIconUrl> -->
     <!-- <RepositoryUrl>Repo URL</RepositoryUrl> -->

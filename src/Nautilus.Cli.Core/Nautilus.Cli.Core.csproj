@@ -1,36 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <LangVersion>7.3</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Abstraction\" />
-    <Folder Include="Components\" />
-    <Folder Include="Configurations\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="FileReaders\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Utils\" />
-    <Folder Include="TestData\" />
-    <Folder Include="Components\Http\" />
-    <Folder Include="Models\Http\" />
-    <Folder Include="FileWriters\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="morelinq" Version="3.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Nautilus.Net">
-      <HintPath>..\..\libs\NautilusSDK3.1.8.0\Nautilus.Net.dll</HintPath>
+      <HintPath>..\..\libs\NautilusSDK\Nautilus.Net.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 </Project>
