@@ -28,4 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Nautilus.Cli.Core\Nautilus.Cli.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
 </Project>
