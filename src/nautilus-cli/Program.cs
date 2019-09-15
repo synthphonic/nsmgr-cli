@@ -5,6 +5,7 @@ using CommandLine;
 using Nautilus.Cli.Client.CommandLine.Services;
 using Nautilus.Cli.Client.CommandLine.Verbs;
 using Nautilus.Cli.Core.Exceptions;
+using Nautilus.Cli.Core.Logging;
 using Nautilus.Cli.Core.TestData;
 
 namespace Nautilus.Cli.Client
@@ -12,6 +13,7 @@ namespace Nautilus.Cli.Client
     class Program
 	{
         public const string Name = "nautilus-cli";
+		private const string LogFileName = "nautilus-cli.log";
 
         static void Main(string[] args)
 		{
@@ -196,6 +198,10 @@ namespace Nautilus.Cli.Client
                 }))
                 .WithNotParsed(errs =>
 				{
+					//
+					// TODO: what should we do here?
+					//
+
 					//var sb = new StringBuilder();
 					//foreach (var item in errs)
 					//{
@@ -212,12 +218,19 @@ namespace Nautilus.Cli.Client
 			Colorful.Console.WriteLine(ex.Message, Color.Red);
 			Console.WriteLine("");
 
-            if (debugMode)
-            {
-                var baseEx = ex.GetBaseException();
-                Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
-                Console.WriteLine("");
-            }
+			if (debugMode)
+			{
+				LoggingManager.Instance.Initialize(LogFileName, true);
+
+				var baseEx = ex.GetBaseException();
+				Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
+
+				LoggingManager.Instance.WriteError($"{ex.Message}\n{ex.StackTrace}");
+
+				Console.WriteLine("");
+
+				LoggingManager.Instance.Close();
+			}
 
             Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
@@ -231,10 +244,17 @@ namespace Nautilus.Cli.Client
 
             if (debugMode)
             {
-                var baseEx = ex.GetBaseException();
+				LoggingManager.Instance.Initialize(LogFileName, true);
+
+				var baseEx = ex.GetBaseException();
                 Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
-                Console.WriteLine("");
-            }
+
+				LoggingManager.Instance.WriteError($"{ex.Message}\n{ex.StackTrace}");
+
+				Console.WriteLine("");
+
+				LoggingManager.Instance.Close();
+			}
 
             Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
@@ -248,10 +268,17 @@ namespace Nautilus.Cli.Client
 
             if (debugMode)
             {
-                var baseEx = ex.GetBaseException();
+				LoggingManager.Instance.Initialize(LogFileName, true);
+
+				var baseEx = ex.GetBaseException();
                 Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
-                Console.WriteLine("");
-            }
+
+				LoggingManager.Instance.WriteError($"{ex.Message}\n{ex.StackTrace}");
+
+				Console.WriteLine("");
+
+				LoggingManager.Instance.Close();
+			}
 
             Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
@@ -265,9 +292,16 @@ namespace Nautilus.Cli.Client
 
             if (debugMode)
             {
-                Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
-                Console.WriteLine("");
-            }
+				LoggingManager.Instance.Initialize(LogFileName, true);
+
+				Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
+
+				LoggingManager.Instance.WriteError($"{cliEx.Message}\n{cliEx.StackTrace}");
+
+				Console.WriteLine("");
+
+				LoggingManager.Instance.Close();
+			}
 
 			Colorful.Console.WriteLine("Program has stopped", Color.Red);
 			Console.WriteLine("");
@@ -287,15 +321,6 @@ namespace Nautilus.Cli.Client
 			Colorful.Console.WriteLine("\nCompleted successfully", Color.GreenYellow);
 			Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
 		}
-
-		//public static readonly string Name
-		//{
-		//	get
-		//	{
-		//		var asmName = new FindConflict().GetType().Assembly.GetName();
-		//		return asmName.Name;
-		//	}
-		//}
 	}
 
     public static class ExceptionExtension
