@@ -3,7 +3,7 @@ using System.IO;
 using Serilog;
 using Serilog.Core;
 
-namespace Nautilus.Logging
+namespace Nautilus.Cli.Core.Logging
 {
 	public sealed class LoggingManager
 	{

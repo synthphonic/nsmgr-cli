@@ -27,6 +27,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nautilus.Cli.Core\Nautilus.Cli.Core.csproj" />
-    <ProjectReference Include="..\Nautilus.Logging\Nautilus.Logging.csproj" />
   </ItemGroup>
 </Project>

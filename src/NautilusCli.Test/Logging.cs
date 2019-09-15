@@ -1,4 +1,4 @@
-﻿using Nautilus.Logging;
+﻿using Nautilus.Cli.Core.Logging;
 using NUnit.Framework;
 
 namespace Tests
