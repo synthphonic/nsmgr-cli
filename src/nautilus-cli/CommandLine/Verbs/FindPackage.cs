@@ -21,8 +21,8 @@ namespace Nautilus.Cli.Client.CommandLine.Verbs
         [Option("package", Required = true, HelpText = "The nuget package name to find.")]
         public string NugetPackage { get; set; }
 
-        [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
-        public bool Debug { get; set; }
+        [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception and stacktrace messages")]
+		public bool Debug { get; set; }
 
         [Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples
