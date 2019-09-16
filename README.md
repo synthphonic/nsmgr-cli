@@ -58,3 +58,6 @@ Usage:
   - solutionfilename : *Required. The full file path to the .sln file.*
   - project : *Required. The name of the project to update the nuget packages involved. Use 'all' to upgrade all projects*
   - package : *Required. The nuget package name to update.*
+#
+#
+**NOTE:** All verbs has _--debug_ option. Default value is false. If this option is turned on, output errors will be written to a log file and stored on the user's _Desktop_ location
