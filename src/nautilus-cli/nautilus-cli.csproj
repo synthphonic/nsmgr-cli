@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CommandLine\Layout\" />
+    <Folder Include="OutputMessages\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nautilus.Cli.Core\Nautilus.Cli.Core.csproj" />
