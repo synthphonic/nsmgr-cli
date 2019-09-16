@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
+using Nautilus.Cli.Core.Abstraction;
 
 namespace Nautilus.Cli.Client.CommandLine.Verbs
 {
 	[Verb("update-nuget-package", HelpText = "Finds the conflicting nuget package versions installed in the solution.")]
-	public class UpdateNugetPackage
+	class UpdateNugetPackage : VerbBase
 	{
 		private const string Example_Text = "Update nuget package to a specificed verison number";
 
@@ -26,9 +27,6 @@ namespace Nautilus.Cli.Client.CommandLine.Verbs
 
 		[Option("version", Required = true, HelpText = "The version number to upate to.")]
 		public string NugetVersion { get; set; }
-
-        [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
-        public bool Debug { get; set; }
 
         [Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples

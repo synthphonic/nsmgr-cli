@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CommandLine;
 using CommandLine.Text;
+using Nautilus.Cli.Core.Abstraction;
 
 namespace Nautilus.Cli.Client.CommandLine.Verbs
 {
 	[Verb("list-projects", HelpText = "List out all projects that exists under a solution (.sln) file")]
-	class ListProjects
+	class ListProjects : VerbBase
 	{
 		private const string Example_Text = "List out all projects under the solution";
 
@@ -26,9 +27,6 @@ namespace Nautilus.Cli.Client.CommandLine.Verbs
 
 		[Option("nuget-package-updates", Default = false, Required = false, Hidden = false, HelpText = "Query and display if there's any new nuget package update version online.")]
 		public bool NugetPackageUpdates { get; set; }
-
-        [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
-        public bool Debug { get; set; }
 
         [Usage(ApplicationAlias = Program.Name)]
 		public static IEnumerable<Example> Examples
