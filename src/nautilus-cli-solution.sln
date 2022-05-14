@@ -1,13 +1,13 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nautilus-cli", "nautilus-cli\nautilus-cli.csproj", "{B1B9BF8C-6EC7-44CE-B7F9-E82CD460CEEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.SolutionExplorerClient", "Nautilus.SolutionExplorerClient\Nautilus.SolutionExplorerClient.csproj", "{B1B9BF8C-6EC7-44CE-B7F9-E82CD460CEEB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{51685194-062E-4561-A7C1-D76CC6FCEAE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NautilusCli.Test", "NautilusCli.Test\NautilusCli.Test.csproj", "{5326A1B8-0F12-420B-9143-0FA81CD9BCD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.SolutionExplorer.Test", "Nautilus.SolutionExplorer.Test\Nautilus.SolutionExplorer.Test.csproj", "{5326A1B8-0F12-420B-9143-0FA81CD9BCD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.Cli.Core", "Nautilus.Cli.Core\Nautilus.Cli.Core.csproj", "{CBD6E648-DFD7-44DF-B546-59E2D662E84B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.SolutionExplorer.Core", "Nautilus.SolutionExplorer.Core\Nautilus.SolutionExplorer.Core.csproj", "{CBD6E648-DFD7-44DF-B546-59E2D662E84B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

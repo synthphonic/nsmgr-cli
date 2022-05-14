@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<AssemblyName>nsmgr</AssemblyName>
+		<Copyright>Copyright (c) FiftyOneLab Tech 2018-2022</Copyright>
+		<RootNamespace>Nautilus.SolutionExplorerClient</RootNamespace>
+		<Version>1.1.0.0</Version>
+		<Authors>Shah Z. S</Authors>
+		<Company>FiftyOne Lab Technologies</Company>
+		<Product>Nautilus Solution Manager</Product>
+		<!--<AssemblyVersion>1.1.0.0</AssemblyVersion>-->
+		<!--<FileVersion>1.0.0.1</FileVersion>-->
+		<NeutralLanguage>en</NeutralLanguage>
+		<Description>Nautilus Visual Studio solution manager cli</Description>
+		<!-- <PackageProjectUrl>Project URL</PackageProjectUrl> -->
+		<!-- <PackageIconUrl>Icon URL</PackageIconUrl> -->
+		<!-- <RepositoryUrl>Repo URL</RepositoryUrl> -->
+		<!-- <RepositoryType>Repo type</RepositoryType> -->
+		<!-- <PackageTags>Tags</PackageTags> -->
+		<!-- <PackageReleaseNotes>Release</PackageReleaseNotes>     -->
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<LangVersion>default</LangVersion>
+		<WarningLevel>4</WarningLevel>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<LangVersion>default</LangVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Colorful.Console" Version="1.2.15" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="CommandLineParser" Version="2.8.0" />
+		<PackageReference Include="morelinq" Version="3.3.2" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Commands\Layout\" />
+		<Folder Include="archve\" />
+		<Folder Include="Services\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Nautilus.SolutionExplorer.Core\Nautilus.SolutionExplorer.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="archve\" />
+		<None Remove="Services\" />
+	</ItemGroup>
+</Project>
