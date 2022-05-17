@@ -20,11 +20,12 @@ class Program
                 var sw = new Stopwatch();
                 sw.Start();
 
-                var service = new UpdateNugetPackageService(command.SolutionFileName, command.ProjectName, command.NugetPackage, command.NugetVersion);
+                //var service = new UpdateNugetPackageService(command.SolutionFileName, command.ProjectName, command.NugetPackage, command.NugetVersion);
 
                 try
                 {
-                    service.Run().Wait();
+                    command.Run().Wait();
+                    //service.Run().Wait();
                 }
                 catch (ProjectNotFoundException prjNotFoundEx)
                 {
@@ -77,11 +78,10 @@ class Program
                 var sw = new Stopwatch();
                 sw.Start();
 
-                var service = new ListProjectsService(command.SolutionFileName, command.ProjectsOnly, command.ShowNugetPackages, command.NugetPackageUpdates);
-
                 try
                 {
-                    service.Run().Wait();
+                    command.Run().Wait();
+                    //service.Run().Wait();
                 }
                 catch (CLIException cliEx)
                 {
@@ -120,11 +120,12 @@ class Program
                 var sw = new Stopwatch();
                 sw.Start();
 
-                var service = new ListNugetPackagesService(command.SolutionFileName, command.ProjectsOnly, command.UseDebugData);
+                //var service = new ListNugetPackagesService(command.SolutionFileName, command.ProjectsOnly, command.UseDebugData);
 
                 try
                 {
-                    service.Run().Wait();
+                    command.Run().Wait();
+                    //service.Run().Wait();
                 }
                 catch (SolutionFileException solutionFileEx)
                 {
@@ -149,60 +150,52 @@ class Program
                     }
                 }
             }))
-        .WithParsed((Action<FindPackageCommand>)((command) =>
-        {
-            _debugMode = command.Debug;
-
-            var sw = new Stopwatch();
-            sw.Start();
-
-            var service = new FindPackageService(command.SolutionFileName, command.NugetPackage);
-
-            try
+            .WithParsed((Action<FindPackageCommand>)((command) =>
             {
-                service.Run().Wait();
-            }
-            catch (SolutionFileException solutionFileEx)
-            {
-                ConsoleOutputLayout.SolutionFileExceptionMessageFormat(solutionFileEx);
+                _debugMode = command.Debug;
 
-                sw.Stop();
-                ConsoleOutputLayout.DisplayFinishingMessage(sw);
-            }
-            catch (Exception ex)
-            {
-                ConsoleOutputLayout.DisplayGeneralExceptionMessageFormat(ex, _debugMode);
+                var sw = new Stopwatch();
+                sw.Start();
 
-                sw.Stop();
-                ConsoleOutputLayout.DisplayFinishingMessage(sw);
-            }
-            finally
-            {
-                if (sw.IsRunning)
+                //var service = new FindPackageService(command.SolutionFileName, command.NugetPackage);
+
+                try
                 {
+                    command.Run().Wait();
+                    //service.Run().Wait();
+                }
+                catch (SolutionFileException solutionFileEx)
+                {
+                    ConsoleOutputLayout.SolutionFileExceptionMessageFormat(solutionFileEx);
+
                     sw.Stop();
                     ConsoleOutputLayout.DisplayFinishingMessage(sw);
                 }
-            }
-        }))
-        .WithNotParsed(errs =>
-            {
-                //var sb = new StringBuilder();
-                //foreach (var item in errs)
-                //{
-                //	sb.AppendFormat($"{item.ToString()}");
-                //}
+                catch (Exception ex)
+                {
+                    ConsoleOutputLayout.DisplayGeneralExceptionMessageFormat(ex, _debugMode);
 
-                //Console.WriteLine(sb.ToString());
-            });
+                    sw.Stop();
+                    ConsoleOutputLayout.DisplayFinishingMessage(sw);
+                }
+                finally
+                {
+                    if (sw.IsRunning)
+                    {
+                        sw.Stop();
+                        ConsoleOutputLayout.DisplayFinishingMessage(sw);
+                    }
+                }
+            }))
+            .WithNotParsed(errs =>
+                {
+                    //var sb = new StringBuilder();
+                    //foreach (var item in errs)
+                    //{
+                    //	sb.AppendFormat($"{item.ToString()}");
+                    //}
+
+                    //Console.WriteLine(sb.ToString());
+                });
     }
-
-    //public static readonly string Name
-    //{
-    //	get
-    //	{
-    //		var asmName = new FindConflict().GetType().Assembly.GetName();
-    //		return asmName.Name;
-    //	}
-    //}
 }

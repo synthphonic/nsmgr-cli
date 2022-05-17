@@ -13,6 +13,8 @@ public enum ProjectTarget
     NETFramework46,
     NETFramework47,
     NETFramework48,
+    NET5,
+    NET6,
     NativeiOS,
     NativeiOSBinding,
     NativeAndroid,

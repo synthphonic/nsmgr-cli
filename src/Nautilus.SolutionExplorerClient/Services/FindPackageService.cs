@@ -1,12 +1,12 @@
 ﻿namespace Nautilus.SolutionExplorerClient.Services;
 
-public class FindPackageService
+public class FindPackageService2
 {
     private readonly string _solutionFileName;
     private readonly string _packageName;
     private readonly bool _returnResults;
 
-    public FindPackageService(string solutionFileName, string packageName, bool returnResults = false)
+    public FindPackageService2(string solutionFileName, string packageName, bool returnResults = false)
     {
         _solutionFileName = solutionFileName;
         _packageName = packageName;

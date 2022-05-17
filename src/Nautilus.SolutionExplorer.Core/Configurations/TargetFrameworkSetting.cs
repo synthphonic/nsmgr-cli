@@ -11,7 +11,9 @@ public static class TargetFrameworkSetting
             ["netstandard2.0"] = ProjectTarget.NETStandard20,
             ["netcoreapp2.2"] = ProjectTarget.NETCoreApp22,
             ["netcoreapp2.1"] = ProjectTarget.NETCoreApp21,
-            ["netcoreapp2.0"] = ProjectTarget.NETCoreApp20
+            ["netcoreapp2.0"] = ProjectTarget.NETCoreApp20,
+            ["net5.0"] = ProjectTarget.NET5,
+            ["net6.0"] = ProjectTarget.NET6,
         };
     }
 
@@ -34,7 +36,6 @@ public static class TargetFrameworkSetting
         {
             return ProjectTarget.Unknown;
         }
-
 
         return _versions[stringValue];
     }

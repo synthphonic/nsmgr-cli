@@ -23,7 +23,52 @@ public class ProjectTypeManager
             projectType = CheckForNETFrameworkProject();
         }
 
+        if (projectType == ProjectTarget.Unknown)
+        {
+            projectType = CheckForNET5orNET6Project();
+        }
+
         return projectType;
+    }
+
+    private ProjectTarget CheckForNET5orNET6Project()
+    {
+        if (!File.Exists(_file))
+        {
+            return ProjectTarget.Unknown;
+        }
+
+        var xmlContent = string.Empty;
+        using (var fs = File.OpenRead(_file))
+        {
+            using (var sr = new StreamReader(fs))
+            {
+                xmlContent = sr.ReadToEnd();
+            }
+        }
+
+        var xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(xmlContent);
+
+        var root = xmlDoc.DocumentElement;
+        var sdkValue = root.GetAttribute("Sdk");
+        if (sdkValue.Equals("Microsoft.NET.Sdk") || sdkValue.Equals("Microsoft.NET.Sdk.Web"))
+        {
+            var element = root.GetElementsByTagName("TargetFramework");
+            var enumerator = element.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var xmlElement = enumerator.Current as XmlElement;
+                if (xmlElement != null)
+                {
+                    var adsa = xmlElement.InnerText;
+
+                    return TargetFrameworkSetting.Get(xmlElement.InnerText);
+                }
+            }
+        }
+
+        return ProjectTarget.Unknown;
     }
 
     private ProjectTarget CheckForNETFrameworkProject()
@@ -49,6 +94,9 @@ public class ProjectTypeManager
         xmlNsManager.AddNamespace("x", "http://schemas.microsoft.com/developer/msbuild/2003");
 
         var xmlNode = xmlDoc.SelectSingleNode("//x:TargetFrameworkVersion", xmlNsManager);
+        if (xmlNode == null)
+            return ProjectTarget.Unknown;
+
         var frameworkVersion = xmlNode.InnerText;
 
         if (!string.IsNullOrWhiteSpace(frameworkVersion))

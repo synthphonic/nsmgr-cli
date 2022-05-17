@@ -26,3 +26,4 @@ global using Nautilus.SolutionExplorerClient.Commands;
 global using Nautilus.SolutionExplorerClient.Commands.Layout;
 global using Nautilus.SolutionExplorerClient.Services;
 global using Newtonsoft.Json;
+global using Nautilus.SolutionExplorerClient.Constants;

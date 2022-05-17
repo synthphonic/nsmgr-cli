@@ -4,15 +4,15 @@ public class CSharpProjectFileReader : IProjectFilePackageReader
 {
     private string _fileName;
 
-		public object Read(string fileName)
+    public object Read(string fileName)
     {
-			_fileName = fileName;
-        return ReadCsharpProjectFile();
+        _fileName = fileName;
+        return ReadCSharpProjectFile();
     }
 
-    private IList<NugetPackageReference> ReadCsharpProjectFile()
+    private IList<NugetPackageReference> ReadCSharpProjectFile()
     {
-			var xmlContent = FileUtil.ReadFileContent(_fileName);
+        var xmlContent = FileUtil.ReadFileContent(_fileName);
 
         var xElement = XElement.Parse(xmlContent);
 

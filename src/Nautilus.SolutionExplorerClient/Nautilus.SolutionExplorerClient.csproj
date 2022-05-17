@@ -39,6 +39,7 @@
 		<Folder Include="Commands\Layout\" />
 		<Folder Include="archve\" />
 		<Folder Include="Services\" />
+		<Folder Include="Constants\" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Nautilus.SolutionExplorer.Core\Nautilus.SolutionExplorer.Core.csproj" />
@@ -46,5 +47,6 @@
 	<ItemGroup>
 		<None Remove="archve\" />
 		<None Remove="Services\" />
+		<None Remove="Constants\" />
 	</ItemGroup>
 </Project>

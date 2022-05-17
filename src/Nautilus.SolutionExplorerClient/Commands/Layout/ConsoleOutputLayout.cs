@@ -15,7 +15,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine("Program has stopped", Color.Red);
+        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
         Console.WriteLine("");
     }
 
@@ -32,7 +32,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine("Program has stopped", Color.Red);
+        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
         Console.WriteLine("");
     }
 
@@ -49,7 +49,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine("Program has stopped", Color.Red);
+        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
         Console.WriteLine("");
     }
 
@@ -65,7 +65,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine("Program has stopped", Color.Red);
+        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
         Console.WriteLine("");
     }
 
@@ -74,7 +74,7 @@ internal static class ConsoleOutputLayout
         Console.WriteLine("");
         Colorful.Console.WriteLine(solutionFileEx.Message, Color.Red);
         Console.WriteLine("");
-        Colorful.Console.WriteLine("Program has stopped", Color.Red);
+        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
         Console.WriteLine("");
     }
 

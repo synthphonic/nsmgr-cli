@@ -37,6 +37,8 @@ public class FileReader
             [ProjectTarget.NETCoreApp20] = new CSharpProjectFileReader(),
             [ProjectTarget.NETCoreApp21] = new CSharpProjectFileReader(),
             [ProjectTarget.NETCoreApp22] = new CSharpProjectFileReader(),
+            [ProjectTarget.NET5] = new CSharpProjectFileReader(),
+            [ProjectTarget.NET6] = new CSharpProjectFileReader(),
             [ProjectTarget.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
             [ProjectTarget.NativeiOSBinding] = new CSharpNETFrameworkProjectFileReader(),
             [ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileReader(),
