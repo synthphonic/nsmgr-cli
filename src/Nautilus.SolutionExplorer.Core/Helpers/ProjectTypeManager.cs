@@ -52,7 +52,16 @@ public class ProjectTypeManager
 
         var root = xmlDoc.DocumentElement;
         var sdkValue = root.GetAttribute("Sdk");
-        if (sdkValue.Equals("Microsoft.NET.Sdk") || sdkValue.Equals("Microsoft.NET.Sdk.Web"))
+
+        /*
+            Potential support for Sdk element
+                Microsoft.NET.Sdk
+                Microsoft.NET.Sdk.Web
+                Microsoft.NET.Sdk.BlazorWebAssembly
+                Microsoft.NET.Sdk.Razor
+                more to come
+         */
+        if (sdkValue.Contains("Microsoft.NET.Sdk"))
         {
             var element = root.GetElementsByTagName("TargetFramework");
             var enumerator = element.GetEnumerator();
