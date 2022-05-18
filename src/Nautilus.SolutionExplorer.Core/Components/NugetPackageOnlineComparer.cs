@@ -5,11 +5,13 @@ namespace Nautilus.SolutionExplorer.Core.Components;
 public class NugetPackageOnlineComparer
 {
     private readonly Solution _solution;
+    private readonly bool _showPreReleaseNugetPackages;
     private readonly Action _writeProgressHandler;
 
-    public NugetPackageOnlineComparer(Solution solution, Action writeProgressHandler = null)
+    public NugetPackageOnlineComparer(Solution solution, bool showPreReleaseNugetPackages, Action writeProgressHandler = null)
     {
         _solution = solution;
+        _showPreReleaseNugetPackages = showPreReleaseNugetPackages;
         _writeProgressHandler = writeProgressHandler;
         Result = new Dictionary<string, IList<NugetPackageInformationComparer>>();
     }
@@ -38,7 +40,7 @@ public class NugetPackageOnlineComparer
                     continue;
                 }
 
-                var requestor = NugetPackageHttpRequest.QueryRequest(package.PackageName, true);
+                var requestor = NugetPackageHttpRequest.QueryRequest(package.PackageName, _showPreReleaseNugetPackages);
                 var response = await requestor.ExecuteAsync();
                 var selectedDatum = response.Data.FirstOrDefault(x => x.Id.Equals(package.PackageName));
 

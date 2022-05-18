@@ -24,6 +24,10 @@ internal class ListProjectsCommand
     [Option(longName: "nuget-package-updates", shortName: 'u', Default = false, Required = false, Hidden = false, HelpText = "Query and display if there's any new nuget package update version online.")]
     public bool ShowNugetPackageUpdates { get; set; }
 
+    [Option(longName: "nuget-pre-release", Default = false, Required = false, Hidden = false, HelpText = "To fetch data for pre-release versions of a particular nuget package. " +
+        "This switch is used toegher with -u or --nuget-package-updates switch")]
+    public bool ShowPreReleaseNugetPackages { get; set; }
+
     [Option(longName: "debug", shortName: 'd', Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
     public bool Debug { get; set; }
 
@@ -86,7 +90,7 @@ internal class ListProjectsCommand
         NugetPackageOnlineComparer comparer = null;
         if (ShowNugetPackageUpdates)
         {
-            comparer = new NugetPackageOnlineComparer(solution, CliStringFormatter.WriteOnlinePackageProgressHandler);
+            comparer = new NugetPackageOnlineComparer(solution, ShowPreReleaseNugetPackages, CliStringFormatter.WriteOnlinePackageProgressHandler);
             await comparer.Run();
         }
 
