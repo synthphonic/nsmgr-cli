@@ -13,7 +13,6 @@ global using System.Threading.Tasks;
 global using System.Xml;
 global using System.Xml.Linq;
 global using System.Xml.Serialization;
-global using Nautilus.Net.Http;
 global using Nautilus.SolutionExplorer.Core.Abstraction;
 global using Nautilus.SolutionExplorer.Core.Components.Http;
 global using Nautilus.SolutionExplorer.Core.Configurations;
