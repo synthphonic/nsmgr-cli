@@ -56,9 +56,6 @@ internal class ListProjectsCommand
 
     internal async Task Run()
     {
-        Colorful.Console.WriteLine();
-        Colorful.Console.WriteLine("Working. Please wait...", Color.DeepSkyBlue);
-
         var slnFileReader = new SolutionFileReader(SolutionFileName, ProjectsOnly);
         Solution solution = null;
 
@@ -66,6 +63,15 @@ internal class ListProjectsCommand
         try
         {
             solution = slnFileReader.Read();
+
+            Colorful.Console.WriteLine();
+            Colorful.Console.Write($"{CliStringFormatter.Format15}", "Solution ");
+            Colorful.Console.WriteLine($": {solution.SolutionFileName}", Color.PapayaWhip);
+            Colorful.Console.Write("Total Projects : ");
+            Colorful.Console.WriteLine($"{solution.Projects.Count()}\n", Color.PapayaWhip);
+
+            Colorful.Console.WriteLine();
+            Colorful.Console.WriteLine("Working. Please wait...", Color.DeepSkyBlue);
         }
         catch (SolutionFileException)
         {
@@ -86,17 +92,11 @@ internal class ListProjectsCommand
 
         Colorful.Console.WriteLine();
 
-        WriteToScreen(solution, comparer?.Result);
+        WriteFinalizedResultToScreen(solution, comparer?.Result);
     }
 
-    private void WriteToScreen(Solution solution, Dictionary<string, IList<NugetPackageInformationComparer>> packageVersionComparer)
+    private void WriteFinalizedResultToScreen(Solution solution, Dictionary<string, IList<NugetPackageInformationComparer>> packageVersionComparer)
     {
-        Colorful.Console.WriteLine();
-        Colorful.Console.Write($"{CliStringFormatter.Format15}", "Solution ");
-        Colorful.Console.WriteLine($": {solution.SolutionFileName}", Color.PapayaWhip);
-        Colorful.Console.Write("Total Projects : ");
-        Colorful.Console.WriteLine($"{solution.Projects.Count()}\n", Color.PapayaWhip);
-
         var projectCounter = 1;
         foreach (var project in solution.Projects)
         {
@@ -148,18 +148,35 @@ internal class ListProjectsCommand
             if (packageVersionComparer != null)
             {
                 var nugetPackageInformation = packageVersionComparer[project.ProjectName].FirstOrDefault(x => x.PackageName.Equals(package.PackageName));
+
+                // if nugetPackageInformation is null, then try ToLower() the PackageName, then find it again
+                if (nugetPackageInformation == null)
+                {
+                    nugetPackageInformation = packageVersionComparer[project.ProjectName].FirstOrDefault(x => x.PackageName.ToLower().Equals(package.PackageName));
+                }
+
+                if (nugetPackageInformation == null) continue;
+
                 var latestVersionMessage = string.Empty;
                 Color color = Color.Green;
 
-                if (nugetPackageInformation.IsLatestVersion)
+                if (nugetPackageInformation.OnlinePackageExists)
                 {
-                    latestVersionMessage = "[OK]";
-                    color = Color.SeaGreen;
+                    if (nugetPackageInformation.IsLatestVersion)
+                    {
+                        latestVersionMessage = "[OK]";
+                        color = Color.SeaGreen;
+                    }
+                    else
+                    {
+                        latestVersionMessage = $"{nugetPackageInformation.OnlineVersion}";
+                        color = Color.OrangeRed;
+                    }
                 }
                 else
                 {
-                    latestVersionMessage = $"{nugetPackageInformation.OnlineVersion}";
-                    color = Color.OrangeRed;
+                    latestVersionMessage = $"[Skipped]";
+                    color = Color.Yellow;
                 }
 
                 Colorful.Console.WriteLine($"{CliStringFormatter.Format5}", color, latestVersionMessage);
