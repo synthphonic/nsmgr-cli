@@ -23,17 +23,14 @@ public class HttpClientManager
 
     public async Task<string> GetAsync(string url, bool ensureSuccessStatusCode = false, CancellationToken cancellationToken = default)
     {
-        await Task.CompletedTask;
-        return string.Empty;
+        var responseMessage = await _httpClient.GetAsync(url, cancellationToken);
+        if (ensureSuccessStatusCode)
+        {
+            // NOTE: if this fail, it will return HttpRequestException
+            responseMessage = responseMessage.EnsureSuccessStatusCode();
+        }
 
+        var stringContent = await responseMessage.Content.ReadAsStringAsync();
+        return stringContent;
     }
 }
-
-public class Abc
-{
-    public void aa()
-    {
-        HttpClientManager.Instance.GetAsync();
-    }
-}
-
