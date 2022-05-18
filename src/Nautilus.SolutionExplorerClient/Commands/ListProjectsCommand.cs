@@ -104,8 +104,8 @@ internal class ListProjectsCommand
 
             if (project.ProjectType == SolutionProjectElement.CSharpProject)
             {
-                Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
-                Colorful.Console.Write($"[{CliStringFormatter.Format7}]", Color.Chocolate, project.TargetFramework);
+                Colorful.Console.Write(CliStringFormatter.Format54, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
+                Colorful.Console.Write($"[{CliStringFormatter.Format5}]", Color.Chocolate, project.TargetFramework);
                 Colorful.Console.WriteLine();
 
                 if (project.TargetFramework == ProjectTarget.Unknown)
@@ -142,7 +142,7 @@ internal class ListProjectsCommand
     {
         foreach (var package in project.Packages)
         {
-            Colorful.Console.Write($"\t{CliStringFormatter.Format40}", Color.Chocolate, package.PackageName);
+            Colorful.Console.Write($"\t{CliStringFormatter.Format50}", Color.Chocolate, package.PackageName);
             Colorful.Console.Write($"{CliStringFormatter.Format30}", Color.YellowGreen, package.Version);
 
             if (packageVersionComparer != null)

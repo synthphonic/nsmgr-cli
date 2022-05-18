@@ -11,6 +11,7 @@ internal static class CliStringFormatter
     internal const string Format40 = "{0,-40}";
     internal const string Format45 = "{0,-45}";
     internal const string Format50 = "{0,-50}";
+    internal const string Format54 = "{0,-54}";
 
     internal static void WriteOnlinePackageProgressHandler()
     {
