@@ -110,7 +110,7 @@ internal class ListProjectsCommand
 
                 if (project.TargetFramework == ProjectTarget.Unknown)
                 {
-
+                    // Todo: do something here? 
                 }
 
                 if (ShowNugetPackages)
