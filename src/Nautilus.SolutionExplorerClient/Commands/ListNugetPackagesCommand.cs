@@ -11,7 +11,7 @@ class ListNugetPackagesCommand
 {
     private const string Example_Text = "Finds any conflicting nuget package versions in the solution";
 
-    [Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file")]
+    [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
     [Option("projects-only", Default = true, Required = false, Hidden = true, HelpText = "Process project files only and ignore the rest. Default is false")]
