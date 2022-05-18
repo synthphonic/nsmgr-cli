@@ -15,7 +15,6 @@ public class UpdateNugetPackageCommand
     [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
-    //[Option(longName: "projects-only", shortName: 'p', HelpText = "Process project files only and ignore the rest.")]
     [Option(longName: "projects-only", shortName: 'p', Required = true, HelpText = "The name of the project to update the nuget packages involved. Use 'all' to upgrade all projects")]
     public string ProjectName { get; set; }
 
