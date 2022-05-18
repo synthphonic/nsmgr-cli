@@ -12,16 +12,17 @@ public class UpdateNugetPackageCommand
     private const string Example_Text = "Update nuget package to a specificed verison number";
     private bool _returnResults = false;
 
-    [Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file.")]
+    [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
-    [Option("project", Required = true, HelpText = "The name of the project to update the nuget packages involved. Use 'all' to upgrade all projects")]
+    //[Option(longName: "projects-only", shortName: 'p', HelpText = "Process project files only and ignore the rest.")]
+    [Option(longName: "projects-only", shortName: 'p', Required = true, HelpText = "The name of the project to update the nuget packages involved. Use 'all' to upgrade all projects")]
     public string ProjectName { get; set; }
 
-    [Option("package", Required = true, HelpText = "The nuget package name to update.")]
+    [Option(longName: "nuget-package", shortName: 'n', Required = true, HelpText = "The nuget package name or package identifier.")]
     public string NugetPackage { get; set; }
 
-    [Option("version", Required = true, HelpText = "The version number to upate to.")]
+    [Option(longName: "nuget-version", shortName: 'g', Required = true, HelpText = "The nuget package version to upate to.")]
     public string NugetVersion { get; set; }
 
     [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
