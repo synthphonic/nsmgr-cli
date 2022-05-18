@@ -20,4 +20,6 @@ public class NugetPackageInformationComparer
     public string OnlineVersion { get { return _onlinePackage.Version; } }
 
     public string LocalVersion { get { return _localPackage.Version; } }
+
+    public bool OnlinePackageExists { get { return _onlinePackage != null; } }
 }
