@@ -38,7 +38,6 @@
 	<ItemGroup>
 		<Folder Include="Commands\Layout\" />
 		<Folder Include="archve\" />
-		<Folder Include="Services\" />
 		<Folder Include="Constants\" />
 	</ItemGroup>
 	<ItemGroup>
@@ -46,7 +45,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="archve\" />
-		<None Remove="Services\" />
 		<None Remove="Constants\" />
 	</ItemGroup>
 </Project>
