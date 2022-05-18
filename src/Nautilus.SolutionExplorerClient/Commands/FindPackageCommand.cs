@@ -11,10 +11,10 @@ class FindPackageCommand
     private const string Example_Text = "Finds the project(s) that depends on the intended nuget package";
     private readonly bool _returnResults;
 
-    [Option("solutionfilename", Required = true, HelpText = "The full file path to the .sln file")]
+    [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
-    [Option("package", Required = true, HelpText = "The nuget package name to find.")]
+    [Option(longName: "nuget-package", shortName: 'g', Required = true, HelpText = "The nuget package to find.")]
     public string NugetPackage { get; set; }
 
     [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
@@ -42,9 +42,9 @@ class FindPackageCommand
         }
     }
 
-    internal FindPackageCommand(bool returnResults = false)
+    public FindPackageCommand()
     {
-        _returnResults = returnResults;
+        // used internally by CommandLine Parser
     }
 
     internal FindPackageCommand(string solutionFileName, string nugetPackage, bool returnResults = false)

@@ -157,12 +157,9 @@ class Program
                 var sw = new Stopwatch();
                 sw.Start();
 
-                //var service = new FindPackageService(command.SolutionFileName, command.NugetPackage);
-
                 try
                 {
                     command.Run().Wait();
-                    //service.Run().Wait();
                 }
                 catch (SolutionFileException solutionFileEx)
                 {
