@@ -1,4 +1,6 @@
-﻿namespace Nautilus.SolutionExplorer.Core.Components;
+﻿using Nautilus.SolutionExplorer.Core.Cache;
+
+namespace Nautilus.SolutionExplorer.Core.Components;
 
 public class NugetPackageOnlineComparer
 {
@@ -28,7 +30,15 @@ public class NugetPackageOnlineComparer
         {
             foreach (var package in project.Packages)
             {
-                var requestor = NugetPackageHttpRequest.QueryRequest(package.PackageName, false);
+                if (NugetPackageCache.Instance.ContainsPackage(package.PackageName))
+                {
+                    var latestPackageInfo = NugetPackageCache.Instance.GetPackage(package.PackageName);
+                    projectPackages.Add(new NugetPackageInformationComparer(package, latestPackageInfo.Data));
+
+                    continue;
+                }
+
+                var requestor = NugetPackageHttpRequest.QueryRequest(package.PackageName, true);
                 var response = await requestor.ExecuteAsync();
                 var selectedDatum = response.Data.FirstOrDefault(x => x.Id.Equals(package.PackageName));
 
@@ -36,6 +46,15 @@ public class NugetPackageOnlineComparer
                 if (selectedDatum == null)
                 {
                     selectedDatum = response.Data.FirstOrDefault(x => x.Id.ToLower().Equals(package.PackageName));
+                }
+
+                if (selectedDatum != null)
+                {
+                    NugetPackageCache.Instance.AddPackage(selectedDatum.Id, selectedDatum.Version, selectedDatum);
+                }
+                else
+                {
+                    NugetPackageCache.Instance.AddNotFoundPackage(package.PackageName, package.Version);
                 }
 
                 projectPackages.Add(new NugetPackageInformationComparer(package, selectedDatum));
