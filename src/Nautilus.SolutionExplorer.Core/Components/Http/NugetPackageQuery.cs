@@ -20,10 +20,6 @@ public class NugetPackageQuery
         try
         {
             var response = await HttpClientManager.Instance.GetAsync(_apiTemplate, false, cancellationToken);
-
-            //var httpClient = new Nautilus.Net.Http.HttpClientManager();
-            //var response = await httpClient.GetAsync(_apiTemplate, false, cancellationToken);
-
             var deserialized = JsonConvert.DeserializeObject<QueryPackageResponse>(response);
 
             return deserialized;
