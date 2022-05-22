@@ -7,7 +7,7 @@
 namespace Nautilus.SolutionExplorerClient.Commands;
 
 [Verb("update-nuget-package", HelpText = "Finds the conflicting nuget package versions installed in the solution.")]
-public class UpdateNugetPackageCommand
+public class UpdateNugetPackageCommand : CommandBase
 {
     private const string Example_Text = "Update nuget package to a specificed verison number";
     private bool _returnResults = false;
@@ -23,9 +23,6 @@ public class UpdateNugetPackageCommand
 
     [Option(longName: "nuget-version", shortName: 'g', Required = true, HelpText = "The nuget package version to upate to.")]
     public string NugetVersion { get; set; }
-
-    [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
-    public bool Debug { get; set; }
 
     [Usage(ApplicationAlias = Program.CliName)]
     public static IEnumerable<Example> Examples

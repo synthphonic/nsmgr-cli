@@ -7,7 +7,7 @@
 namespace Nautilus.SolutionExplorerClient.Commands;
 
 [Verb("list-packages", HelpText = "List nuget packages for all projects in the solution")]
-class ListNugetPackagesCommand
+class ListNugetPackagesCommand : CommandBase
 {
     private const string Example_Text = "Finds any conflicting nuget package versions in the solution";
 
@@ -19,9 +19,6 @@ class ListNugetPackagesCommand
 
     [Option("usedebugdata", Required = false, Hidden = true, HelpText = "")]
     public bool UseDebugData { get; set; }
-
-    [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
-    public bool Debug { get; set; }
 
     [Usage(ApplicationAlias = Program.CliName)]
     public static IEnumerable<Example> Examples
