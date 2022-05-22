@@ -6,7 +6,7 @@ public class CSharpNETStandardProjectFileWriter : IProjectFilePackageWriter
     private string _projectFullPath;
 
     #region IProjectFilePackageWriter implementations
-    public void Initialize(ProjectTarget targetFramework, ProjectMetadata projectMetadata)
+    public void Initialize(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata)
     {
         _projectMetadata = projectMetadata;
 

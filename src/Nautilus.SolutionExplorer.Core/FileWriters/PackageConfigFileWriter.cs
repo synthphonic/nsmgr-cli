@@ -3,7 +3,7 @@
 public class PackageConfigFileWriter : IProjectFilePackageWriter
 {
     #region IProjectFilePackageWriter implementation
-    public void Initialize(ProjectTarget targetFramework, ProjectMetadata projectMetadata)
+    public void Initialize(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata)
     {
         // SHAH: TO IMPLEMENT IProjectFilePackageWriter interface
     }

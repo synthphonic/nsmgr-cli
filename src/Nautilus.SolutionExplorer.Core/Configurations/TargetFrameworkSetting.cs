@@ -2,18 +2,18 @@
 
 public static class TargetFrameworkSetting
 {
-    private static Dictionary<string, ProjectTarget> _versions;
+    private static Dictionary<string, ProjectTargetFramework> _versions;
 
     static TargetFrameworkSetting()
     {
-        _versions = new Dictionary<string, ProjectTarget>
+        _versions = new Dictionary<string, ProjectTargetFramework>
         {
-            ["netstandard2.0"] = ProjectTarget.NETStandard20,
-            ["netcoreapp2.2"] = ProjectTarget.NETCoreApp22,
-            ["netcoreapp2.1"] = ProjectTarget.NETCoreApp21,
-            ["netcoreapp2.0"] = ProjectTarget.NETCoreApp20,
-            ["net5.0"] = ProjectTarget.NET5,
-            ["net6.0"] = ProjectTarget.NET6,
+            ["netstandard2.0"] = ProjectTargetFramework.NETStandard20,
+            ["netcoreapp2.2"] = ProjectTargetFramework.NETCoreApp22,
+            ["netcoreapp2.1"] = ProjectTargetFramework.NETCoreApp21,
+            ["netcoreapp2.0"] = ProjectTargetFramework.NETCoreApp20,
+            ["net5.0"] = ProjectTargetFramework.NET5,
+            ["net6.0"] = ProjectTargetFramework.NET6,
         };
     }
 
@@ -26,7 +26,7 @@ public static class TargetFrameworkSetting
     /// </summary>
     /// <returns>The get.</returns>
     /// <param name="stringValue">Inner text.</param>
-    internal static ProjectTarget Get(string stringValue)
+    internal static ProjectTargetFramework Get(string stringValue)
     {
         try
         {
@@ -34,7 +34,7 @@ public static class TargetFrameworkSetting
         }
         catch (ArgumentNullException)
         {
-            return ProjectTarget.Unknown;
+            return ProjectTargetFramework.Unknown;
         }
 
         return _versions[stringValue];

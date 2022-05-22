@@ -1,7 +1,7 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.Configurations.Enums;
 
 // TODO: TO REFACTOR THIS AND SolutionProjectElement
-public enum ProjectTarget
+public enum ProjectTargetFramework
 {
     Unknown = -1,
     NETStandard20,

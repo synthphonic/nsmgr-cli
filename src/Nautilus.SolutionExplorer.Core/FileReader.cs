@@ -6,9 +6,9 @@ namespace Nautilus.SolutionExplorer.Core;
 
 public class FileReader
 {
-    private readonly Dictionary<ProjectTarget, IProjectFilePackageReader> _fileReaders;
+    private readonly Dictionary<ProjectTargetFramework, IProjectFilePackageReader> _fileReaders;
     private readonly ProjectMetadata _metadata;
-    private readonly ProjectTarget _targetFramework;
+    private readonly ProjectTargetFramework _targetFramework;
     private readonly bool _packagesConfigFileExist;
 
     public FileReader(Project project) : this()
@@ -18,7 +18,7 @@ public class FileReader
         _packagesConfigFileExist = project.PackagesConfigFileExist;
     }
 
-    internal FileReader(ProjectTarget targetFramework, ProjectMetadata projectMetadata) : this()
+    internal FileReader(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata) : this()
     {
         _metadata = projectMetadata;
         _targetFramework = targetFramework;
@@ -26,23 +26,23 @@ public class FileReader
 
     private FileReader()
     {
-        _fileReaders = new Dictionary<ProjectTarget, IProjectFilePackageReader>
+        _fileReaders = new Dictionary<ProjectTargetFramework, IProjectFilePackageReader>
         {
             //[SolutionProjectElement.PackageConfig] = new PackageConfigFileReader(),
             //[SolutionProjectElement.iOS] = new CSharpNativeProjectFileReader(),
             //[SolutionProjectElement.Android] = new CSharpNativeProjectFileReader()
-            [ProjectTarget.NETFramework] = new CSharpNETFrameworkProjectFileReader(),
-            [ProjectTarget.NETFramework46] = new PackageConfigFileReader(),
-            [ProjectTarget.NETStandard20] = new CSharpProjectFileReader(),
-            [ProjectTarget.NETCoreApp20] = new CSharpProjectFileReader(),
-            [ProjectTarget.NETCoreApp21] = new CSharpProjectFileReader(),
-            [ProjectTarget.NETCoreApp22] = new CSharpProjectFileReader(),
-            [ProjectTarget.NET5] = new CSharpProjectFileReader(),
-            [ProjectTarget.NET6] = new CSharpProjectFileReader(),
-            [ProjectTarget.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
-            [ProjectTarget.NativeiOSBinding] = new CSharpNETFrameworkProjectFileReader(),
-            [ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileReader(),
-            [ProjectTarget.NativeUWP] = new CSharpNETFrameworkProjectFileReader()
+            [ProjectTargetFramework.NETFramework] = new CSharpNETFrameworkProjectFileReader(),
+            [ProjectTargetFramework.NETFramework46] = new PackageConfigFileReader(),
+            [ProjectTargetFramework.NETStandard20] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp20] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp21] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp22] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NET5] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NET6] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
+            [ProjectTargetFramework.NativeiOSBinding] = new CSharpNETFrameworkProjectFileReader(),
+            [ProjectTargetFramework.NativeAndroid] = new CSharpNETFrameworkProjectFileReader(),
+            [ProjectTargetFramework.NativeUWP] = new CSharpNETFrameworkProjectFileReader()
         };
     }
 
@@ -61,7 +61,7 @@ public class FileReader
 
             object returnedObject = null;
 
-            if (_targetFramework == ProjectTarget.NETFramework46)
+            if (_targetFramework == ProjectTargetFramework.NETFramework46)
             {
                 var projectFileName = _metadata.ProjectFullPath;
                 var packageConfigFile = Path.Combine(Path.GetDirectoryName(projectFileName), "packages.config");
@@ -69,7 +69,7 @@ public class FileReader
 
                 returnedObject = packageConfigExists
                     ? _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath)
-                    : _fileReaders[ProjectTarget.NETFramework].Read(_metadata.ProjectFullPath);
+                    : _fileReaders[ProjectTargetFramework.NETFramework].Read(_metadata.ProjectFullPath);
             }
             else
             {
@@ -111,7 +111,7 @@ public class FileReader
             IList<NugetPackageReference> packageReferences = null;
             NugetPackageReference found = null;
 
-            if (_targetFramework == ProjectTarget.NETFramework46)
+            if (_targetFramework == ProjectTargetFramework.NETFramework46)
             {
                 if (_packagesConfigFileExist)
                 {
@@ -122,7 +122,7 @@ public class FileReader
                     return !string.IsNullOrWhiteSpace(found.Version);
                 }
 
-                packageReferences = _fileReaders[ProjectTarget.NETFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+                packageReferences = _fileReaders[ProjectTargetFramework.NETFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
                 found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
                 version = found.Version;
 

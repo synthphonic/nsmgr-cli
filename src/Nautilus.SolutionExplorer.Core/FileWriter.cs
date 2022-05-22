@@ -2,20 +2,20 @@
 
 public class FileWriter
 {
-    private readonly Dictionary<ProjectTarget, IProjectFilePackageWriter> _fileWriters;
+    private readonly Dictionary<ProjectTargetFramework, IProjectFilePackageWriter> _fileWriters;
     private readonly Project _project;
 
     private FileWriter()
     {
-        _fileWriters = new Dictionary<ProjectTarget, IProjectFilePackageWriter>
+        _fileWriters = new Dictionary<ProjectTargetFramework, IProjectFilePackageWriter>
         {
-            [ProjectTarget.NETCoreApp22] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTarget.NETStandard20] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTarget.NativeAndroid] = new CSharpNETFrameworkProjectFileWriter(),
-            [ProjectTarget.NativeiOS] = new CSharpNETFrameworkProjectFileWriter(),
-            [ProjectTarget.NativeUWP] = new CSharpNETFrameworkProjectFileWriter(),
-            [ProjectTarget.NETFramework] = new CSharpNETFrameworkProjectFileWriter(),
-            [ProjectTarget.NETFramework46] = new PackageConfigFileWriter()
+            [ProjectTargetFramework.NETCoreApp22] = new CSharpNETStandardProjectFileWriter(),
+            [ProjectTargetFramework.NETStandard20] = new CSharpNETStandardProjectFileWriter(),
+            [ProjectTargetFramework.NativeAndroid] = new CSharpNETFrameworkProjectFileWriter(),
+            [ProjectTargetFramework.NativeiOS] = new CSharpNETFrameworkProjectFileWriter(),
+            [ProjectTargetFramework.NativeUWP] = new CSharpNETFrameworkProjectFileWriter(),
+            [ProjectTargetFramework.NETFramework] = new CSharpNETFrameworkProjectFileWriter(),
+            [ProjectTargetFramework.NETFramework46] = new PackageConfigFileWriter()
         };
     }
 
@@ -28,7 +28,7 @@ public class FileWriter
     {
         IProjectFilePackageWriter fileWriter = null;
 
-        if (_project.TargetFramework == ProjectTarget.NETFramework46)
+        if (_project.TargetFramework == ProjectTargetFramework.NETFramework46)
         {
             if (_project.PackagesConfigFileExist)
             {
@@ -36,7 +36,7 @@ public class FileWriter
             }
             else
             {
-                fileWriter = _fileWriters[ProjectTarget.NETFramework];
+                fileWriter = _fileWriters[ProjectTargetFramework.NETFramework];
             }
         }
         else

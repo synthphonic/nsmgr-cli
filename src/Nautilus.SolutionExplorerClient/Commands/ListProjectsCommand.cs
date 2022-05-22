@@ -109,7 +109,7 @@ internal class ListProjectsCommand : CommandBase
                 Colorful.Console.Write($"[{CliStringFormatter.Format5}]", Color.Chocolate, project.TargetFramework);
                 Colorful.Console.WriteLine();
 
-                if (project.TargetFramework == ProjectTarget.Unknown)
+                if (project.TargetFramework == ProjectTargetFramework.Unknown)
                 {
                     // Todo: do something here? 
                 }
@@ -124,7 +124,7 @@ internal class ListProjectsCommand : CommandBase
             {
                 Colorful.Console.Write(CliStringFormatter.Format45, Color.YellowGreen, $"{project.ProjectName}");
 
-                if (project.TargetFramework == ProjectTarget.Unknown)
+                if (project.TargetFramework == ProjectTargetFramework.Unknown)
                 {
                     Colorful.Console.Write($"[{CliStringFormatter.Format7}-", Color.Chocolate, project.TargetFramework);
                     Colorful.Console.WriteLine($"{CliStringFormatter.Format9}]", Color.Chocolate, project.ProjectType);

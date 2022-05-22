@@ -7,7 +7,7 @@ public class CSharpNETFrameworkProjectFileWriter : IProjectFilePackageWriter
     private const string XmlNameSpace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
     #region IProjectFilePackageWriter implementations
-    public void Initialize(ProjectTarget targetFramework, ProjectMetadata projectMetadata)
+    public void Initialize(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata)
     {
         _projectMetadata = projectMetadata;
 

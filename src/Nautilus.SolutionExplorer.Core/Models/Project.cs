@@ -26,7 +26,7 @@ public class Project
         }
         else if (Metadata.ProjectType == SolutionProjectElement.VirtualFolder)
         {
-            TargetFramework = ProjectTarget.Unknown;
+            TargetFramework = ProjectTargetFramework.Unknown;
         }
 
         ProjectType = Metadata.ProjectType;
@@ -52,7 +52,7 @@ public class Project
     /// Gets the target framework.
     /// </summary>
     /// <value>The target framework.</value>
-    public ProjectTarget TargetFramework { get; private set; }
+    public ProjectTargetFramework TargetFramework { get; private set; }
     /// <summary>
     /// Gets the packages.
     /// </summary>

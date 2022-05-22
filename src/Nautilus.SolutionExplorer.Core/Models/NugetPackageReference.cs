@@ -31,7 +31,7 @@ public class NugetPackageReferenceExtended : NugetPackageReference
 
     public string ProjectName { get; private set; }
 
-    public ProjectTarget ProjectTargetFramework { get; private set; }
+    public ProjectTargetFramework ProjectTargetFramework { get; private set; }
 
     public string PackageVersionName
     {

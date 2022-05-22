@@ -9,21 +9,21 @@ public class ProjectTypeManager
         _file = file;
     }
 
-    public ProjectTarget GetTargetFramework()
+    public ProjectTargetFramework GetTargetFramework()
     {
         var projectType = CheckForNativeProject();
 
-        if (projectType == ProjectTarget.Unknown)
+        if (projectType == ProjectTargetFramework.Unknown)
         {
             projectType = CheckForNETStandardProject();
         }
 
-        if (projectType == ProjectTarget.Unknown)
+        if (projectType == ProjectTargetFramework.Unknown)
         {
             projectType = CheckForNETFrameworkProject();
         }
 
-        if (projectType == ProjectTarget.Unknown)
+        if (projectType == ProjectTargetFramework.Unknown)
         {
             projectType = CheckForNET5orNET6Project();
         }
@@ -31,11 +31,11 @@ public class ProjectTypeManager
         return projectType;
     }
 
-    private ProjectTarget CheckForNET5orNET6Project()
+    private ProjectTargetFramework CheckForNET5orNET6Project()
     {
         if (!File.Exists(_file))
         {
-            return ProjectTarget.Unknown;
+            return ProjectTargetFramework.Unknown;
         }
 
         var xmlContent = string.Empty;
@@ -77,14 +77,14 @@ public class ProjectTypeManager
             }
         }
 
-        return ProjectTarget.Unknown;
+        return ProjectTargetFramework.Unknown;
     }
 
-    private ProjectTarget CheckForNETFrameworkProject()
+    private ProjectTargetFramework CheckForNETFrameworkProject()
     {
         if (!File.Exists(_file))
         {
-            return ProjectTarget.Unknown;
+            return ProjectTargetFramework.Unknown;
         }
 
         var xmlContent = string.Empty;
@@ -104,30 +104,30 @@ public class ProjectTypeManager
 
         var xmlNode = xmlDoc.SelectSingleNode("//x:TargetFrameworkVersion", xmlNsManager);
         if (xmlNode == null)
-            return ProjectTarget.Unknown;
+            return ProjectTargetFramework.Unknown;
 
         var frameworkVersion = xmlNode.InnerText;
 
         if (!string.IsNullOrWhiteSpace(frameworkVersion))
         {
             if (frameworkVersion.Contains("4.5"))
-                return ProjectTarget.NETFramework45;
+                return ProjectTargetFramework.NETFramework45;
             if (frameworkVersion.Contains("4.6"))
-                return ProjectTarget.NETFramework46;
+                return ProjectTargetFramework.NETFramework46;
             if (frameworkVersion.Contains("4.7"))
-                return ProjectTarget.NETFramework47;
+                return ProjectTargetFramework.NETFramework47;
             if (frameworkVersion.Contains("4.8"))
-                return ProjectTarget.NETFramework48;
+                return ProjectTargetFramework.NETFramework48;
         }
 
-        return ProjectTarget.Unknown;
+        return ProjectTargetFramework.Unknown;
     }
 
-    private ProjectTarget CheckForNativeProject()
+    private ProjectTargetFramework CheckForNativeProject()
     {
         if (!File.Exists(_file))
         {
-            return ProjectTarget.Unknown;
+            return ProjectTargetFramework.Unknown;
         }
 
         var xmlContent = string.Empty;
@@ -144,32 +144,32 @@ public class ProjectTypeManager
 
         var foundTaggedElements = xmlDoc.DocumentElement.GetElementsByTagName("ProjectTypeGuids");
         if (foundTaggedElements.Count == 0)
-            return ProjectTarget.Unknown;
+            return ProjectTargetFramework.Unknown;
 
         var iosProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.iOSTypeGuid);
         if (iosProject)
-            return ProjectTarget.NativeiOS;
+            return ProjectTargetFramework.NativeiOS;
 
         var iosNativeProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.iOSBindingTypeGuid);
         if (iosNativeProject)
-            return ProjectTarget.NativeiOSBinding;
+            return ProjectTargetFramework.NativeiOSBinding;
 
         var androidProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.AndroidTypeGuid);
         if (androidProject)
-            return ProjectTarget.NativeAndroid;
+            return ProjectTargetFramework.NativeAndroid;
 
         var uwpProject = foundTaggedElements[0].InnerText.Contains(VisualStudioProjectSetting.UWPTypeGuid);
         if (uwpProject)
-            return ProjectTarget.NativeUWP;
+            return ProjectTargetFramework.NativeUWP;
 
-        return ProjectTarget.Unknown;
+        return ProjectTargetFramework.Unknown;
     }
 
-    private ProjectTarget CheckForNETStandardProject()
+    private ProjectTargetFramework CheckForNETStandardProject()
     {
         if (!File.Exists(_file))
         {
-            return ProjectTarget.Unknown;
+            return ProjectTargetFramework.Unknown;
         }
 
         var xmlContent = string.Empty;
@@ -202,6 +202,6 @@ public class ProjectTypeManager
             }
         }
 
-        return ProjectTarget.Unknown;
+        return ProjectTargetFramework.Unknown;
     }
 }
