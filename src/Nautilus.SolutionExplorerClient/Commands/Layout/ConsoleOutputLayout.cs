@@ -15,8 +15,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
-        Console.WriteLine("");
+        ConsoleMessages.DisplayProgramHasTerminatedMessage();
     }
 
     internal static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, bool debugMode = false)
@@ -32,8 +31,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
-        Console.WriteLine("");
+        ConsoleMessages.DisplayProgramHasTerminatedMessage();
     }
 
     internal static void DisplayGeneralExceptionMessageFormat(Exception ex, bool debugMode = false)
@@ -49,8 +47,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
-        Console.WriteLine("");
+        ConsoleMessages.DisplayProgramHasTerminatedMessage();
     }
 
     internal static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
@@ -65,8 +62,7 @@ internal static class ConsoleOutputLayout
             Console.WriteLine("");
         }
 
-        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
-        Console.WriteLine("");
+        ConsoleMessages.DisplayProgramHasTerminatedMessage();
     }
 
     internal static void SolutionFileExceptionMessageFormat(SolutionFileException solutionFileEx)
@@ -74,8 +70,8 @@ internal static class ConsoleOutputLayout
         Console.WriteLine("");
         Colorful.Console.WriteLine(solutionFileEx.Message, Color.Red);
         Console.WriteLine("");
-        Colorful.Console.WriteLine(ConsoleMessages.ProgramTerminated, Color.Red);
-        Console.WriteLine("");
+
+        ConsoleMessages.DisplayProgramHasTerminatedMessage();
     }
 
     internal static void DisplayFinishingMessage(Stopwatch sw)

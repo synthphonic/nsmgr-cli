@@ -21,3 +21,5 @@ global using Nautilus.SolutionExplorer.Core.TestData;
 global using Nautilus.SolutionExplorerClient.Commands;
 global using Nautilus.SolutionExplorerClient.Commands.Layout;
 global using Nautilus.SolutionExplorerClient.Constants;
+global using Nautilus.SolutionExplorerClient.Core;
+global using Nautilus.SolutionExplorer.Core.Logging;

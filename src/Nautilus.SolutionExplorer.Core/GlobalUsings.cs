@@ -26,3 +26,6 @@ global using Nautilus.SolutionExplorer.Core.Models.Http;
 global using Nautilus.SolutionExplorer.Core.TestData;
 global using Nautilus.SolutionExplorer.Core.Utils;
 global using Newtonsoft.Json;
+global using Serilog;
+global using Serilog.Core;
+global using static System.Environment;

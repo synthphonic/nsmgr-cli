@@ -1,7 +1,7 @@
-﻿namespace Nautilus.SolutionExplorer.Core.Abstraction;
+﻿namespace Nautilus.SolutionExplorerClient.Core;
 
-public abstract class VerbBase
+public abstract class CommandBase
 {
     [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
-    public virtual bool Debug { get; set; }
+    public bool Debug { get; set; }
 }

@@ -1,5 +1,9 @@
-﻿global using System.Linq;
+﻿global using System;
+global using System.IO;
 global using System.Threading.Tasks;
 global using Nautilus.SolutionExplorer.Core.Components.Http;
+global using Nautilus.SolutionExplorer.Core.Exceptions;
 global using Nautilus.SolutionExplorer.Core.Extensions;
+global using Nautilus.SolutionExplorer.Core.Logging;
+global using Nautilus.SolutionExplorer.Test.Helpers;
 global using NUnit.Framework;
