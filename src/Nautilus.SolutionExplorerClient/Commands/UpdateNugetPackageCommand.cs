@@ -73,6 +73,7 @@ public class UpdateNugetPackageCommand : CommandBase
             await UpdatePerProject(solution);
         }
     }
+
     private void SetReturnResults(bool returnResults)
     {
         _returnResults = returnResults;
@@ -191,5 +192,73 @@ public class UpdateNugetPackageCommand : CommandBase
             throw;
         }
 
+    }
+
+    internal static void Execute(UpdateNugetPackageCommand command)
+    {
+        bool exceptionRaised = false;
+        bool debugMode = command.Debug;
+
+        var sw = new Stopwatch();
+        sw.Start();
+
+        try
+        {
+            command.Run().Wait();
+        }
+        catch (ProjectNotFoundException prjNotFoundEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayProjectNotFoundMessageFormat(prjNotFoundEx, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (NugetPackageNotFoundException nugetPackageNotFoundEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (CLIException cliEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (SolutionFileException solutionFileEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (Exception ex)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        finally
+        {
+            if (sw.IsRunning)
+            {
+                sw.Stop();
+            }
+
+            ConsoleMessages.DisplayExecutionTimeMessage(sw);
+
+            if (!exceptionRaised)
+            {
+                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
+            }
+        }
     }
 }

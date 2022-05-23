@@ -101,4 +101,56 @@ class FindPackageCommand : CommandBase
     }
 
     public IList<NugetPackageReferenceExtended> Results { get; private set; }
+
+    internal static void Execute(FindPackageCommand command)
+    {
+        bool debugMode = command.Debug;
+        bool exceptionRaised = false;
+
+        var sw = new Stopwatch();
+        sw.Start();
+
+        try
+        {
+            command.Run().Wait();
+        }
+        catch (CLIException cliEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (SolutionFileException solutionFileEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (Exception ex)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        finally
+        {
+            if (sw.IsRunning)
+            {
+                sw.Stop();
+            }
+
+            ConsoleMessages.DisplayExecutionTimeMessage(sw);
+
+            if (!exceptionRaised)
+            {
+                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
+            }
+        }
+    }
 }

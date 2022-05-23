@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.SolutionExplorer.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.SolutionExplorer.Core", "Nautilus.SolutionExplorer.Core\Nautilus.SolutionExplorer.Core.csproj", "{CBD6E648-DFD7-44DF-B546-59E2D662E84B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cli-playground", "cli-playground", "{CFC6E99E-2187-44CD-96E9-A95A342EFAC9}"
+	ProjectSection(SolutionItems) = preProject
+		command_for_testing.txt = command_for_testing.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

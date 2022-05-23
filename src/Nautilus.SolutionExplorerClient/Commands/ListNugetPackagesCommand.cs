@@ -154,4 +154,56 @@ class ListNugetPackagesCommand : CommandBase
 
         return result;
     }
+
+    internal static void Execute(ListNugetPackagesCommand command)
+    {
+        bool debugMode = command.Debug;
+        bool exceptionRaised = true;
+
+        var sw = new Stopwatch();
+        sw.Start();
+
+        try
+        {
+            command.Run().Wait();
+        }
+        catch (CLIException cliEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (SolutionFileException solutionFileEx)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (Exception ex)
+        {
+            sw.Stop();
+
+            exceptionRaised = true;
+            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, debugMode);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        finally
+        {
+            if (sw.IsRunning)
+            {
+                sw.Stop();
+            }
+
+            ConsoleMessages.DisplayExecutionTimeMessage(sw);
+
+            if (!exceptionRaised)
+            {
+                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
+            }
+        }
+    }
 }
