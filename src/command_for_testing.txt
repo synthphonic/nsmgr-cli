@@ -1,0 +1,11 @@
+﻿dotnet run list-projects --p -s ~/projects/synthphonic/nautilus-mobile-sdk/2.3/src/NautilusSDK_v2.3.sln -u -n
+dotnet run list-projects --p -s ~/projects/synthphonic/structify/src/StructifySolution.sln  -u -n
+dotnet run list-projects --p -s ~/projects/synthphonic/myfinance-silverlight-bitbckt/trunk/MyFinanceSolution.sln -u -n
+
+
+./nsmgr list-projects -s ~/projects/synthphonic/structify/src/StructifySolution.sln 
+./nsmgr list-projects -s ~/projects/synthphonic/myfinance-silverlight-bitbckt/trunk/MyFinanceSolution.sln -p 
+
+
+list-projects -s ../../../../../../myfinance-silverlight-bitbckt/trunk/MyFinanceSolution.sln -p 
+list-projects -s ../../../../../../nautilus-starterkit/src/nautilus-starterkit.sln -p
