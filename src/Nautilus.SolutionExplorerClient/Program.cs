@@ -2,7 +2,6 @@
 
 class Program
 {
-    private const string LogFileName = "nsmgr-cli.log";
     internal const string CliName = $"nsmgr";
 
     static void Main(string[] args)
