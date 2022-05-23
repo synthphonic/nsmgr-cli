@@ -32,11 +32,18 @@ public class FileReader
             //[SolutionProjectElement.iOS] = new CSharpNativeProjectFileReader(),
             //[SolutionProjectElement.Android] = new CSharpNativeProjectFileReader()
             [ProjectTargetFramework.NETFramework] = new CSharpNETFrameworkProjectFileReader(),
+            [ProjectTargetFramework.NETFramework35] = new PackageConfigFileReader(),
+            [ProjectTargetFramework.NETFramework40] = new PackageConfigFileReader(),
+            [ProjectTargetFramework.NETFramework45] = new PackageConfigFileReader(),
             [ProjectTargetFramework.NETFramework46] = new PackageConfigFileReader(),
+            [ProjectTargetFramework.NETFramework47] = new PackageConfigFileReader(),
+            [ProjectTargetFramework.NETFramework48] = new PackageConfigFileReader(),
             [ProjectTargetFramework.NETStandard20] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NETStandard21] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NETCoreApp20] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NETCoreApp21] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NETCoreApp22] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp31] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NET5] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NET6] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
@@ -61,7 +68,12 @@ public class FileReader
 
             object returnedObject = null;
 
-            if (_targetFramework == ProjectTargetFramework.NETFramework46)
+            if (_targetFramework == ProjectTargetFramework.NETFramework35 ||
+                _targetFramework == ProjectTargetFramework.NETFramework40 ||
+                _targetFramework == ProjectTargetFramework.NETFramework45 ||
+                _targetFramework == ProjectTargetFramework.NETFramework46 ||
+                _targetFramework == ProjectTargetFramework.NETFramework47 ||
+                _targetFramework == ProjectTargetFramework.NETFramework48)
             {
                 var projectFileName = _metadata.ProjectFullPath;
                 var packageConfigFile = Path.Combine(Path.GetDirectoryName(projectFileName), "packages.config");
@@ -111,7 +123,12 @@ public class FileReader
             IList<NugetPackageReference> packageReferences = null;
             NugetPackageReference found = null;
 
-            if (_targetFramework == ProjectTargetFramework.NETFramework46)
+            if (_targetFramework == ProjectTargetFramework.NETFramework35 ||
+                _targetFramework == ProjectTargetFramework.NETFramework40 ||
+                _targetFramework == ProjectTargetFramework.NETFramework45 ||
+                _targetFramework == ProjectTargetFramework.NETFramework46 ||
+                _targetFramework == ProjectTargetFramework.NETFramework47 ||
+                _targetFramework == ProjectTargetFramework.NETFramework48)
             {
                 if (_packagesConfigFileExist)
                 {

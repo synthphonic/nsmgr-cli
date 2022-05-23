@@ -5,10 +5,14 @@ public enum ProjectTargetFramework
 {
     Unknown = -1,
     NETStandard20,
+    NETStandard21,
     NETCoreApp20,
     NETCoreApp21,
     NETCoreApp22,
+    NETCoreApp31,
     NETFramework,
+    NETFramework35,
+    NETFramework40,
     NETFramework45,
     NETFramework46,
     NETFramework47,
@@ -18,5 +22,5 @@ public enum ProjectTargetFramework
     NativeiOS,
     NativeiOSBinding,
     NativeAndroid,
-    NativeUWP,
+    NativeUWP    
 }

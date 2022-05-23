@@ -9,9 +9,11 @@ public static class TargetFrameworkSetting
         _versions = new Dictionary<string, ProjectTargetFramework>
         {
             ["netstandard2.0"] = ProjectTargetFramework.NETStandard20,
-            ["netcoreapp2.2"] = ProjectTargetFramework.NETCoreApp22,
-            ["netcoreapp2.1"] = ProjectTargetFramework.NETCoreApp21,
+            ["netstandard2.1"] = ProjectTargetFramework.NETStandard21,
             ["netcoreapp2.0"] = ProjectTargetFramework.NETCoreApp20,
+            ["netcoreapp2.1"] = ProjectTargetFramework.NETCoreApp21,
+            ["netcoreapp2.2"] = ProjectTargetFramework.NETCoreApp22,
+            ["netcoreapp3.1"] = ProjectTargetFramework.NETCoreApp31,
             ["net5.0"] = ProjectTargetFramework.NET5,
             ["net6.0"] = ProjectTargetFramework.NET6,
         };

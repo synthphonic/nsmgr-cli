@@ -110,6 +110,10 @@ public class ProjectTypeManager
 
         if (!string.IsNullOrWhiteSpace(frameworkVersion))
         {
+            if (frameworkVersion.Contains("3.5"))
+                return ProjectTargetFramework.NETFramework35;
+            if (frameworkVersion.Contains("4.0"))
+                return ProjectTargetFramework.NETFramework40;
             if (frameworkVersion.Contains("4.5"))
                 return ProjectTargetFramework.NETFramework45;
             if (frameworkVersion.Contains("4.6"))
