@@ -5,6 +5,7 @@
 
     <IsPackable>false</IsPackable>
     <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>                
+    <ReleaseVersion>2.1.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
