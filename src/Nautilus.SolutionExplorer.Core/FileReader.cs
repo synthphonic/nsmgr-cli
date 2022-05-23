@@ -32,6 +32,7 @@ public class FileReader
             //[SolutionProjectElement.iOS] = new CSharpNativeProjectFileReader(),
             //[SolutionProjectElement.Android] = new CSharpNativeProjectFileReader()
             [ProjectTargetFramework.NETFramework] = new CSharpNETFrameworkProjectFileReader(),
+            [ProjectTargetFramework.NETFramework20] = new PackageConfigFileReader(),
             [ProjectTargetFramework.NETFramework35] = new PackageConfigFileReader(),
             [ProjectTargetFramework.NETFramework40] = new PackageConfigFileReader(),
             [ProjectTargetFramework.NETFramework45] = new PackageConfigFileReader(),
@@ -43,6 +44,7 @@ public class FileReader
             [ProjectTargetFramework.NETCoreApp20] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NETCoreApp21] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NETCoreApp22] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp30] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NETCoreApp31] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NET5] = new CSharpProjectFileReader(),
             [ProjectTargetFramework.NET6] = new CSharpProjectFileReader(),
@@ -68,7 +70,8 @@ public class FileReader
 
             object returnedObject = null;
 
-            if (_targetFramework == ProjectTargetFramework.NETFramework35 ||
+            if (_targetFramework == ProjectTargetFramework.NETFramework20 ||
+                _targetFramework == ProjectTargetFramework.NETFramework35 ||
                 _targetFramework == ProjectTargetFramework.NETFramework40 ||
                 _targetFramework == ProjectTargetFramework.NETFramework45 ||
                 _targetFramework == ProjectTargetFramework.NETFramework46 ||
@@ -123,7 +126,8 @@ public class FileReader
             IList<NugetPackageReference> packageReferences = null;
             NugetPackageReference found = null;
 
-            if (_targetFramework == ProjectTargetFramework.NETFramework35 ||
+            if (_targetFramework == ProjectTargetFramework.NETFramework20 ||
+                _targetFramework == ProjectTargetFramework.NETFramework35 ||
                 _targetFramework == ProjectTargetFramework.NETFramework40 ||
                 _targetFramework == ProjectTargetFramework.NETFramework45 ||
                 _targetFramework == ProjectTargetFramework.NETFramework46 ||

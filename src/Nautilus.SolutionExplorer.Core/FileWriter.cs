@@ -12,6 +12,7 @@ public class FileWriter
             [ProjectTargetFramework.NETCoreApp20] = new CSharpNETStandardProjectFileWriter(),
             [ProjectTargetFramework.NETCoreApp21] = new CSharpNETStandardProjectFileWriter(),
             [ProjectTargetFramework.NETCoreApp22] = new CSharpNETStandardProjectFileWriter(),
+            [ProjectTargetFramework.NETCoreApp30] = new CSharpNETStandardProjectFileWriter(),
             [ProjectTargetFramework.NETCoreApp31] = new CSharpNETStandardProjectFileWriter(),
             [ProjectTargetFramework.NETStandard20] = new CSharpNETStandardProjectFileWriter(),
             [ProjectTargetFramework.NETStandard21] = new CSharpNETStandardProjectFileWriter(),
@@ -32,7 +33,8 @@ public class FileWriter
     {
         IProjectFilePackageWriter fileWriter = null;
 
-        if (_project.TargetFramework == ProjectTargetFramework.NETFramework35 ||
+        if (_project.TargetFramework == ProjectTargetFramework.NETFramework20 ||
+            _project.TargetFramework == ProjectTargetFramework.NETFramework35 ||
             _project.TargetFramework == ProjectTargetFramework.NETFramework40 ||
             _project.TargetFramework == ProjectTargetFramework.NETFramework45 ||
             _project.TargetFramework == ProjectTargetFramework.NETFramework46 ||

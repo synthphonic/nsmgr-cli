@@ -13,6 +13,7 @@ public static class TargetFrameworkSetting
             ["netcoreapp2.0"] = ProjectTargetFramework.NETCoreApp20,
             ["netcoreapp2.1"] = ProjectTargetFramework.NETCoreApp21,
             ["netcoreapp2.2"] = ProjectTargetFramework.NETCoreApp22,
+            ["netcoreapp3.0"] = ProjectTargetFramework.NETCoreApp30,
             ["netcoreapp3.1"] = ProjectTargetFramework.NETCoreApp31,
             ["net5.0"] = ProjectTargetFramework.NET5,
             ["net6.0"] = ProjectTargetFramework.NET6,
