@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.FileReaders;
 
-public class CSharpProjectFileReader : IProjectFilePackageReader
+public class CSharpNETCoreProjectFileReader : IProjectFilePackageReader
 {
     private string _fileName;
 
