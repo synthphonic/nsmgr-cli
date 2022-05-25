@@ -1,45 +1,46 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.Helpers;
 
-public class ProjectTypeManager
+public class ProjectTargetFrameworkManager
 {
-    private string _file;
+    private string _projectFilePath;
 
-    public ProjectTypeManager(string file)
+    public ProjectTargetFrameworkManager(string projectFilePath)
     {
-        _file = file;
+        _projectFilePath = projectFilePath;
     }
 
     public ProjectTargetFramework GetTargetFramework()
-    {
-        var projectType = CheckForNativeProject();
+    {        
+        var projectTargetFramework = CheckForNativeProject();
 
-        if (projectType == ProjectTargetFramework.Unknown)
+        if (projectTargetFramework == ProjectTargetFramework.Unknown)
         {
-            projectType = CheckForNETStandardProject();
+            projectTargetFramework = CheckForNETStandardProject();
         }
 
-        if (projectType == ProjectTargetFramework.Unknown)
+        if (projectTargetFramework == ProjectTargetFramework.Unknown)
         {
-            projectType = CheckForNETFrameworkProject();
+            projectTargetFramework = CheckForNETFrameworkProject();
         }
 
-        if (projectType == ProjectTargetFramework.Unknown)
+        if (projectTargetFramework == ProjectTargetFramework.Unknown)
         {
-            projectType = CheckForNET5orNET6Project();
+            projectTargetFramework = CheckForNET5orNET6Project();
         }
 
-        return projectType;
+        return projectTargetFramework;
     }
 
     private ProjectTargetFramework CheckForNET5orNET6Project()
     {
-        if (!File.Exists(_file))
+        if (!File.Exists(_projectFilePath))
         {
             return ProjectTargetFramework.Unknown;
         }
 
+        // TODO: replace this code with FileUtil.ReadFileContent
         var xmlContent = string.Empty;
-        using (var fs = File.OpenRead(_file))
+        using (var fs = File.OpenRead(_projectFilePath))
         {
             using (var sr = new StreamReader(fs))
             {
@@ -82,13 +83,13 @@ public class ProjectTypeManager
 
     private ProjectTargetFramework CheckForNETFrameworkProject()
     {
-        if (!File.Exists(_file))
+        if (!File.Exists(_projectFilePath))
         {
             return ProjectTargetFramework.Unknown;
         }
 
         var xmlContent = string.Empty;
-        using (var fs = File.OpenRead(_file))
+        using (var fs = File.OpenRead(_projectFilePath))
         {
             using (var sr = new StreamReader(fs))
             {
@@ -131,13 +132,13 @@ public class ProjectTypeManager
 
     private ProjectTargetFramework CheckForNativeProject()
     {
-        if (!File.Exists(_file))
+        if (!File.Exists(_projectFilePath))
         {
             return ProjectTargetFramework.Unknown;
         }
 
         var xmlContent = string.Empty;
-        using (var fs = File.OpenRead(_file))
+        using (var fs = File.OpenRead(_projectFilePath))
         {
             using (var sr = new StreamReader(fs))
             {
@@ -173,13 +174,13 @@ public class ProjectTypeManager
 
     private ProjectTargetFramework CheckForNETStandardProject()
     {
-        if (!File.Exists(_file))
+        if (!File.Exists(_projectFilePath))
         {
             return ProjectTargetFramework.Unknown;
         }
 
         var xmlContent = string.Empty;
-        using (var fs = File.OpenRead(_file))
+        using (var fs = File.OpenRead(_projectFilePath))
         {
             using (var sr = new StreamReader(fs))
             {
