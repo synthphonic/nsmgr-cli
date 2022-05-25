@@ -16,7 +16,7 @@ public class Project
 
         if (Metadata.ProjectType == SolutionProjectElement.CSharpProject)
         {
-            var projectTypeManager = new ProjectTypeManager(Metadata.ProjectFullPath);
+            var projectTypeManager = new ProjectTargetFrameworkManager(Metadata.ProjectFullPath);
             TargetFramework = projectTypeManager.GetTargetFramework();
             ProjectType = Metadata.ProjectType;
 
