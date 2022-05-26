@@ -1,10 +1,10 @@
-﻿namespace Nautilus.SolutionExplorer.Core.Helpers;
+﻿namespace Nautilus.SolutionExplorer.Core.Utils;
 
-public class ProjectTargetFrameworkManager
+public class ProjectTargetFrameworkExtractor
 {
     private string _projectFilePath;
 
-    public ProjectTargetFrameworkManager(string projectFilePath)
+    public ProjectTargetFrameworkExtractor(string projectFilePath)
     {
         _projectFilePath = projectFilePath;
     }
