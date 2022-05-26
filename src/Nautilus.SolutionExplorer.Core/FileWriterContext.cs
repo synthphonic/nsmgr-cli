@@ -1,21 +1,24 @@
 ﻿namespace Nautilus.SolutionExplorer.Core;
 
-public class FileWriter
+public class FileWriterContext
 {
-    private readonly Dictionary<ProjectTargetFramework, IProjectFilePackageWriter> _fileWriters;
+    private readonly Dictionary<ProjectTargetFramework, IProjectFileWriter> _fileWriters;
     private readonly Project _project;
 
-    private FileWriter()
+    private FileWriterContext()
     {
-        _fileWriters = new Dictionary<ProjectTargetFramework, IProjectFilePackageWriter>
+        _fileWriters = new Dictionary<ProjectTargetFramework, IProjectFileWriter>
         {
-            [ProjectTargetFramework.NETCoreApp20] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTargetFramework.NETCoreApp21] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTargetFramework.NETCoreApp22] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTargetFramework.NETCoreApp30] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTargetFramework.NETCoreApp31] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTargetFramework.NETStandard20] = new CSharpNETStandardProjectFileWriter(),
-            [ProjectTargetFramework.NETStandard21] = new CSharpNETStandardProjectFileWriter(),
+            [ProjectTargetFramework.NETCoreApp20] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NETCoreApp21] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NETCoreApp22] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NETCoreApp30] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NETCoreApp31] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NETStandard20] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NETStandard21] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NET5] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NET6] = new CSharpNETCoreProjectFileWriter(),
+            [ProjectTargetFramework.NETStandard21] = new CSharpNETCoreProjectFileWriter(),
             [ProjectTargetFramework.NativeAndroid] = new CSharpNETFrameworkProjectFileWriter(),
             [ProjectTargetFramework.NativeiOS] = new CSharpNETFrameworkProjectFileWriter(),
             [ProjectTargetFramework.NativeUWP] = new CSharpNETFrameworkProjectFileWriter(),
@@ -24,14 +27,14 @@ public class FileWriter
         };
     }
 
-    public FileWriter(Project project) : this()
+    public FileWriterContext(Project project) : this()
     {
         _project = project;
     }
 
     public bool UpdateNugetPackage(string packageName, string version)
     {
-        IProjectFilePackageWriter fileWriter = null;
+        IProjectFileWriter fileWriter = null;
 
         if (_project.TargetFramework == ProjectTargetFramework.NETFramework20 ||
             _project.TargetFramework == ProjectTargetFramework.NETFramework35 ||
@@ -55,9 +58,16 @@ public class FileWriter
             fileWriter = _fileWriters[_project.TargetFramework];
         }
 
-        fileWriter.Initialize(_project.TargetFramework, _project.Metadata);
+        fileWriter.Initialize(_project.Metadata);
         fileWriter.UpdatePackageReference(packageName, version);
 
         return true;
+    }
+
+    public void UpdateElement(string elementName, string value)
+    {
+        var fileWriter = _fileWriters[_project.TargetFramework];
+        fileWriter.Initialize(_project.Metadata);
+        fileWriter.AddOrUpdateElement(elementName, value);
     }
 }
