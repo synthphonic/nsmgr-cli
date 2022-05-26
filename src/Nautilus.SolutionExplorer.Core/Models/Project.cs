@@ -5,7 +5,26 @@ public class Project
     public Project(ProjectMetadata metadata)
     {
         Metadata = metadata;
+    }
 
+    public void Update(string elementName, string value)
+    {
+        var fileWriter = new FileWriterContext(this);
+        fileWriter.UpdateElement(elementName, value);
+    }
+
+    public void Restore()
+    {
+        RestoreFile.Execute(Metadata.ProjectFullPath);
+    }
+
+    public void Backup()
+    {
+        BackupFile.Execute(Metadata.ProjectFullPath);
+    }
+
+    public void Read()
+    {
         CheckPackagesConfigFileExistence();
 
         if (TestDataHelper.UseTestData)
@@ -16,13 +35,13 @@ public class Project
 
         if (Metadata.ProjectType == SolutionProjectElement.CSharpProject)
         {
-            var projectTypeManager = new ProjectTargetFrameworkManager(Metadata.ProjectFullPath);
+            var projectTypeManager = new ProjectTargetFrameworkExtractor(Metadata.ProjectFullPath);
             TargetFramework = projectTypeManager.GetTargetFramework();
             ProjectType = Metadata.ProjectType;
 
-            var fileFinder = new FileReader(TargetFramework, Metadata);
-            var fileContentObject = fileFinder.ReadFile();
-            Packages = fileContentObject as IEnumerable<NugetPackageReference>;
+            var fileReader = new FileReaderContext(TargetFramework, Metadata);
+            Packages = fileReader.ReadNugetPackages();
+            Version = fileReader.ReadVersion();
         }
         else if (Metadata.ProjectType == SolutionProjectElement.VirtualFolder)
         {
@@ -63,6 +82,7 @@ public class Project
     /// </summary>
     /// <value>The type of the project.</value>
     public SolutionProjectElement ProjectType { get; private set; }
+
     /// <summary>
     /// Gets the metadata.
     /// </summary>
@@ -73,4 +93,9 @@ public class Project
     /// </summary>
     /// <value><c>true</c> if packages config file exists; otherwise, <c>false</c>.</value>
     public bool PackagesConfigFileExist { get; private set; }
+
+    /// <summary>
+    /// The project version. Element: "Version"
+    /// </summary>
+    public string Version { get; private set; }
 }
