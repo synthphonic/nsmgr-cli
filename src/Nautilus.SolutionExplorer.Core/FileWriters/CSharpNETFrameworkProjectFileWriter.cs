@@ -1,13 +1,13 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.FileWriters;
 
-public class CSharpNETFrameworkProjectFileWriter : IProjectFilePackageWriter
+public class CSharpNETFrameworkProjectFileWriter : IProjectFileWriter
 {
     private ProjectMetadata _projectMetadata;
     private string _projectFullPath;
     private const string XmlNameSpace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
     #region IProjectFilePackageWriter implementations
-    public void Initialize(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata)
+    public void Initialize(ProjectMetadata projectMetadata)
     {
         _projectMetadata = projectMetadata;
 
@@ -47,6 +47,11 @@ public class CSharpNETFrameworkProjectFileWriter : IProjectFilePackageWriter
 
         // save edited content to original file
         xmlDoc.Save(_projectFullPath);
+    }
+
+    public void AddOrUpdateElement(string elementName, string value)
+    {
+        throw new NotImplementedException();
     }
     #endregion
 }

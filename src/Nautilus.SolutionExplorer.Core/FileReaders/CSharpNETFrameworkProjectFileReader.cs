@@ -1,21 +1,12 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.FileReaders;
 
-public class CSharpNETFrameworkProjectFileReader : IProjectFilePackageReader
+public class CSharpNETFrameworkProjectFileReader : IProjectFileReader
 {
-    private string _fileName;
-
-    public object Read(string fileName)
-    {
-        _fileName = fileName;
-
-        return ReadCSharpProjectFile();
-    }
-
-    private IList<NugetPackageReference> ReadCSharpProjectFile()
+    public IEnumerable<NugetPackageReference> ReadNugetPackages(string fileName)
     {
         var nugetPackages = new List<NugetPackageReference>();
 
-        var xmlContent = FileUtil.ReadFileContent(_fileName);
+        var xmlContent = FileUtil.ReadFileContent(fileName);
 
         var xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xmlContent);
@@ -51,5 +42,10 @@ public class CSharpNETFrameworkProjectFileReader : IProjectFilePackageReader
         }
 
         return nugetPackages;
+    }
+
+    public string ReadVersion(string fileName)
+    {
+        throw new NotImplementedException();
     }
 }

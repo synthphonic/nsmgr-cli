@@ -1,11 +1,11 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.FileReaders;
 
-public class PackageConfigFileReader : IProjectFilePackageReader
+public class PackageConfigFileReader : IProjectFileReader
 {
     private string _fileName;
     private string _packageConfigFile;
 
-    public object Read(string fileName)
+    public IEnumerable<NugetPackageReference> ReadNugetPackages(string fileName)
     {
         _fileName = fileName;
         _packageConfigFile = Path.Combine(Path.GetDirectoryName(_fileName), "packages.config");
@@ -16,6 +16,11 @@ public class PackageConfigFileReader : IProjectFilePackageReader
                                 select new NugetPackageReference(item.Id, item.Version, item.TargetFramework)).ToList();
 
         return nugetPackageRefs;
+    }
+
+    public string ReadVersion(string fileName)
+    {
+        throw new NotImplementedException();
     }
 
     private PackageConfig ReadPackageConfig()

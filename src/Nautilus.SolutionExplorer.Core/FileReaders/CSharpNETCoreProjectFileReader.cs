@@ -1,18 +1,10 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.FileReaders;
 
-public class CSharpNETCoreProjectFileReader : IProjectFilePackageReader
+public class CSharpNETCoreProjectFileReader : IProjectFileReader
 {
-    private string _fileName;
-
-    public object Read(string fileName)
+    public IEnumerable<NugetPackageReference> ReadNugetPackages(string fileName)
     {
-        _fileName = fileName;
-        return ReadCSharpProjectFile();
-    }
-
-    private IList<NugetPackageReference> ReadCSharpProjectFile()
-    {
-        var xmlContent = FileUtil.ReadFileContent(_fileName);
+        var xmlContent = FileUtil.ReadFileContent(fileName);
 
         var xElement = XElement.Parse(xmlContent);
 
@@ -30,5 +22,22 @@ public class CSharpNETCoreProjectFileReader : IProjectFilePackageReader
         }
 
         return packageReferenceList;
+    }
+
+    public string ReadVersion(string fileName)
+    {
+        var xmlContent = FileUtil.ReadFileContent(fileName);
+
+        var xElement = XElement.Parse(xmlContent);
+
+        var versionElement = xElement.Descendants("Version").FirstOrDefault();
+
+        //
+        // another way of getting the Version string value
+        //
+        //var itemGroups = xElement.Elements("PropertyGroup").ToList();
+        //var versionElement = itemGroups.Elements("Version").ToList();
+
+        return versionElement != null ? versionElement.Value : null;            
     }
 }
