@@ -63,20 +63,27 @@ class FindPackageCommand : CommandBase
         var flatList = solution.ExtractNugetPackageAsFlatList();
         var categorizedByPackageNameList = solution.CategorizeByPackageName(flatList);
 
-        await Task.Delay(1);
-
         Colorful.Console.WriteLine();
 
-        var projects = categorizedByPackageNameList[NugetPackage];
+        if (categorizedByPackageNameList.ContainsKey(NugetPackage))
+        {
+            var projects = categorizedByPackageNameList[NugetPackage];
 
-        if (_returnResults)
-        {
-            Results = projects;
+            if (_returnResults)
+            {
+                Results = projects;
+            }
+            else
+            {
+                WriteOutput(projects, solution.SolutionFileName);
+            }
+
+            return;
         }
-        else
-        {
-            WriteOutput(projects, solution.SolutionFileName);
-        }
+
+        Colorful.Console.WriteLine($"'{NugetPackage}' nuget package is not referenced in any project.\n");
+
+        await Task.Delay(1);
     }
 
     private void WriteOutput(IList<NugetPackageReferenceExtended> projects, string solutionFileName)

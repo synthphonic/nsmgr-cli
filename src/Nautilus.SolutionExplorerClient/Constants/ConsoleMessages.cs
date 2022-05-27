@@ -91,12 +91,12 @@ public static class ConsoleMessages
 
     internal static void DisplayExecutionTimeMessage(Stopwatch sw)
     {
-        Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
+        Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs", Color.GreenYellow);
     }
 
     internal static void DisplayCompletedSuccessfullyFinishingMessage()
     {
-        Colorful.Console.WriteLine("\nCompleted successfully", Color.GreenYellow);
+        Colorful.Console.WriteLine("\nCompleted successfully\n", Color.GreenYellow);
     }
 
     internal static void LogToFileIfDebugMode(ProjectNotFoundException ex, string logFileName, bool debugMode)
