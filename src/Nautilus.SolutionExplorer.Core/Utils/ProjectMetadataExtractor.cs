@@ -1,4 +1,4 @@
-﻿namespace Nautilus.SolutionExplorer.Core.Helpers;
+﻿namespace Nautilus.SolutionExplorer.Core.Utils;
 
 public static class ProjectMetadataExtractor
 {

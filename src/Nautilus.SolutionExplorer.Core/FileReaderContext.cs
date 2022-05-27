@@ -1,32 +1,38 @@
 ﻿/*
  * ref: https://stackoverflow.com/questions/14110212/reading-specific-xml-elements-from-xml-file
+ *
+ *  NOTES:
+ *      for ProjectTarget.NETFramework46, we need to check the following:
+ *      1. check if packages.json file exists. if yes, then read from it
+ *      2. if packages.json does not exists, then read from C# project file
+ * 
  */
 
 namespace Nautilus.SolutionExplorer.Core;
 
-public class FileReader
+public class FileReaderContext
 {
-    private readonly Dictionary<ProjectTargetFramework, IProjectFilePackageReader> _fileReaders;
+    private readonly Dictionary<ProjectTargetFramework, IProjectFileReader> _fileReaders;
     private readonly ProjectMetadata _metadata;
     private readonly ProjectTargetFramework _targetFramework;
     private readonly bool _packagesConfigFileExist;
 
-    public FileReader(Project project) : this()
+    public FileReaderContext(Project project) : this()
     {
         _metadata = project.Metadata;
         _targetFramework = project.TargetFramework;
         _packagesConfigFileExist = project.PackagesConfigFileExist;
     }
 
-    internal FileReader(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata) : this()
+    internal FileReaderContext(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata) : this()
     {
         _metadata = projectMetadata;
         _targetFramework = targetFramework;
     }
 
-    private FileReader()
+    private FileReaderContext()
     {
-        _fileReaders = new Dictionary<ProjectTargetFramework, IProjectFilePackageReader>
+        _fileReaders = new Dictionary<ProjectTargetFramework, IProjectFileReader>
         {
             //[SolutionProjectElement.PackageConfig] = new PackageConfigFileReader(),
             //[SolutionProjectElement.iOS] = new CSharpNativeProjectFileReader(),
@@ -39,15 +45,15 @@ public class FileReader
             [ProjectTargetFramework.NETFramework46] = new PackageConfigFileReader(),
             [ProjectTargetFramework.NETFramework47] = new PackageConfigFileReader(),
             [ProjectTargetFramework.NETFramework48] = new PackageConfigFileReader(),
-            [ProjectTargetFramework.NETStandard20] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NETStandard21] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NETCoreApp20] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NETCoreApp21] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NETCoreApp22] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NETCoreApp30] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NETCoreApp31] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NET5] = new CSharpProjectFileReader(),
-            [ProjectTargetFramework.NET6] = new CSharpProjectFileReader(),
+            [ProjectTargetFramework.NETStandard20] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NETStandard21] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp20] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp21] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp22] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp30] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NETCoreApp31] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NET5] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NET6] = new CSharpNETCoreProjectFileReader(),
             [ProjectTargetFramework.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
             [ProjectTargetFramework.NativeiOSBinding] = new CSharpNETFrameworkProjectFileReader(),
             [ProjectTargetFramework.NativeAndroid] = new CSharpNETFrameworkProjectFileReader(),
@@ -55,20 +61,15 @@ public class FileReader
         };
     }
 
-    public object ReadFile()
+    public IEnumerable<NugetPackageReference> ReadNugetPackages()
     {
-        //
-        // SOME NOTES:
-        // for ProjectTarget.NETFramework46, we need to check the following:
-        // 1. check if packages.json file exists. if yes, then read from it
-        // 2. if packages.json does not exists, then read from C# project file
-        //
+        // read NOTES at the starting of this file
 
         try
         {
             var packageConfigExists = false;
 
-            object returnedObject = null;
+            IEnumerable<NugetPackageReference> returnedObject = null;
 
             if (_targetFramework == ProjectTargetFramework.NETFramework20 ||
                 _targetFramework == ProjectTargetFramework.NETFramework35 ||
@@ -83,15 +84,54 @@ public class FileReader
                 packageConfigExists = File.Exists(packageConfigFile);
 
                 returnedObject = packageConfigExists
-                    ? _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath)
-                    : _fileReaders[ProjectTargetFramework.NETFramework].Read(_metadata.ProjectFullPath);
+                    ? _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath)
+                    : _fileReaders[ProjectTargetFramework.NETFramework].ReadNugetPackages(_metadata.ProjectFullPath);
             }
             else
             {
-                returnedObject = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath);
+                //
+                // should be .NET CORE and above if code lands here
+                //
+
+                returnedObject = _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath);
             }
 
             return returnedObject;
+        }
+        catch (KeyNotFoundException keyNotFoundEx)
+        {
+            var exceptionMessage = new StringBuilder();
+            exceptionMessage.AppendFormat($"File cannot be read for '{_metadata.ProjectFileName}'\n");
+            exceptionMessage.AppendFormat($"Reason:{keyNotFoundEx.Message}");
+            throw new CLIException(exceptionMessage.ToString(), keyNotFoundEx);
+
+        }
+        catch (FileNotFoundException fileNotFoundEx)
+        {
+            var exceptionMessage = new StringBuilder();
+            exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
+            exceptionMessage.AppendFormat($"Reason:{fileNotFoundEx.Message}");
+            throw new CLIException(exceptionMessage.ToString(), fileNotFoundEx);
+        }
+        catch (Exception ex)
+        {
+            var exceptionMessage = new StringBuilder();
+            exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
+            exceptionMessage.AppendFormat($"Reason:{ex.Message}");
+            throw new CLIException(exceptionMessage.ToString(), ex);
+        }
+    }
+
+    /// <summary>
+    /// Read the version string from the Version element in the csproj file. If none exists, it will return null
+    /// </summary>
+    /// <returns>Returns the version string number, if non exists return null.</returns>
+    public string ReadVersion()
+    {   
+        try
+        {
+            var foundVersion = _fileReaders[_targetFramework].ReadVersion(_metadata.ProjectFullPath);
+            return foundVersion;
         }
         catch (KeyNotFoundException keyNotFoundEx)
         {
@@ -136,21 +176,21 @@ public class FileReader
             {
                 if (_packagesConfigFileExist)
                 {
-                    packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+                    packageReferences = _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
                     found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
                     version = found.Version;
 
                     return !string.IsNullOrWhiteSpace(found.Version);
                 }
 
-                packageReferences = _fileReaders[ProjectTargetFramework.NETFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+                packageReferences = _fileReaders[ProjectTargetFramework.NETFramework].ReadNugetPackages(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
                 found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
                 version = found.Version;
 
                 return !string.IsNullOrWhiteSpace(found.Version);
             }
 
-            packageReferences = _fileReaders[_targetFramework].Read(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+            packageReferences = _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
             found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
             version = found.Version;
 

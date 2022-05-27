@@ -11,11 +11,12 @@ class Program
         TestDataHelper.UseTestData = false;
 #endif
 
-        _ = Parser.Default.ParseArguments<FindPackageCommand, ListProjectsCommand, ListNugetPackagesCommand, UpdateNugetPackageCommand>(args)
+        _ = Parser.Default.ParseArguments<FindPackageCommand, ListProjectsCommand, ListNugetPackagesCommand, UpdateNugetPackageCommand, ModifyProjectVersionCommand>(args)
             .WithParsed((Action<UpdateNugetPackageCommand>)((command) => UpdateNugetPackageCommand.Execute(command)))
             .WithParsed((Action<ListProjectsCommand>)((command) => ListProjectsCommand.Execute(command)))
             .WithParsed((Action<ListNugetPackagesCommand>)((command) => ListNugetPackagesCommand.Execute(command)))
             .WithParsed((Action<FindPackageCommand>)((command) => FindPackageCommand.Execute(command)))
+            .WithParsed((Action<ModifyProjectVersionCommand>)((command) => ModifyProjectVersionCommand.Execute(command)))
             .WithNotParsed(errs =>
             {
                 //var sb = new StringBuilder();

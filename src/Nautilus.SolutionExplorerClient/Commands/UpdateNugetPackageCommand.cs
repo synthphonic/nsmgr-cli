@@ -143,12 +143,12 @@ public class UpdateNugetPackageCommand : CommandBase
 
     private void UpdateProjectNugetPackage(Project foundProject)
     {
-        var reader = new FileReader(foundProject);
+        var reader = new FileReaderContext(foundProject);
         bool found = reader.TryGetPackageVersion(NugetPackage, out string packageVersion);
 
         if (found && !NugetVersion.Equals(packageVersion))
         {
-            var writer = new FileWriter(foundProject);
+            var writer = new FileWriterContext(foundProject);
             writer.UpdateNugetPackage(NugetPackage, NugetVersion);
         }
     }

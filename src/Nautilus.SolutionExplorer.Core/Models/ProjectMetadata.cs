@@ -2,6 +2,19 @@
 
 public class ProjectMetadata
 {
+    public static ProjectMetadata SetMetadata(string projectFilePath)
+    {
+        var metadata = new ProjectMetadata
+        {
+            ProjectFullPath = projectFilePath,
+            ProjectFileName = FileUtil.GetFileName(projectFilePath),
+            ProjectType = SolutionProjectElement.CSharpProject,
+            ProjectName = FileUtil.GetFileNameWithoutExtension(projectFilePath)
+        };
+
+        return metadata;
+    }
+
     /// <summary>
     /// The project file name
     /// </summary>

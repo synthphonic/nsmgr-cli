@@ -26,17 +26,18 @@ public class SolutionFileReader
         var f = new List<string>(solutionFileContents);
         var searchResults = f.Where(x => x.Contains("Project(")).ToList();
 
-        var solution = new Solution(_solutionFileName);
-
         foreach (var item in searchResults)
         {
             var parentPath = FileUtil.GetFullPath(_solutionFileName);
             ExtractProjectMetadata(item, _solutionFileName);
         }
 
+        var solution = new Solution(_solutionFileName);
+
         foreach (var metadata in _projectMetadataList)
         {
             var project = new Project(metadata);
+            project.Read();
             solution.AddProject(project);
         }
 

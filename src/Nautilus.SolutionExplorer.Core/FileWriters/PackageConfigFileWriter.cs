@@ -1,11 +1,16 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.FileWriters;
 
-public class PackageConfigFileWriter : IProjectFilePackageWriter
+public class PackageConfigFileWriter : IProjectFileWriter
 {
     #region IProjectFilePackageWriter implementation
-    public void Initialize(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata)
+    public void Initialize(ProjectMetadata projectMetadata)
     {
         // SHAH: TO IMPLEMENT IProjectFilePackageWriter interface
+    }
+
+    public void AddOrUpdateElement(string elementName, string value)
+    {
+        throw new NotImplementedException();
     }
 
     public void UpdatePackageReference(string packageName, string newVersion)
