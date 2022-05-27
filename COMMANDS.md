@@ -1,19 +1,19 @@
 # Commands
 
 ## Available Commands
-**find-package**
+[find-package](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#find-package)
 Finds the project(s) that depends on the intended nuget package
 
-**list-projects**
+[list-projects](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#list-projects)
 List out all projects that exists under a solution (.sln) file
 
-**list-packages**
+[list-packages](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#list-packages)
 List nuget packages for all projects in the solution
 
-**update-nuget-package**
+[update-nuget-package](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#update-nuget-package)
 Finds the conflicting nuget package versions installed in the solution.
 
-**modify-project-version**
+[modify-project-version](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#modify-project-version)
 Modify a particular project 'Version' element accordingly.
 
 ## find-package
@@ -56,10 +56,10 @@ Usage:
 ```csharp
 ./nsmgr modify-project-version -p <project path> -v <newversion> Xamarin.Forms --project MyProject.Name --solutionfile /users/itsme/xxx.sln --version 3.6.1.21221121
 ```
-**-p, --project-path**. Required. The full file path of a given csproj file name.
-**-v, --version-number**. Required. The new version number.
-**-b, --backup**. Prior to version change, the command should backup the original version number.
-**-r, --restore-version**.  Restore the version number to its original state.
+- **-p, --project-path**. Required. The full file path of a given csproj file name.
+- **-v, --version-number**. Required. The new version number.
+- **-b, --backup**. Prior to version change, the command should backup the original version number.
+- **-r, --restore-version**.  Restore the version number to its original state.
 
 #
 **NOTE:** All commands has ***--debug*** switch, with default value to false. If this option is turned on, output errors will be written to a log file and stored on the user's _Desktop_ location
