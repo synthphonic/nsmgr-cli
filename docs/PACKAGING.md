@@ -2,14 +2,33 @@
 
 ## Publish an app self-contained and ReadyToRun.
 
-### macOS 64-bit
+### macOS x64 
 - Publish an app self-contained and ReadyToRun. A macOS 64-bit executable is created.
     ```csharp
     dotnet publish -c Release -r osx-x64 -p:PublishReadyToRun=true
     ```
 - Publish a self-contained and ReadyToRun and single file.
     ```csharp
-    dotnet publish -c Release -r osx-64 -o publish -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true
+    dotnet publish -c Release -r osx-x64 -o publish-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
+    ```
+### macOS x64 Monterey
+- Publish an app self-contained and ReadyToRun. A macOS 64-bit executable is created.
+    ```csharp
+    dotnet publish -c Release -r osx.12-x64 -p:PublishReadyToRun=true
+    ```
+- Publish a self-contained and ReadyToRun and single file.
+    ```csharp
+    dotnet publish -c Release -r osx.12-x64 -o publish-12-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
+    ```
+
+### macOS M1
+- Publish an app self-contained and ReadyToRun. A macOS 64-bit executable is created.
+    ```csharp
+    dotnet publish -c Release -r osx.12-arm64 -p:PublishReadyToRun=true
+    ```
+- Publish a self-contained and ReadyToRun and single file.
+    ```csharp
+    dotnet publish -c Release -r osx.12-arm64 -o publish-arm64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
     ```
 
 ### Windows 64-bit
