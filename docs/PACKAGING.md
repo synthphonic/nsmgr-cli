@@ -1,6 +1,6 @@
 # Packaging & Publishing the CLI tool
 
-## Publish an app self-contained and ReadyToRun.
+### Publish console app
 
 ### macOS x64 
 - Publish an app self-contained and ReadyToRun. A macOS 64-bit executable is created.
@@ -9,7 +9,7 @@
 	```
 - Publish a self-contained and ReadyToRun and single file.
 	```csharp
-	dotnet publish -c Release -r osx-x64 -o publish-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
+	dotnet publish -c Release -r osx-x64 -o publish-osx-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
 	```
 ### macOS x64 Monterey
 - Publish an app self-contained and ReadyToRun. A macOS 64-bit executable is created.
@@ -18,7 +18,7 @@
 	```
 - Publish a self-contained and ReadyToRun and single file.
 	```csharp
-	dotnet publish -c Release -r osx.12-x64 -o publish-12-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
+	dotnet publish -c Release -r osx.12-x64 -o publish-osx.12-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
 	```
 
 ### macOS M1
@@ -28,7 +28,7 @@
 	```
 - Publish a self-contained and ReadyToRun and single file.
 	```csharp
-	dotnet publish -c Release -r osx.12-arm64 -o publish-arm64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
+	dotnet publish -c Release -r osx.12-arm64 -o publish-osx.12-arm64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
 	```
 
 For M1 machines, you need to sign the executable file before running it
@@ -44,7 +44,7 @@ codesign -s identity nsmgr
 
 - Publish a self-contained and ReadyToRun and single file.
 	```csharp
-	dotnet publish -c Release -r win-x64 -o publish -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
+	dotnet publish -c Release -r win-x64 -o publish-win-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
 	```
 
 ## Reference
