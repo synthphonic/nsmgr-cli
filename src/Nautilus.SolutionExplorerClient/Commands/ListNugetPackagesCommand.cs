@@ -20,7 +20,7 @@ class ListNugetPackagesCommand : CommandBase
     [Option("usedebugdata", Required = false, Hidden = true, HelpText = "")]
     public bool UseDebugData { get; set; }
 
-    [Usage(ApplicationAlias = Program.CliName)]
+    [Usage()]
     public static IEnumerable<Example> Examples
     {
         get
@@ -56,6 +56,8 @@ class ListNugetPackagesCommand : CommandBase
 
     public async Task Run()
     {
+        Program.DisplayProductInfo();
+
         Colorful.Console.WriteLine();
         Colorful.Console.WriteLine("Working. Please wait...", Color.GreenYellow);
 
