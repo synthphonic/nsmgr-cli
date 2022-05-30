@@ -18,7 +18,7 @@ class ModifyProjectVersionCommand : CommandBase
     [Option(longName: "restore-version", shortName: 'r', Required = false, HelpText = "Restore the version number to its original state.")]
     public bool RestoreVersionNumber { get; set; }
 
-    [Usage(ApplicationAlias = Program.CliName)]
+    [Usage()]
     public static IEnumerable<Example> Examples
     {
         get
@@ -58,7 +58,7 @@ class ModifyProjectVersionCommand : CommandBase
 
     public async Task Run()
     {
-        await Task.CompletedTask;
+        Program.DisplayProductInfo();
 
         Colorful.Console.WriteLine();
         Colorful.Console.WriteLine("Working. Please wait...", Color.GreenYellow);
@@ -80,8 +80,7 @@ class ModifyProjectVersionCommand : CommandBase
             project.Update("Version", VersionNumber);
         }
 
-        //Console.WriteLine($"-b {Backup}");
-        //Console.WriteLine($"-r {RestoreVersionNumber}");
+        await Task.CompletedTask;
     }
 
     internal static void Execute(ModifyProjectVersionCommand command)

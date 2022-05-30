@@ -4,11 +4,13 @@
     <TargetFramework>net6.0</TargetFramework>
     <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>        
     <ReleaseVersion>2.1.0</ReleaseVersion>
+    <Copyright>synthphonic tech 2018-2022</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <LangVersion>default</LangVersion>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <LangVersion>default</LangVersion>

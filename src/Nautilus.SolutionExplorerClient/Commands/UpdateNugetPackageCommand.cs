@@ -24,7 +24,7 @@ public class UpdateNugetPackageCommand : CommandBase
     [Option(longName: "nuget-version", shortName: 'g', Required = true, HelpText = "The nuget package version to upate to.")]
     public string NugetVersion { get; set; }
 
-    [Usage(ApplicationAlias = Program.CliName)]
+    [Usage()]
     public static IEnumerable<Example> Examples
     {
         get
@@ -62,6 +62,8 @@ public class UpdateNugetPackageCommand : CommandBase
 
     internal async Task Run()
     {
+        Program.DisplayProductInfo();
+
         var solution = ReadSolutionStructure();
 
         if (ProjectName.ToUpper().Equals("ALL") || ProjectName.ToLower().Equals("all"))

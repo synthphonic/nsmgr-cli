@@ -18,7 +18,7 @@ class FindPackageCommand : CommandBase
     [Option(longName: "nuget-package", shortName: 'g', Required = true, HelpText = "The nuget package to find.")]
     public string NugetPackage { get; set; }
 
-    [Usage(ApplicationAlias = Program.CliName)]
+    [Usage()]
     public static IEnumerable<Example> Examples
     {
         get
@@ -54,6 +54,8 @@ class FindPackageCommand : CommandBase
 
     public async Task Run()
     {
+        Program.DisplayProductInfo();
+
         Colorful.Console.WriteLine();
         Colorful.Console.WriteLine("Working. Please wait...", Color.GreenYellow);
 

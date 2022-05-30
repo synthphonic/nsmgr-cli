@@ -9,13 +9,12 @@ namespace Nautilus.SolutionExplorerClient.Commands;
 [Verb("list-projects", HelpText = "List out all projects that exists under a solution (.sln) file")]
 internal class ListProjectsCommand : CommandBase
 {
-    private const string Example_Text = "List out all projects under the solution";
-    //delegate void ShowNugetPackages(Project project);
+    private const string Example_Text = $"List out all projects under the solution";
 
     [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
-    [Option(longName: "projects-only", shortName: 'p', HelpText = "Process project files only and ignore the rest.")]
+    [Option(longName: "projects-only", shortName: 'p', Default = false, HelpText = "Process project files only and ignore the rest.")]
     public bool ProjectsOnly { get; set; }
 
     [Option(longName: "nuget-packages", shortName: 'n', Default = false, Required = false, Hidden = false, HelpText = "Display nuget packages for each project.")]
@@ -25,10 +24,10 @@ internal class ListProjectsCommand : CommandBase
     public bool ShowNugetPackageUpdates { get; set; }
 
     [Option(longName: "nuget-pre-release", Default = false, Required = false, Hidden = false, HelpText = "To fetch data for pre-release versions of a particular nuget package. " +
-        "This switch is used toegher with -u or --nuget-package-updates switch")]
+        "This switch is used toegher with -u option")]
     public bool ShowPreReleaseNugetPackages { get; set; }
 
-    [Usage(ApplicationAlias = Program.CliName)]
+    [Usage()]
     public static IEnumerable<Example> Examples
     {
         get
@@ -36,11 +35,11 @@ internal class ListProjectsCommand : CommandBase
             var platformPathSample = string.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                platformPathSample = "/users/itsme/xxx.sln";
+                platformPathSample = @"/users/itsme/mysolution.sln";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                platformPathSample = @"C:\myproject\xxx.sln";
+                platformPathSample = @"C:\myproject\mysolution.sln";
             }
 
             return new List<Example>
@@ -57,6 +56,8 @@ internal class ListProjectsCommand : CommandBase
 
     internal async Task Run()
     {
+        Program.DisplayProductInfo();
+
         var slnFileReader = new SolutionFileReader(SolutionFileName, ProjectsOnly);
         Solution solution = null;
 
