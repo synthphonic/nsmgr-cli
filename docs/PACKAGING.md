@@ -31,6 +31,11 @@
     dotnet publish -c Release -r osx.12-arm64 -o publish-arm64 -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -p:IncludeNativeLibrariesForSelfExtract=true -p:UseAppHost=true
     ```
 
+For M1 machines, you need to sign the executable file before running it
+```csharp
+codesign -s identity nsmgr
+```
+
 ### Windows 64-bit
 - Publish an app self-contained and ReadyToRun. A Windows 64-bit executable is created
     ```csharp
