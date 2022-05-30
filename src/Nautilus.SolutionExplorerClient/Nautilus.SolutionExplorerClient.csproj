@@ -4,12 +4,15 @@
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0</TargetFramework>
 		<AssemblyName>nsmgr</AssemblyName>
-		<Copyright>Copyright (c) FiftyOneLab Tech 2018-2022</Copyright>
+		<Copyright>synthphonic tech 2018-2022</Copyright>
 		<RootNamespace>Nautilus.SolutionExplorerClient</RootNamespace>
 		<Version>2.1.0</Version>
 		<Authors>Shah Z. S</Authors>
 		<Company>FiftyOne Lab Technologies</Company>
 		<Product>Nautilus Solution Manager CLI</Product>
+		<UseAppHost>false</UseAppHost>
+		<!--<_EnableMacOSCodeSign>false</_EnableMacOSCodeSign>-->
+
 		<!--<AssemblyVersion>1.1.0.0</AssemblyVersion>-->
 		<!--<FileVersion>1.0.0.1</FileVersion>-->
 		<NeutralLanguage>en</NeutralLanguage>
