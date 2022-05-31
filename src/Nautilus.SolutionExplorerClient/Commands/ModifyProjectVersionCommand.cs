@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.SolutionExplorerClient.Commands;
 
-[Verb("modify-project-version", HelpText = "Modify a particular C# project 'Version' element accordingly")]
+[Verb("modify-project-version", HelpText = Example_Text)]
 class ModifyProjectVersionCommand : CommandBase
 {
     private const string Example_Text = "Modify a particular C# project 'Version' element accordingly";
@@ -12,10 +12,10 @@ class ModifyProjectVersionCommand : CommandBase
     [Option(longName: "version-number", shortName: 'v', Required = true, HelpText = "The new version number.")]
     public string VersionNumber { get; set; }
 
-    [Option(longName: "backup", shortName: 'b', Required = false, HelpText = "Prior to version change, the command should backup the original version number.")]
+    [Option(longName: "backup", shortName: 'b', Default = false, Required = false, HelpText = "Prior to version change, the command should backup the original version number.")]
     public bool Backup { get; set; }
 
-    [Option(longName: "restore-version", shortName: 'r', Required = false, HelpText = "Restore the version number to its original state.")]
+    [Option(longName: "restore-version", shortName: 'r', Default = false, Required = false, HelpText = "Restore the version number to its original state.")]
     public bool RestoreVersionNumber { get; set; }
 
     [Usage()]
@@ -56,7 +56,7 @@ class ModifyProjectVersionCommand : CommandBase
         // used internally by CommandLine Parser
     }
 
-    public async Task Run()
+    private async Task Run()
     {
         Program.DisplayProductInfo();
 
@@ -83,55 +83,8 @@ class ModifyProjectVersionCommand : CommandBase
         await Task.CompletedTask;
     }
 
-    internal static void Execute(ModifyProjectVersionCommand command)
+    public override void Execute()
     {
-        bool debugMode = command.Debug;
-        bool exceptionRaised = false;
-
-        var sw = new Stopwatch();
-        sw.Start();
-
-        try
-        {
-            command.Run().Wait();
-        }
-        catch (CLIException cliEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (SolutionFileException solutionFileEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (Exception ex)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        finally
-        {
-            if (sw.IsRunning)
-            {
-                sw.Stop();
-            }
-
-            ConsoleMessages.DisplayExecutionTimeMessage(sw);
-
-            if (!exceptionRaised)
-            {
-                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
-            }
-        }
+        Run().Wait();
     }
 }

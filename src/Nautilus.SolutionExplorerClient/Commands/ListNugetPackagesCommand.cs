@@ -6,19 +6,17 @@
 
 namespace Nautilus.SolutionExplorerClient.Commands;
 
-[Verb("list-packages", HelpText = "List nuget packages for all projects in the solution")]
+[Verb("list-packages", HelpText = Example_Text)]
 class ListNugetPackagesCommand : CommandBase
 {
     private const string Example_Text = "Finds any conflicting nuget package versions in the solution";
 
+    #region Command Line Setup & Options
     [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
     [Option("projects-only", Default = true, Required = false, Hidden = true, HelpText = "Process project files only and ignore the rest. Default is false")]
     public bool ProjectsOnly { get; set; }
-
-    [Option("usedebugdata", Required = false, Hidden = true, HelpText = "")]
-    public bool UseDebugData { get; set; }
 
     [Usage()]
     public static IEnumerable<Example> Examples
@@ -41,20 +39,19 @@ class ListNugetPackagesCommand : CommandBase
                 };
         }
     }
+    #endregion
 
     public ListNugetPackagesCommand()
     {
 
     }
 
-    //public ListNugetPackagesService(string solutionFileName, bool processProjectsOnly = false, bool debugData = false)
-    //{
-    //    _processProjectsOnly = processProjectsOnly;
-    //    _solutionFileName = solutionFileName;
-    //    TestDataHelper.UseTestData = debugData;
-    //}
+    public override void Execute()
+    {
+        Run().Wait();
+    }
 
-    public async Task Run()
+    private async Task Run()
     {
         Program.DisplayProductInfo();
 
@@ -155,57 +152,5 @@ class ListNugetPackagesCommand : CommandBase
         }
 
         return result;
-    }
-
-    internal static void Execute(ListNugetPackagesCommand command)
-    {
-        bool debugMode = command.Debug;
-        bool exceptionRaised = true;
-
-        var sw = new Stopwatch();
-        sw.Start();
-
-        try
-        {
-            command.Run().Wait();
-        }
-        catch (CLIException cliEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (SolutionFileException solutionFileEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (Exception ex)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        finally
-        {
-            if (sw.IsRunning)
-            {
-                sw.Stop();
-            }
-
-            ConsoleMessages.DisplayExecutionTimeMessage(sw);
-
-            if (!exceptionRaised)
-            {
-                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
-            }
-        }
     }
 }

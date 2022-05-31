@@ -2,6 +2,9 @@
 
 class Program
 {
+    private static Stopwatch _sw = null;
+    private static bool _exceptionRaised = false;
+
     static void Main(string[] args)
     {
         string[] internalArgs;
@@ -24,15 +27,83 @@ class Program
         TestDataHelper.UseTestData = false;
 #endif
 
+        var commands = new List<Type>
+        {
+            typeof(UpdateNugetPackageCommand),
+            typeof(ListProjectsCommand),
+            typeof(ListNugetPackagesCommand),
+            typeof(FindPackageCommand),
+            typeof(ModifyProjectVersionCommand)
+        };
+
         var parser = new Parser(with => with.HelpWriter = null);
-        var parserResult = parser.ParseArguments<FindPackageCommand, ListProjectsCommand, ListNugetPackagesCommand, UpdateNugetPackageCommand, ModifyProjectVersionCommand>(args);
+        var parserResult = parser.ParseArguments(args, commands.ToArray());
         parserResult
-            .WithParsed<UpdateNugetPackageCommand>(options => UpdateNugetPackageCommand.Execute(options))
-            .WithParsed<ListProjectsCommand>(options => ListProjectsCommand.Execute(options))
-            .WithParsed<ListNugetPackagesCommand>(options => ListNugetPackagesCommand.Execute(options))
-            .WithParsed<FindPackageCommand>(options => FindPackageCommand.Execute(options))
-            .WithParsed<ModifyProjectVersionCommand>(options => ModifyProjectVersionCommand.Execute(options))
+            .WithParsed((Action<CommandBase>)(cmd =>
+            {
+                ExecuteCommand(cmd);
+            }))
             .WithNotParsed(errs => DisplayHelp(parserResult, errs));
+    }
+
+    private static void ExecuteCommand(CommandBase cmd)
+    {
+        _sw = new Stopwatch();
+        _sw.Start();
+
+        try
+        {
+            cmd.Execute();
+            _sw.Stop();
+
+            Console.WriteLine();
+            Console.WriteLine($"Completed in {_sw.Elapsed}");
+            Console.WriteLine();
+        }
+        catch (ProjectNotFoundException prjNotFoundEx)
+        {
+            _exceptionRaised = true;
+            ConsoleMessages.DisplayProjectNotFoundMessageFormat(prjNotFoundEx, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (NugetPackageNotFoundException nugetPackageNotFoundEx)
+        {
+            _exceptionRaised = true;
+            ConsoleMessages.DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (CLIException cliEx)
+        {
+            _exceptionRaised = true;
+            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (SolutionFileException solutionFileEx)
+        {
+            _exceptionRaised = true;
+            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        catch (Exception ex)
+        {
+            _exceptionRaised = true;
+            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+        }
+        finally
+        {
+            if (_sw != null && _sw.IsRunning)
+            {
+                _sw.Stop();
+            }
+
+            ConsoleMessages.DisplayExecutionTimeMessage(_sw);
+
+            if (!_exceptionRaised)
+            {
+                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
+            }
+        }
     }
 
     private static void DisplayHelp<T>(ParserResult<T> result, IEnumerable<Error> errors)
