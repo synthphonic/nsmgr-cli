@@ -4,4 +4,9 @@ public abstract class CommandBase
 {
     [Option("debug", Default = false, Required = false, Hidden = true, HelpText = "Show debugging message including exception message and stacktrace")]
     public bool Debug { get; set; }
+
+    /// <summary>
+    /// Execute the command
+    /// </summary>
+    public abstract void Execute();
 }

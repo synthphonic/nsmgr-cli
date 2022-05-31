@@ -6,12 +6,13 @@
 
 namespace Nautilus.SolutionExplorerClient.Commands;
 
-[Verb("update-nuget-package", HelpText = "Finds the conflicting nuget package versions installed in the solution.")]
+[Verb("update-nuget-package", HelpText = Example_Text)]
 public class UpdateNugetPackageCommand : CommandBase
 {
     private const string Example_Text = "Update nuget package to a specificed verison number";
     private bool _returnResults = false;
 
+    #region Command Line Setup & Options
     [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
@@ -54,13 +55,19 @@ public class UpdateNugetPackageCommand : CommandBase
                 };
         }
     }
+    #endregion
 
     public UpdateNugetPackageCommand()
     {
 
     }
 
-    internal async Task Run()
+    public override void Execute()
+    {
+        Run().Wait();
+    }
+
+    private async Task Run()
     {
         Program.DisplayProductInfo();
 
@@ -76,23 +83,19 @@ public class UpdateNugetPackageCommand : CommandBase
         }
     }
 
-    private void SetReturnResults(bool returnResults)
-    {
-        _returnResults = returnResults;
-    }
-
     private async Task UpdateAllProjects(Solution solution)
     {
         _returnResults = true;
+
         await Run();
 
-        //var findPackage = new FindPackageService(solution.SolutionFullPath, NugetPackage, true);
         var findPackage = new FindPackageCommand(solution.SolutionFullPath, NugetPackage, true);
-        await findPackage.Run();
+        findPackage.Execute();
         var results = findPackage.Results;
 
         //
         // Get the intended Nuget Package information from nuget.org
+        //
         var request = NugetPackageHttpRequest.QueryRequest(NugetPackage, true);
         var result = await request.ExecuteAsync();
 
@@ -103,11 +106,11 @@ public class UpdateNugetPackageCommand : CommandBase
             var foundProject = solution.Projects.FirstOrDefault(x => x.ProjectName.Equals(item.ProjectName));
             UpdateProjectNugetPackage(foundProject);
         }
+    }
 
-        //if (found)
-        //{
-        //    UpdateProjectNugetPackage(foundProject);
-        //}
+    private void SetReturnResults(bool returnResults)
+    {
+        _returnResults = returnResults;
     }
 
     private async Task UpdatePerProject(Solution solution)
@@ -194,73 +197,5 @@ public class UpdateNugetPackageCommand : CommandBase
             throw;
         }
 
-    }
-
-    internal static void Execute(UpdateNugetPackageCommand command)
-    {
-        bool exceptionRaised = false;
-        bool debugMode = command.Debug;
-
-        var sw = new Stopwatch();
-        sw.Start();
-
-        try
-        {
-            command.Run().Wait();
-        }
-        catch (ProjectNotFoundException prjNotFoundEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayProjectNotFoundMessageFormat(prjNotFoundEx, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (NugetPackageNotFoundException nugetPackageNotFoundEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (CLIException cliEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (SolutionFileException solutionFileEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (Exception ex)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        finally
-        {
-            if (sw.IsRunning)
-            {
-                sw.Stop();
-            }
-
-            ConsoleMessages.DisplayExecutionTimeMessage(sw);
-
-            if (!exceptionRaised)
-            {
-                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
-            }
-        }
     }
 }

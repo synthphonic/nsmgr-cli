@@ -6,12 +6,13 @@
 
 namespace Nautilus.SolutionExplorerClient.Commands;
 
-[Verb("find-package", HelpText = "Finds the project(s) that depends on the intended nuget package")]
+[Verb("find-package", HelpText = Example_Text)]
 class FindPackageCommand : CommandBase
 {
     private const string Example_Text = "Finds the project(s) that depends on the intended nuget package";
     private readonly bool _returnResults;
 
+    #region Command Line Setup & Options
     [Option(longName: "solutionfile", shortName: 's', Required = true, HelpText = "The full file path to the .sln file.")]
     public string SolutionFileName { get; set; }
 
@@ -39,6 +40,7 @@ class FindPackageCommand : CommandBase
                 };
         }
     }
+    #endregion
 
     public FindPackageCommand()
     {
@@ -52,7 +54,12 @@ class FindPackageCommand : CommandBase
         _returnResults = returnResults;
     }
 
-    public async Task Run()
+    public override void Execute()
+    {
+        Run().Wait();
+    }
+
+    private async Task Run()
     {
         Program.DisplayProductInfo();
 
@@ -110,56 +117,4 @@ class FindPackageCommand : CommandBase
     }
 
     public IList<NugetPackageReferenceExtended> Results { get; private set; }
-
-    internal static void Execute(FindPackageCommand command)
-    {
-        bool debugMode = command.Debug;
-        bool exceptionRaised = false;
-
-        var sw = new Stopwatch();
-        sw.Start();
-
-        try
-        {
-            command.Run().Wait();
-        }
-        catch (CLIException cliEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (SolutionFileException solutionFileEx)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        catch (Exception ex)
-        {
-            sw.Stop();
-
-            exceptionRaised = true;
-            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, debugMode);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
-        }
-        finally
-        {
-            if (sw.IsRunning)
-            {
-                sw.Stop();
-            }
-
-            ConsoleMessages.DisplayExecutionTimeMessage(sw);
-
-            if (!exceptionRaised)
-            {
-                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
-            }
-        }
-    }
 }
