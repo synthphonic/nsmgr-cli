@@ -32,6 +32,7 @@ class Program
             typeof(UpdateNugetPackageCommand),
             typeof(ListProjectsCommand),
             typeof(ListNugetPackagesCommand),
+            typeof(ListProjectsTargetFrameworkCommand),
             typeof(FindPackageCommand),
             typeof(ModifyProjectVersionCommand)
         };
