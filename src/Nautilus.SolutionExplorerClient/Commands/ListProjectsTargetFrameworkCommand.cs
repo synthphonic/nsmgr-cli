@@ -95,7 +95,7 @@ internal class ListProjectsTargetFrameworkCommand : CommandBase
 
             if (project.ProjectType == SolutionProjectElement.CSharpProject)
             {
-                Colorful.Console.Write(CliStringFormatter.Format54, Color.YellowGreen, $"{project.ProjectName} ({project.Packages.Count()})");
+                Colorful.Console.Write(CliStringFormatter.Format54, Color.YellowGreen, $"{project.ProjectName}");
                 Colorful.Console.Write($"[{CliStringFormatter.Format5}]", Color.Chocolate, project.TargetFramework);
                 Colorful.Console.WriteLine();
 
@@ -120,56 +120,6 @@ internal class ListProjectsTargetFrameworkCommand : CommandBase
             }
 
             projectCounter++;
-        }
-    }
-
-    private static void DisplayNugetPackages(Project project, Dictionary<string, IList<NugetPackageInformationComparer>> packageVersionComparer = null)
-    {
-        foreach (var package in project.Packages)
-        {
-            Colorful.Console.Write($"\t{CliStringFormatter.Format50}", Color.Chocolate, package.PackageName);
-            Colorful.Console.Write($"{CliStringFormatter.Format30}", Color.YellowGreen, package.Version);
-
-            if (packageVersionComparer != null)
-            {
-                var nugetPackageInformation = packageVersionComparer[project.ProjectName].FirstOrDefault(x => x.PackageName.Equals(package.PackageName));
-
-                // if nugetPackageInformation is null, then try ToLower() the PackageName, then find it again
-                if (nugetPackageInformation == null)
-                {
-                    nugetPackageInformation = packageVersionComparer[project.ProjectName].FirstOrDefault(x => x.PackageName.ToLower().Equals(package.PackageName));
-                }
-
-                if (nugetPackageInformation == null) continue;
-
-                var latestVersionMessage = string.Empty;
-                Color color = Color.Green;
-
-                if (nugetPackageInformation.OnlinePackageExists)
-                {
-                    if (nugetPackageInformation.IsLatestVersion)
-                    {
-                        latestVersionMessage = "[OK]";
-                        color = Color.SeaGreen;
-                    }
-                    else
-                    {
-                        latestVersionMessage = $"{nugetPackageInformation.OnlineVersion}";
-                        color = Color.OrangeRed;
-                    }
-                }
-                else
-                {
-                    latestVersionMessage = $"[Skipped]";
-                    color = Color.Yellow;
-                }
-
-                Colorful.Console.WriteLine($"{CliStringFormatter.Format5}", color, latestVersionMessage);
-            }
-            else
-            {
-                Colorful.Console.WriteLine();
-            }
         }
     }
 }

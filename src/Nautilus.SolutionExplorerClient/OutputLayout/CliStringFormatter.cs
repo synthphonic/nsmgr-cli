@@ -1,4 +1,4 @@
-﻿namespace Nautilus.SolutionExplorerClient.Commands.Layout;
+﻿namespace Nautilus.SolutionExplorerClient.OutputLayout;
 
 internal static class CliStringFormatter
 {

@@ -58,38 +58,39 @@ class Program
             _sw.Stop();
 
             Console.WriteLine();
-            Console.WriteLine($"Completed in {_sw.Elapsed}");
+            //ConsoleOutputLayout.DisplayExecutionTimeMessage(_sw);
+            //Console.WriteLine($"Completed in {_sw.Elapsed}");
             Console.WriteLine();
         }
         catch (ProjectNotFoundException prjNotFoundEx)
         {
             _exceptionRaised = true;
-            ConsoleMessages.DisplayProjectNotFoundMessageFormat(prjNotFoundEx, CLIConstants.LogFileName, cmd.Debug);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+            ConsoleOutputLayout.DisplayProjectNotFoundMessageFormat(prjNotFoundEx, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleOutputLayout.DisplayProgramHasTerminatedMessage();
         }
         catch (NugetPackageNotFoundException nugetPackageNotFoundEx)
         {
             _exceptionRaised = true;
-            ConsoleMessages.DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx, CLIConstants.LogFileName, cmd.Debug);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+            ConsoleOutputLayout.DisplayNugetPackageNotFoundMessageFormat(nugetPackageNotFoundEx, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleOutputLayout.DisplayProgramHasTerminatedMessage();
         }
         catch (CLIException cliEx)
         {
             _exceptionRaised = true;
-            ConsoleMessages.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, cmd.Debug);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+            ConsoleOutputLayout.DisplayCLIExceptionMessageFormat(cliEx, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleOutputLayout.DisplayProgramHasTerminatedMessage();
         }
         catch (SolutionFileException solutionFileEx)
         {
             _exceptionRaised = true;
-            ConsoleMessages.SolutionFileExceptionMessageFormat(solutionFileEx);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+            ConsoleOutputLayout.SolutionFileExceptionMessageFormat(solutionFileEx);
+            ConsoleOutputLayout.DisplayProgramHasTerminatedMessage();
         }
         catch (Exception ex)
         {
             _exceptionRaised = true;
-            ConsoleMessages.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, cmd.Debug);
-            ConsoleMessages.DisplayProgramHasTerminatedMessage();
+            ConsoleOutputLayout.DisplayGeneralExceptionMessageFormat(ex, CLIConstants.LogFileName, cmd.Debug);
+            ConsoleOutputLayout.DisplayProgramHasTerminatedMessage();
         }
         finally
         {
@@ -98,11 +99,11 @@ class Program
                 _sw.Stop();
             }
 
-            ConsoleMessages.DisplayExecutionTimeMessage(_sw);
+            ConsoleOutputLayout.DisplayExecutionTimeMessage(_sw);
 
             if (!_exceptionRaised)
             {
-                ConsoleMessages.DisplayCompletedSuccessfullyFinishingMessage();
+                ConsoleOutputLayout.DisplayCompletedSuccessfullyFinishingMessage();
             }
         }
     }
