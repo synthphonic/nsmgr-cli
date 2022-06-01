@@ -1,13 +1,79 @@
-﻿namespace Nautilus.SolutionExplorerClient.Constants;
+﻿namespace Nautilus.SolutionExplorerClient.OutputLayout;
 
-public static class ConsoleMessages
+internal static class ConsoleOutputLayout
 {
-    private const string ErrorsHasOccurredMessage = "Error(s) has occurred.";
-    private const string CheckLogMessage = "Detail of error is in the log file";
+    internal static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, bool debugMode = false)
+    {
+        Console.WriteLine("");
+        Colorful.Console.WriteLine(ex.Message, Color.Red);
+        Console.WriteLine("");
+
+        if (debugMode)
+        {
+            var baseEx = ex.GetBaseException();
+            Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
+            Console.WriteLine("");
+        }
+
+        DisplayProgramHasTerminatedMessage();
+    }
+
+    internal static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, bool debugMode = false)
+    {
+        Console.WriteLine("");
+        Colorful.Console.WriteLine(ex.Message, Color.Red);
+        Console.WriteLine("");
+
+        if (debugMode)
+        {
+            var baseEx = ex.GetBaseException();
+            Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
+            Console.WriteLine("");
+        }
+
+        DisplayProgramHasTerminatedMessage();
+    }
+
+    internal static void DisplayGeneralExceptionMessageFormat(Exception ex, bool debugMode = false)
+    {
+        Console.WriteLine("");
+        Colorful.Console.WriteLine(ex.Message, Color.Red);
+        Console.WriteLine("");
+
+        if (debugMode)
+        {
+            var baseEx = ex.GetBaseException();
+            Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
+            Console.WriteLine("");
+        }
+
+        DisplayProgramHasTerminatedMessage();
+    }
+
+    internal static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
+    {
+        Console.WriteLine("");
+        Colorful.Console.WriteLine(cliEx.Message, Color.Red);
+        Console.WriteLine("");
+
+        if (debugMode)
+        {
+            Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
+            Console.WriteLine("");
+        }
+
+        DisplayProgramHasTerminatedMessage();
+    }
+
+    internal static void DisplayFinishingMessage(Stopwatch sw)
+    {
+        Colorful.Console.WriteLine($"\n{ConsoleMessageConstants.CompletedSuccessfully}", Color.GreenYellow);
+        Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs\n", Color.GreenYellow);
+    }
 
     internal static void DisplayProgramHasTerminatedMessage()
     {
-        Colorful.Console.WriteLine("Program has terminated", Color.Red);
+        Colorful.Console.WriteLine($"{ConsoleMessageConstants.ProgramTerminated}", Color.Red);
         Console.WriteLine("");
     }
 
@@ -16,12 +82,14 @@ public static class ConsoleMessages
         Console.WriteLine("");
         Colorful.Console.WriteLine(solutionFileEx.Message, Color.Red);
         Console.WriteLine("");
+
+        DisplayProgramHasTerminatedMessage();
     }
 
     internal static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, string logFileName, bool debugMode = false)
     {
         Console.WriteLine("");
-        Colorful.Console.WriteLine(ErrorsHasOccurredMessage, Color.Red);
+        Colorful.Console.WriteLine(ConsoleMessageConstants.ErrorsHasOccurredM, Color.Red);
         Console.WriteLine("");
 
         LogToFileIfDebugMode(ex, logFileName, debugMode);
@@ -91,19 +159,19 @@ public static class ConsoleMessages
 
     internal static void DisplayExecutionTimeMessage(Stopwatch sw)
     {
-        Colorful.Console.WriteLine($"execution time : {sw.Elapsed.TotalSeconds} secs", Color.GreenYellow);
+        Colorful.Console.WriteLine($"{ConsoleMessageConstants.ExecutionTime} {sw.Elapsed}",Color.Yellow);
     }
 
     internal static void DisplayCompletedSuccessfullyFinishingMessage()
     {
-        Colorful.Console.WriteLine("\nCompleted successfully\n", Color.GreenYellow);
+        Colorful.Console.WriteLine($"\n{ConsoleMessageConstants.CompletedSuccessfully}\n");
     }
 
     internal static void LogToFileIfDebugMode(ProjectNotFoundException ex, string logFileName, bool debugMode)
     {
         if (debugMode)
         {
-            Colorful.Console.WriteLine(CheckLogMessage, Color.Red);
+            Colorful.Console.WriteLine(ConsoleMessageConstants.CheckLog, Color.Red);
 
             LoggingManager.Instance.Initialize(logFileName, true);
 
