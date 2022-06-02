@@ -29,3 +29,12 @@ modify-project-version
 
     modify-project-version -p ../../../../../../nautilus/src/Nautilus.DataGeneratorCore/Nautilus.DataGeneratorCore.csproj -v 1.2.3.4
     '/Users/shahz.macbook/projects/synthphonic/nautilus-cli/src/nautilus/src/Nautilus.DataGeneratorCore/Nautilus.DataGeneratorCore.csproj'
+
+
+============================================
+project-property
+============================================
+dotnet nsmgr.dll project-property -p ~/projects/synthphonic/nautilus/src/Nautilus.IO/Nautilus.IO.csproj -t Authors:aa,bb,cc
+dotnet nsmgr.dll project-property -p ../../../../../../nautilus/src/Nautilus.IO/Nautilus.IO.csproj -t Authors:aa,bb,cc
+dotnet nsmgr.dll project-property -p ../../../../../../nautilus/Nautilus.IO.csproj -t Authors:aa,bb,cc
+

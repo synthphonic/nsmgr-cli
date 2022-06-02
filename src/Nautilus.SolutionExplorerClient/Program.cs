@@ -29,12 +29,13 @@ class Program
 
         var commands = new List<Type>
         {
-            typeof(UpdateNugetPackageCommand),
+            typeof(FindPackageCommand),
             typeof(ListProjectsCommand),
             typeof(ListNugetPackagesCommand),
-            typeof(ListProjectsTargetFrameworkCommand),
-            typeof(FindPackageCommand),
-            typeof(ModifyProjectVersionCommand)
+            typeof(ListProjectsTargetFrameworkCommand),            
+            typeof(ModifyProjectVersionCommand),
+            typeof(ProjectMetadataCommand),
+            typeof(UpdateNugetPackageCommand)
         };
 
         var parser = new Parser(with => with.HelpWriter = null);

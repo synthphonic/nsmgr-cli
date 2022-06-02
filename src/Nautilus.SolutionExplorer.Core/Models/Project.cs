@@ -1,10 +1,64 @@
 ﻿namespace Nautilus.SolutionExplorer.Core.Models;
 
+public interface IProjectElementValue
+{
+    void Create(string elementName, string elementValue);
+    void Remove(string elementName);
+}
+
+public class Test
+{
+    public void TestMethod()
+    {
+        var project = new Project(null);
+        project
+            .ParentElement("parentElement")
+            .Create("PackageVersion", "1.0.0-preview3");
+
+    }
+}
+
+internal class ProjectProperty : IProjectElementValue
+{
+    private string _parentElement;
+    private Project _project;
+
+    public ProjectProperty(Project project)
+    {
+        _project = project;
+    }
+
+    public void Create(string elementName, string elementValue)
+    {
+        var fileWriter = new FileWriterContext(_project);
+        fileWriter.AddOrUpdateElement(_parentElement, elementName, elementValue);
+    }
+
+    public void Remove(string elementName)
+    {
+        var fileWriter = new FileWriterContext(_project);
+        fileWriter.DeleteElement(_parentElement, elementName);
+    }
+
+    internal IProjectElementValue SetParent(string parentElement)
+    {
+        _parentElement = parentElement;
+
+        return this;
+    }
+}
+
 public class Project
 {
     public Project(ProjectMetadata metadata)
     {
         Metadata = metadata;
+    }
+
+    public IProjectElementValue ParentElement(string parentElement)
+    {
+        var projectProperty = new ProjectProperty(this);
+        return projectProperty.SetParent(parentElement);
     }
 
     public void Update(string elementName, string value)
