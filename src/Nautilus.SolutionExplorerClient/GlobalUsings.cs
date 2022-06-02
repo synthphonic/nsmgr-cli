@@ -20,6 +20,7 @@ global using Nautilus.SolutionExplorer.Core.Logging;
 global using Nautilus.SolutionExplorer.Core.Models;
 global using Nautilus.SolutionExplorer.Core.Models.Http;
 global using Nautilus.SolutionExplorer.Core.TestData;
+global using Nautilus.SolutionExplorer.Core.Utils;
 global using Nautilus.SolutionExplorerClient.Commands;
 global using Nautilus.SolutionExplorerClient.Constants;
 global using Nautilus.SolutionExplorerClient.Core;

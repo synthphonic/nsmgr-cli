@@ -15,12 +15,37 @@ public class CSharpNETCoreProjectFileWriter : IProjectFileWriter
         _projectFullPath = _projectMetadata.ProjectFullPath;
     }
 
-    private XmlDocument Load(string fileName)
+    private XmlDocument LoadXmlDoc()
     {
         var xmlDoc = new XmlDocument();
         xmlDoc.Load(_projectFullPath);
 
         return xmlDoc;
+    }
+
+    public void AddOrUpdateElement(string parentElement, string elementName, string value)
+    {
+        var allData = XElement.Load(_projectFullPath);
+        var parentXElements = allData.Elements(parentElement);
+        XElement parentXElement = null;
+
+        if (parentXElements != null)
+        {
+            parentXElement = parentXElements.FirstOrDefault();
+        }
+
+        var found = parentXElement.Descendants(elementName);
+        if (found.Any())
+        {
+            found.FirstOrDefault().Value = value;
+        }
+        else
+        {            
+            var newElement = new XElement(elementName, value);
+            parentXElement.Add(newElement);
+        }
+
+        allData.Save(_projectFullPath);
     }
 
     public void AddOrUpdateElement(string elementName, string value)
@@ -51,7 +76,7 @@ public class CSharpNETCoreProjectFileWriter : IProjectFileWriter
 
     public void UpdatePackageReference(string packageName, string newVersion)
     {
-        var xmlDoc = Load(_projectFullPath);
+        var xmlDoc = LoadXmlDoc();
 
         var xpathString = $"//PackageReference[@Include='{packageName}']";
         var node = xmlDoc.DocumentElement.SelectSingleNode(xpathString);
@@ -66,6 +91,25 @@ public class CSharpNETCoreProjectFileWriter : IProjectFileWriter
 
         // save edited content to original file
         xmlDoc.Save(_projectFullPath);
+    }
+
+    public void DeleteElement(string parentElement, string elementName)
+    {
+        var allData = XElement.Load(_projectFullPath);
+        var parentXElements = allData.Elements(parentElement);
+        XElement parentXElement = null;
+
+        if (parentXElements != null)
+        {
+            parentXElement = parentXElements.FirstOrDefault();
+        }
+
+        var found = parentXElement.Descendants(elementName);
+        if (found.Any())
+        {
+            found.FirstOrDefault().Remove();
+            allData.Save(_projectFullPath);
+        }
     }
     #endregion
 }

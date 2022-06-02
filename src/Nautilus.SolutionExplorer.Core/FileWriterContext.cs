@@ -34,8 +34,7 @@ public class FileWriterContext
 
     public bool UpdateNugetPackage(string packageName, string version)
     {
-        IProjectFileWriter fileWriter = null;
-
+        IProjectFileWriter fileWriter;
         if (_project.TargetFramework == ProjectTargetFramework.NETFramework20 ||
             _project.TargetFramework == ProjectTargetFramework.NETFramework35 ||
             _project.TargetFramework == ProjectTargetFramework.NETFramework40 ||
@@ -69,5 +68,19 @@ public class FileWriterContext
         var fileWriter = _fileWriters[_project.TargetFramework];
         fileWriter.Initialize(_project.Metadata);
         fileWriter.AddOrUpdateElement(elementName, value);
+    }
+
+    public void AddOrUpdateElement(string parentElement, string elementName, string value)
+    {
+        var fileWriter = _fileWriters[_project.TargetFramework];
+        fileWriter.Initialize(_project.Metadata);
+        fileWriter.AddOrUpdateElement(parentElement, elementName, value);
+    }
+
+    public void DeleteElement(string parentElement, string elementName)
+    {
+        var fileWriter = _fileWriters[_project.TargetFramework];
+        fileWriter.Initialize(_project.Metadata);
+        fileWriter.DeleteElement(parentElement, elementName);
     }
 }

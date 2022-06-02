@@ -53,5 +53,15 @@ public class CSharpNETFrameworkProjectFileWriter : IProjectFileWriter
     {
         throw new NotImplementedException();
     }
+
+    public void AddOrUpdateElement(string parentElement, string elementName, string value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteElement(string parentElement, string elementName)
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 }

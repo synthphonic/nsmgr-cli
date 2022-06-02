@@ -8,14 +8,24 @@ public class PackageConfigFileWriter : IProjectFileWriter
         // SHAH: TO IMPLEMENT IProjectFilePackageWriter interface
     }
 
+    public void UpdatePackageReference(string packageName, string newVersion)
+    {
+        // SHAH: TO IMPLEMENT IProjectFilePackageWriter interface
+    }
+
     public void AddOrUpdateElement(string elementName, string value)
     {
         throw new NotImplementedException();
     }
 
-    public void UpdatePackageReference(string packageName, string newVersion)
+    public void AddOrUpdateElement(string parentElement, string elementName, string value)
     {
-        // SHAH: TO IMPLEMENT IProjectFilePackageWriter interface
+        throw new NotImplementedException();
+    }
+
+    public void DeleteElement(string parentElement, string elementName)
+    {
+        throw new NotImplementedException();
     }
     #endregion
 }
