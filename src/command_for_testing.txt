@@ -35,6 +35,5 @@ modify-project-version
 project-property
 ============================================
 dotnet nsmgr.dll project-property -p ~/projects/synthphonic/nautilus/src/Nautilus.IO/Nautilus.IO.csproj -t Authors:aa,bb,cc
-dotnet nsmgr.dll project-property -p ../../../../../../nautilus/src/Nautilus.IO/Nautilus.IO.csproj -t Authors:aa,bb,cc
-dotnet nsmgr.dll project-property -p ../../../../../../nautilus/Nautilus.IO.csproj -t Authors:aa,bb,cc
-
+dotnet nsmgr.dll project-property -p ../../../../../../nautilus/src/Nautilus.IO/Nautilus.IO.csproj -m PropertyGroup:Authors=aa,bb,cc
+dotnet nsmgr.dll project-property -p ../../../../../../nautilus/Nautilus.IO.csproj -m PropertyGroup:Version=1.2.11.2001
