@@ -55,7 +55,7 @@ class ProjectMetadataCommand : CommandBase
                     new Example(DeleteExample, unParserSettings, new ProjectMetadataCommand
                     {
                         ProjectFilePath = platformPathSample,
-                        Metadata = "Authors",
+                        Metadata = "PropertyGroup:Authors",
                         RemoveMetadata = true
                     })
                 };
