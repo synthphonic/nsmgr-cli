@@ -1,4 +1,5 @@
-# Commands
+# nsmgr cli v2.1
+
 
 ## Available Commands
 [find-package](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#find-package)
@@ -15,6 +16,9 @@ Finds the conflicting nuget package versions installed in the solution.
 
 [modify-project-version](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#modify-project-version)
 Modify a particular project 'Version' element accordingly.
+
+[project-metadata](https://github.com/synthphonic/nautilus-cli/edit/FEATURES/44-ability-to-addupdatedelete-csproj-file-metadata-related-to-nuget-package-creation/docs/COMMANDS.md#project-metadata)
+Add/Delete/Update xml element or csproj metadata in project file.
 
 ## find-package
 Usage:
@@ -61,5 +65,25 @@ Usage:
 - **-b, --backup**. Prior to version change, the command should backup the original version number.
 - **-r, --restore-version**.  Restore the version number to its original state.
 
+## project-metadata
+Usage:
+**Example 1: Add/Update the 'Authors' project metadata**
+```csharp
+nsmgr project-metadata -m PropertyGroup:Authors=aa,bb,cc -p /projects/myproject/xxx.csproj
+```
+**Example 2: Add/Update the 'Version' project metadata**
+```csharp
+nsmgr project-metadata -m PropertyGroup:Version=1.0.0.200 -p /projects/myproject/xxx.csproj
+```
+
+**Example: Delete project metadata**
+```csharp
+nsmgr project-metadata -r -m PropertyGroup:Authors -p /projects/myproject/xxx.csproj
+```
+
+**Command Parameters**
+- **-p, --project-path**. Required. The full file path of a given csproj file name.
+- **-m, --xml-metadata**. Required. The fully qualified metadata or xml element name to operate on.
+
 #
-**NOTE:** All commands has ***--debug*** switch, with default value to false. If this option is turned on, output errors will be written to a log file and stored on the user's _Desktop_ location
+**NOTE:** All commands has ***--debug*** switch, with default value to false. If this option is turned on, output errors will be displayed to the console
