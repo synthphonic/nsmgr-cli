@@ -1,4 +1,4 @@
-# What is Nautilus CLI 
+# What is NSMGR CLI Tool
 My own personal code playground to implement simple operations on csproj files with relation to nuget packages
 Nautilus CLI is (well from the name) is a command line tool.
 Just imagine if you have more than 10 projects (*in my case i have several solutions that have 20-40 projects in it*) in a Visual Studio solution, and you want to only update specific nuget packages. It will be a nightmare! 
