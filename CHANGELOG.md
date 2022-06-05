@@ -1,9 +1,16 @@
 
 # Change Log
 
+## Version 2.1.0 Preview 1
+* Release date: June 6, 2022
+* Release status: PRE-RELEASE
+
 ## Version 1.1.0
 * Release date: September 14, 2019
 * Release status: PRE-RELEASE
+
+### What's new in 2.1.0 Preview 1
+TBA
 
 ### What's new in 1.11.0
 * `find-package`
