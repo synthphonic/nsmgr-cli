@@ -34,6 +34,7 @@ class Program
             typeof(ListNugetPackagesCommand),
             typeof(ListProjectsTargetFrameworkCommand),            
             typeof(ModifyProjectVersionCommand),
+            typeof(NugetMetadataCommand),
             typeof(ProjectMetadataCommand),
             typeof(UpdateNugetPackageCommand)
         };
@@ -59,8 +60,6 @@ class Program
             _sw.Stop();
 
             Console.WriteLine();
-            //ConsoleOutputLayout.DisplayExecutionTimeMessage(_sw);
-            //Console.WriteLine($"Completed in {_sw.Elapsed}");
             Console.WriteLine();
         }
         catch (ProjectNotFoundException prjNotFoundEx)
