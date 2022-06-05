@@ -7,9 +7,6 @@ Perhaps this tool can help you!
 
 Oh btw, There's always room for improvements, after all we are just human beings. We do our best. If there bugs, we fix. 
 
-## Nautilus CLI v1.1.0.0 
-v1.1 works for For **Windows x64** and **MacOS X x64**. I haven't tested it on **Linux** as I have no use for it just yet. So if anyone who would like to go ahead and test it, be my guest... :)
-
 ## Available commands
 Refer to [COMMANDS.md](https://github.com/synthphonic/nautilus-cli/blob/develop/develop-main/docs/COMMANDS.md) for available commands
 
@@ -24,6 +21,6 @@ A lot has changed in **v2.1** since it was first published. For example cli exec
 
 |Version| Status |
 |--|--|
-|nsmgr-v2.1-windows-X64 | Not released yet  |
-|nsmgr-v2.1-macosx-X64 | Not released yet  |
-|nsmgr-v2.1-macosx-M1 | Future |
+|nsmgr-v2.1.0-win-x64 Preview 1 | Released |
+|nsmgr-v2.1.0-macosx-x64 Preview 1 | Released |
+|nsmgr-v2.1-macosx-M1 | No Timeline |
