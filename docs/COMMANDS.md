@@ -1,3 +1,5 @@
+
+
 # nsmgr cli v2.1
 
 
@@ -17,13 +19,16 @@ Finds the conflicting nuget package versions installed in the solution.
 [modify-project-version](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#modify-project-version)
 Modify a particular project 'Version' element accordingly.
 
+[nuget-metadata](https://github.com/synthphonic/nautilus-cli/blob/33-documentation-update-readmemd-to-include-modify-project-version-command/COMMANDS.md#nuget-metadata)
+Add/Delete nuget metadata in a particular project.
+
 [project-metadata](https://github.com/synthphonic/nautilus-cli/edit/FEATURES/44-ability-to-addupdatedelete-csproj-file-metadata-related-to-nuget-package-creation/docs/COMMANDS.md#project-metadata)
 Add/Delete/Update xml element or csproj metadata in project file.
 
 ## find-package
 Usage:
 ```csharp
-./nsmgr find-package --package Xamarin.Forms --solutionfile /users/itsme/xxx.sln
+nsmgr find-package --package Xamarin.Forms --solutionfile /users/itsme/xxx.sln
 ```
   - solutionfile :   *Required. The full file path to the .sln file*
   - package          :   *Required. The nuget package name to find.*
@@ -31,7 +36,7 @@ Usage:
 ## list-projects
 Usage:
 ```csharp
-./nsmgr list-projects --solutionfile /users/itsme/xxx.sln
+nsmgr list-projects --solutionfile /users/itsme/xxx.sln
 ```
   - solutionfile : *Required. The full file path to the .sln file.*
   - projects-only   : *Process project files only and ignore the rest.*
@@ -41,7 +46,7 @@ Usage:
 ## list-packages
 Usage:
 ```csharp
-./nsmgr list-packages --solutionfile /users/itsme/xxx.sln
+nsmgr list-packages --solutionfile /users/itsme/xxx.sln
 ```
   - solutionfile : *Required. The full file path to the .sln file*
 
@@ -49,7 +54,7 @@ Usage:
 ## update-nuget-package
 Usage:
 ```csharp
-./nsmgr update-nuget-package --package Xamarin.Forms --project MyProject.Name --solutionfile /users/itsme/xxx.sln --version 3.6.1.21221121
+nsmgr update-nuget-package --package Xamarin.Forms --project MyProject.Name --solutionfile /users/itsme/xxx.sln --version 3.6.1.21221121
 ```
   - solutionfile : *Required. The full file path to the .sln file.*
   - project : *Required. The name of the project to update the nuget packages involved. Use 'all' to upgrade all projects*
@@ -58,12 +63,27 @@ Usage:
 ## modify-project-version
 Usage:
 ```csharp
-./nsmgr modify-project-version -p <project path> -v <newversion> Xamarin.Forms --project MyProject.Name --solutionfile /users/itsme/xxx.sln --version 3.6.1.21221121
+nsmgr modify-project-version -p <project path> -v <newversion> Xamarin.Forms --project MyProject.Name --solutionfile /users/itsme/xxx.sln --version 3.6.1.21221121
 ```
 - **-p, --project-path**. Required. The full file path of a given csproj file name.
 - **-v, --version-number**. Required. The new version number.
 - **-b, --backup**. Prior to version change, the command should backup the original version number.
 - **-r, --restore-version**.  Restore the version number to its original state.
+
+## nuget-metadata
+Usage:
+**Example 1: Add nuget metadata for a project**
+```csharp
+nsmgr nuget-metadata --project-path /projects/myproject/xxx.csproj
+```
+
+**Example 2: Delete nuget metadata for a project**
+```csharp
+nsmgr nuget-metadata --project-path /projects/myproject/xxx.csproj --remove
+```
+
+- **-p, --project-path**    Required. The full file path of a given csproj file name.
+- **-r, --remove**          (Default: false) Remove nuget package specific metadata from the project file
 
 ## project-metadata
 Usage:
