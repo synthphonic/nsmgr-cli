@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ReleaseVersion>2.1.0</ReleaseVersion>
+    <AssemblyName>Nautilus.Cli.Client</AssemblyName>
   </PropertyGroup>
 
 </Project>
