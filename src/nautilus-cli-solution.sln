@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cli-playground", "cli-playg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Archived", "Archived", "{141116B1-A10D-4147-8065-C1689257F0BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nsmgr", "Nautilus.Cli.Client\nsmgr.csproj", "{54407940-7580-41D4-B560-DB5910BFC3F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautilus.Cli.Client", "Nautilus.Cli.Client\Nautilus.Cli.Client.csproj", "{54407940-7580-41D4-B560-DB5910BFC3F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
