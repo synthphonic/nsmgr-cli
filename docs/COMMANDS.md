@@ -17,7 +17,7 @@ $ nsmgr package metadata remove --project ~/projects/myproject/xxx.csproj
 
 $ nsmgr project list --solution ~/users/itsme/xxx.sln
 
-$ nsmgr project version update -project <project-name> --new-version <newversion> --solution /projects/mysolution.sln`--backup --restore
+$ nsmgr project version update myproject.csproj --version 1.2.3.4 --solution /projects/mysolution.sln`--backup --restore
 
 NOTES:
 * *--backup - optional argument*
