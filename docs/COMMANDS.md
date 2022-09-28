@@ -1,5 +1,3 @@
-
-
 # nsmgr cli v3
 
 
