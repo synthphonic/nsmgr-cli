@@ -5,7 +5,7 @@
 
 ## Available Commands
 ## `package Command`
-`$ nsmgr package find --name Newtonsoft.Json`
+$ nsmgr package find --name Newtonsoft.Json
 
 `$ nsmgr package list --solution ~/projects/myproject.sln`
 
