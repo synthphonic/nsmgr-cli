@@ -1,6 +1,6 @@
 ﻿internal static class CommandGeneratorExtensions
 {
-    internal static void BuildPackageCommand(this RootCommand rootCommand)
+    internal static void BuildNugetPackageCommand(this RootCommand rootCommand)
     {
         //
         // Parent: package command
@@ -62,5 +62,55 @@
             Console.WriteLine($"Solution Path   : {solutionFileInfo.Name} : [{solutionFileInfo.Exists}]");
 
         }, nugetPackageNameOption, nugetPackageVersionOption, projectNameOption, solutionPathOption);
+    }
+
+    internal static void BuildProjectCommand(this RootCommand rootCommand)
+    {
+        //
+        // Parent: project command
+        //
+        var projectCommand = new Command("project", "Project or csproj command");
+        rootCommand.Add(projectCommand);
+
+        //
+        // project list
+        //  --solution /path/to/the/solution/file/mysolution.sln
+        //
+        var project_list_command = new Command("list", "Show all projects in a solution");
+        var solution_option = OptionGenerator.CreateOption<FileInfo>("--solution", "The solution path", "-s", true);
+        project_list_command.AddOption(solution_option);
+        projectCommand.Add(project_list_command);
+
+        //
+        // project update version 1.2.3.4
+        //  --project myproject.csproj
+        //  --solution /path/to/the/solution/file/mysolution.sln
+        //  --backup (optional)
+        //  --restore (optional)
+        //
+
+        var updateCommand = new Command("update", "Update command");
+        var versionCommand = new Command("version", "The version to use");
+        var projectOption = OptionGenerator.CreateOption<string>("--project", "The project name to target", "-p", true);
+        var solutionOption = OptionGenerator.CreateOption<FileInfo>("--solution", "The solution path", "-s", true);
+        var backupOption = OptionGenerator.CreateOption<bool>("--backup", "Backup file before version is modified", "-b");
+        var restoreOption = OptionGenerator.CreateOption<bool>("--restore", "Restore file to its original state before modification", "-r");
+        var argument = new Argument<string>();
+        argument.Name = "version number";
+
+        versionCommand.AddArgument(argument);
+        versionCommand.AddOption(projectOption);
+        versionCommand.AddOption(solutionOption);
+        versionCommand.AddOption(backupOption);
+        versionCommand.AddOption(restoreOption);
+        versionCommand.SetHandler((solutionFileInfo, isBackup, isRestore) =>
+        {
+            Console.WriteLine($"Solution: {solutionFileInfo.Name} : [{solutionFileInfo.Exists}] : backup {isBackup} , restore {isRestore}");
+
+        }, solutionOption, backupOption, restoreOption);
+
+        updateCommand.Add(versionCommand);
+
+        projectCommand.Add(updateCommand);
     }
 }
