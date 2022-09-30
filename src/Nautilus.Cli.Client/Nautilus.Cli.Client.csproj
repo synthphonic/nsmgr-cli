@@ -26,13 +26,26 @@
     <None Remove="System.CommandLine" />
     <None Remove="Supports\" />
     <None Remove="Supports\Tools\" />
+    <None Remove="Commands\" />
+    <None Remove="OutputLayout\" />
+    <None Remove="Colorful.Console" />
+    <None Remove="Constants\" />
+    <None Remove="morelinq" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppStartup\" />
     <Folder Include="Supports\" />
     <Folder Include="Supports\Tools\" />
+    <Folder Include="Commands\" />
+    <Folder Include="OutputLayout\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    <PackageReference Include="Colorful.Console" Version="1.2.15" />
+    <PackageReference Include="morelinq" Version="3.3.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nautilus.SolutionExplorer.Core\Nautilus.SolutionExplorer.Core.csproj" />
   </ItemGroup>
 </Project>
