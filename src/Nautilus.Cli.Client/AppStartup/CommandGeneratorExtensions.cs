@@ -4,9 +4,9 @@
     {
         var nugetPackageNameOption = OptionGenerator.CreateOption<string>(name: "--name", description: "The nuget package name to find. e.g: Newtonsoft.Json", alias: "-n", isRequired: true);
         var nugetPackageVersionOption = OptionGenerator.CreateOption<string>(name: "--version", description: "The nuget package version to target", alias: "-v", isRequired: true);
-        var projectNameOption = OptionGenerator.Common!.ProjectPathOption();
+        var projectNameOption = OptionGenerator.Common!.ProjectNameOption();
         var solutionPathOption = OptionGenerator.Common.SolutionOption();
-        var showErrorOption = OptionGenerator.CreateOption<bool>(name: "--show-error", description: "Display full error", defaultValue: false, alias: "-e", isHidden: true);
+        var showFullErrorOption = OptionGenerator.CreateOption<bool>(name: "--show-error", description: "Display full error", defaultValue: false, alias: "-e", isHidden: true);
 
         //
         // Parent: package command
@@ -31,7 +31,7 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException);
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
@@ -40,7 +40,7 @@
                 Environment.Exit(-1);
             }
 
-        }, solutionPathOption, nugetPackageNameOption, showErrorOption);
+        }, solutionPathOption, nugetPackageNameOption, showFullErrorOption);
 
         packageCommand.Add(findPackageCommand);
 
@@ -49,7 +49,7 @@
         //
         var listPackageSubCommand = new Command("list", "List out all projects that exists under a solution (.sln)");
         listPackageSubCommand.AddOption(solutionPathOption);
-        listPackageSubCommand.AddOption(showErrorOption);
+        listPackageSubCommand.AddOption(showFullErrorOption);
         listPackageSubCommand.SetHandler(async (solutionFileInfo, showFullError) =>
         {
             try
@@ -59,7 +59,7 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException);
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@
                 ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
                 Environment.Exit(-1);
             }
-        }, solutionPathOption, showErrorOption);
+        }, solutionPathOption, showFullErrorOption);
 
         packageCommand.Add(listPackageSubCommand);
 
@@ -85,14 +85,30 @@
         updatePackageSubCommand.AddOption(nugetPackageVersionOption);
         updatePackageSubCommand.AddOption(projectNameOption);
         updatePackageSubCommand.AddOption(solutionPathOption);
-        updatePackageSubCommand.SetHandler((packageName, packageVersion, projectName, solutionFileInfo, showFullError) =>
+        updatePackageSubCommand.SetHandler(async (packageName, packageVersion, projectName, solutionFile, showFullError) =>
         {
             Console.WriteLine($"Package Name    : {packageName}");
             Console.WriteLine($"Version         : {packageVersion}");
             Console.WriteLine($"Project Name    : {projectName}");
-            Console.WriteLine($"Solution Path   : {solutionFileInfo.Name} : [{solutionFileInfo.Exists}]");
+            Console.WriteLine($"Solution Path   : {solutionFile.Name} : [{solutionFile.Exists}]");
 
-        }, nugetPackageNameOption, nugetPackageVersionOption, projectNameOption, solutionPathOption, showErrorOption);
+            try
+            {
+                var cmd = new UpdateNugetPackageCommand(solutionFile, projectName, packageName, packageVersion);
+                await cmd.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
+
+        }, nugetPackageNameOption, nugetPackageVersionOption, projectNameOption, solutionPathOption, showFullErrorOption);
     }
 
     internal static void BuildProjectCommand(this RootCommand rootCommand)
