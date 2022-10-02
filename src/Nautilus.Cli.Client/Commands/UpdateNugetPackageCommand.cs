@@ -43,7 +43,7 @@ public class UpdateNugetPackageCommand
         await Run();
 
         var findPackage = new FindPackageCommand(solution.SolutionFile, _nugetPackageName, true);
-        findPackage.Execute();
+        await findPackage.ExecuteAsync();
         var results = findPackage.Results;
 
         //

@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.Cli.Client.Commands;
 
-internal sealed class FindPackageCommand
+internal sealed class FindPackageCommand : CommandBase
 {
     private readonly bool _returnResults;
 
@@ -11,12 +11,12 @@ internal sealed class FindPackageCommand
         _returnResults = returnResults;
     }
 
-    public void Execute()
+    public override async Task ExecuteAsync()
     {
-        Run().Wait();
+        await RunAsync();
     }
 
-    private async Task Run()
+    private async Task RunAsync()
     {
 
         Colorful.Console.WriteLine();
