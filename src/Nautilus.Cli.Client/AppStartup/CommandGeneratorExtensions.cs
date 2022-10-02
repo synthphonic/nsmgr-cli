@@ -32,12 +32,12 @@
         var listPackageSubCommand = new Command("list", "List out all projects that exists under a solution (.sln)");
         listPackageSubCommand.AddOption(solutionPathOption);
         listPackageSubCommand.AddOption(showErrorOption);
-        listPackageSubCommand.SetHandler((solutionFileInfo, showFullError) =>
+        listPackageSubCommand.SetHandler(async (solutionFileInfo, showFullError) =>
         {
             try
             {
                 var findPackageCmd = new ListNugetPackagesCommand(solutionFileInfo, false, showFullError);
-                findPackageCmd.Execute();
+                await findPackageCmd.ExecuteAsync();
             }
             catch (CommandException cmdException)
             {
