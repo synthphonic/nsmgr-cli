@@ -8,11 +8,14 @@ public static class SolutionExtensions
 
         foreach (var project in solution.Projects)
         {
-            var packages = project.Packages.ToList();
-            foreach (var package in packages)
+            if (project.Packages is not null)
             {
-                var extended = new NugetPackageReferenceExtended(project, package);
-                flatNugetPackageList.Add(extended);
+                var packages = project.Packages.ToList();
+                foreach (var package in packages)
+                {
+                    var extended = new NugetPackageReferenceExtended(project, package);
+                    flatNugetPackageList.Add(extended);
+                }
             }
         }
 
