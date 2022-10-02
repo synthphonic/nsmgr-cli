@@ -11,6 +11,7 @@ global using Nautilus.Cli.Client.Commands;
 global using Nautilus.Cli.Client.Constants;
 global using Nautilus.Cli.Client.Supports.Tools;
 global using Nautilus.SolutionExplorer.Core;
+global using Nautilus.SolutionExplorer.Core.Abstraction;
 global using Nautilus.SolutionExplorer.Core.Components;
 global using Nautilus.SolutionExplorer.Core.Components.Http;
 global using Nautilus.SolutionExplorer.Core.Configurations.Enums;
@@ -22,4 +23,5 @@ global using Nautilus.SolutionExplorer.Core.Models;
 global using Nautilus.SolutionExplorer.Core.Models.Http;
 global using Nautilus.SolutionExplorer.Core.Utils;
 global using Nautilus.SolutionExplorerClient.OutputLayout;
+
 
