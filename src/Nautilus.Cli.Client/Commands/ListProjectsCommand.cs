@@ -7,7 +7,7 @@ internal sealed class ListProjectsCommand : CommandBase
     private readonly bool _showNugetUpdates;
     private readonly bool _showPreReleaseNugetPackages;
 
-    public ListProjectsCommand(FileInfo solutionFile, bool projectsOnly, string nugetPackage, bool showNugetUpdates, bool showPreReleaseNugetPackages, bool returnResults = false)
+    public ListProjectsCommand(FileInfo solutionFile, bool projectsOnly, bool showNugetUpdates, bool showPreReleaseNugetPackages, bool returnResults = false)
     {
         _solutionFile = solutionFile;
         _projectsOnly = projectsOnly;
@@ -30,7 +30,6 @@ internal sealed class ListProjectsCommand : CommandBase
         {
             solution = slnFileReader.Read();
 
-            Colorful.Console.WriteLine();
             Colorful.Console.Write($"{CliStringFormatter.Format15}", "Solution ");
             Colorful.Console.WriteLine($": {solution.SolutionFile.Name}", Color.PapayaWhip);
             Colorful.Console.Write("Total Projects : ");

@@ -135,16 +135,15 @@
         var projectListCommand = new Command("list", "Show all projects in a solution");
         projectListCommand.AddOption(SolutionPathOption);
         projectListCommand.AddOption(ShowProjectOnlyOption);
-        projectListCommand.AddOption(NugetPackageNameOption);
         projectListCommand.AddOption(ShowNugetPackageUpdateOption);
         projectListCommand.AddOption(ShowFullErrorOption);
         projectListCommand.AddOption(ShowPreReleasePackageOption);
         projectCommand.Add(projectListCommand);
-        projectListCommand.SetHandler(async (solutionFile, showProjectOnly, packageName, showNugetPackageUpdate, showFullError, showPreReleasePackage) =>
+        projectListCommand.SetHandler(async (solutionFile, showProjectOnly, showNugetPackageUpdate, showFullError, showPreReleasePackage) =>
         {
             try
             {
-                var command = new ListProjectsCommand(solutionFile, showProjectOnly, packageName, showNugetPackageUpdate, showPreReleasePackage);
+                var command = new ListProjectsCommand(solutionFile, showProjectOnly, showNugetPackageUpdate, showPreReleasePackage);
                 await command.ExecuteAsync();
             }
             catch (CommandException cmdException)
@@ -157,7 +156,7 @@
                 ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
                 Environment.Exit(-1);
             }
-        }, SolutionPathOption, ShowProjectOnlyOption, NugetPackageNameOption, ShowNugetPackageUpdateOption, ShowFullErrorOption, ShowPreReleasePackageOption);
+        }, SolutionPathOption, ShowProjectOnlyOption, ShowNugetPackageUpdateOption, ShowFullErrorOption, ShowPreReleasePackageOption);
 
         //
         // project update version 1.2.3.4
