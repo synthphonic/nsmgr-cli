@@ -6,7 +6,7 @@
         var nugetPackageVersionOption = OptionGenerator.CreateOption<string>(name: "--version", description: "The nuget package version to target", alias: "-v", isRequired: true);
         var projectNameOption = OptionGenerator.Common!.ProjectPathOption();
         var solutionPathOption = OptionGenerator.Common.SolutionOption();
-        var showErrorOption = OptionGenerator.CreateOption<bool>(name: "--show-error", description: "Display full error", alias: "-e", isHidden: false);
+        var showErrorOption = OptionGenerator.CreateOption<bool>(name: "--show-error", description: "Display full error", defaultValue: false, alias: "-e", isHidden: true);
 
         //
         // Parent: package command
@@ -18,11 +18,29 @@
         // package find --name <name>
         //
         var findPackageCommand = new Command("find", "Finds the project(s) that depends on the intended nuget package");
+        findPackageCommand.AddOption(solutionPathOption);
         findPackageCommand.AddOption(nugetPackageNameOption);
-        findPackageCommand.SetHandler((nugetPackageName) =>
+        findPackageCommand.SetHandler(async (solutionFile, nugetPackageName, showFullError) =>
         {
-            Console.WriteLine($"trying to find {nugetPackageName}");
-        }, nugetPackageNameOption);
+            //Console.WriteLine($"trying to find {nugetPackageName}");
+
+            try
+            {
+                var command = new FindPackageCommand(solutionFile, nugetPackageName);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
+
+        }, solutionPathOption, nugetPackageNameOption, showErrorOption);
 
         packageCommand.Add(findPackageCommand);
 
@@ -128,7 +146,7 @@
 
     private static void BuildProjectMetadataCommand(Command? parentCommand)
     {
-        var metadataOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description:  "The fully qualified xml metadata element to target", alias: "-x", isRequired: true);
+        var metadataOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description: "The fully qualified xml metadata element to target", alias: "-x", isRequired: true);
         var projectPathOption = OptionGenerator.Common!.ProjectPathOption();
 
         //
