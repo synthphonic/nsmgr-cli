@@ -7,6 +7,7 @@ global using System.Linq;
 global using System.Reflection;
 global using System.Threading.Tasks;
 global using MoreLinq;
+global using Nautilus.Cli.Client.Commands;
 global using Nautilus.Cli.Client.Constants;
 global using Nautilus.Cli.Client.Supports.Tools;
 global using Nautilus.SolutionExplorer.Core;
@@ -21,3 +22,4 @@ global using Nautilus.SolutionExplorer.Core.Models;
 global using Nautilus.SolutionExplorer.Core.Models.Http;
 global using Nautilus.SolutionExplorer.Core.Utils;
 global using Nautilus.SolutionExplorerClient.OutputLayout;
+

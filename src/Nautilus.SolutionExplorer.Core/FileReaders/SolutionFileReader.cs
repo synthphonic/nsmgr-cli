@@ -3,12 +3,12 @@
 public class SolutionFileReader
 {
     private readonly bool _processProjectsOnly;
-    private readonly string _solutionFileName;
+    private readonly FileInfo _solutionFile;
     private readonly IList<ProjectMetadata> _projectMetadataList;
 
-    public SolutionFileReader(string solutionFileName, bool processProjectsOnly = false)
+    public SolutionFileReader(FileInfo solutionFile, bool processProjectsOnly = false)
     {
-        _solutionFileName = solutionFileName;
+        _solutionFile = solutionFile;
         _processProjectsOnly = processProjectsOnly;
 
         _projectMetadataList = new List<ProjectMetadata>();
@@ -16,9 +16,9 @@ public class SolutionFileReader
 
     public Solution Read()
     {
-        if (!File.Exists(_solutionFileName))
+        if (!_solutionFile.Exists)
         {
-            throw new SolutionFileException($"Solution file '{_solutionFileName}' is invalid", "solutionFileName");
+            throw new SolutionFileException($"Solution file '{_solutionFile.FullName}' is invalid", "solutionFileName");
         }
 
         var solutionFileContents = ReadSolutionFile();
@@ -28,11 +28,11 @@ public class SolutionFileReader
 
         foreach (var item in searchResults)
         {
-            var parentPath = FileUtil.GetFullPath(_solutionFileName);
-            ExtractProjectMetadata(item, _solutionFileName);
+            //var parentPath = FileUtil.GetFullPath(_solutionFile.Name);
+            ExtractProjectMetadata(item, _solutionFile.FullName);
         }
 
-        var solution = new Solution(_solutionFileName);
+        var solution = new Solution(_solutionFile);
 
         foreach (var metadata in _projectMetadataList)
         {
@@ -65,7 +65,7 @@ public class SolutionFileReader
     {
         var fileContents = new List<string>();
 
-        using (var sr = new StreamReader(_solutionFileName, Encoding.UTF8))
+        using (var sr = new StreamReader(_solutionFile.FullName, Encoding.UTF8))
         {
             while (string.IsNullOrEmpty(sr.ReadLine()))
             {

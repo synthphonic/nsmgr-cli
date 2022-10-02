@@ -8,14 +8,14 @@ namespace Nautilus.Cli.Client.Commands;
 
 internal sealed class ListProjectsCommand
 {
-    private readonly string _solutionFileName;
+    private readonly FileInfo _solutionFile;
     private readonly bool _projectsOnly;
     private readonly bool _showNugetUpdates;
     private readonly bool _showPreReleaseNugetPackages;
 
-    public ListProjectsCommand(string solutionFileName, bool projectsOnly, string nugetPackage, bool showNugetUpdates, bool showPreReleaseNugetPackages, bool returnResults = false)
+    public ListProjectsCommand(FileInfo solutionFile, bool projectsOnly, string nugetPackage, bool showNugetUpdates, bool showPreReleaseNugetPackages, bool returnResults = false)
     {
-        _solutionFileName = solutionFileName;
+        _solutionFile = solutionFile;
         _projectsOnly = projectsOnly;
         _showNugetUpdates = showNugetUpdates;
         _showPreReleaseNugetPackages = showPreReleaseNugetPackages;
@@ -28,7 +28,7 @@ internal sealed class ListProjectsCommand
 
     private async Task Run()
     {
-        var slnFileReader = new SolutionFileReader(_solutionFileName, _projectsOnly);
+        var slnFileReader = new SolutionFileReader(_solutionFile, _projectsOnly);
         Solution solution = null!;
 
         #region Solution file reader execution section
@@ -38,7 +38,7 @@ internal sealed class ListProjectsCommand
 
             Colorful.Console.WriteLine();
             Colorful.Console.Write($"{CliStringFormatter.Format15}", "Solution ");
-            Colorful.Console.WriteLine($": {solution.SolutionFileName}", Color.PapayaWhip);
+            Colorful.Console.WriteLine($": {solution.SolutionFile.Name}", Color.PapayaWhip);
             Colorful.Console.Write("Total Projects : ");
             Colorful.Console.WriteLine($"{solution.Projects.Count()}\n", Color.PapayaWhip);
 

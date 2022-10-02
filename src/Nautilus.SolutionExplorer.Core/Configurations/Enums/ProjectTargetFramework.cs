@@ -21,6 +21,7 @@ public enum ProjectTargetFramework
     NETFramework48,
     NET5,
     NET6,
+    NET7,
     NativeiOS,
     NativeiOSBinding,
     NativeAndroid,

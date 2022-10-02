@@ -22,7 +22,7 @@ internal class ListProjectsTargetFrameworkCommand
 
     private Task Run()
     {
-        var slnFileReader = new SolutionFileReader(_solutionFile!.Name, true);
+        var slnFileReader = new SolutionFileReader(_solutionFile, true);
         Solution solution;
 
         #region Solution file reader execution section
@@ -32,7 +32,7 @@ internal class ListProjectsTargetFrameworkCommand
 
             Colorful.Console.WriteLine();
             Colorful.Console.Write($"{CliStringFormatter.Format15}", "Solution ");
-            Colorful.Console.WriteLine($": {solution.SolutionFileName}", Color.PapayaWhip);
+            Colorful.Console.WriteLine($": {solution.SolutionFile}", Color.PapayaWhip);
             Colorful.Console.Write("Total Projects : ");
             Colorful.Console.WriteLine($"{solution.Projects.Count()}\n", Color.PapayaWhip);
 

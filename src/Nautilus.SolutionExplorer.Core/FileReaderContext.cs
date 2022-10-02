@@ -54,6 +54,7 @@ public class FileReaderContext
             [ProjectTargetFramework.NETCoreApp31] = new CSharpNETCoreProjectFileReader(),
             [ProjectTargetFramework.NET5] = new CSharpNETCoreProjectFileReader(),
             [ProjectTargetFramework.NET6] = new CSharpNETCoreProjectFileReader(),
+            [ProjectTargetFramework.NET7] = new CSharpNETCoreProjectFileReader(),
             [ProjectTargetFramework.NativeiOS] = new CSharpNETFrameworkProjectFileReader(),
             [ProjectTargetFramework.NativeiOSBinding] = new CSharpNETFrameworkProjectFileReader(),
             [ProjectTargetFramework.NativeAndroid] = new CSharpNETFrameworkProjectFileReader(),
@@ -103,7 +104,7 @@ public class FileReaderContext
             var exceptionMessage = new StringBuilder();
             exceptionMessage.AppendFormat($"File cannot be read for '{_metadata.ProjectFileName}'\n");
             exceptionMessage.AppendFormat($"Reason:{keyNotFoundEx.Message}");
-            throw new CLIException(exceptionMessage.ToString(), keyNotFoundEx);
+            throw new FileException(exceptionMessage.ToString(), keyNotFoundEx);
 
         }
         catch (FileNotFoundException fileNotFoundEx)
@@ -111,14 +112,15 @@ public class FileReaderContext
             var exceptionMessage = new StringBuilder();
             exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
             exceptionMessage.AppendFormat($"Reason:{fileNotFoundEx.Message}");
-            throw new CLIException(exceptionMessage.ToString(), fileNotFoundEx);
+            throw new FileException(exceptionMessage.ToString(), fileNotFoundEx);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            var exceptionMessage = new StringBuilder();
-            exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
-            exceptionMessage.AppendFormat($"Reason:{ex.Message}");
-            throw new CLIException(exceptionMessage.ToString(), ex);
+            throw;
+            //var exceptionMessage = new StringBuilder();
+            //exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
+            //exceptionMessage.AppendFormat($"Reason:{ex.Message}");
+            //throw new Exception(exceptionMessage.ToString(), ex);
         }
     }
 
@@ -138,7 +140,7 @@ public class FileReaderContext
             var exceptionMessage = new StringBuilder();
             exceptionMessage.AppendFormat($"File cannot be read for '{_metadata.ProjectFileName}'\n");
             exceptionMessage.AppendFormat($"Reason:{keyNotFoundEx.Message}");
-            throw new CLIException(exceptionMessage.ToString(), keyNotFoundEx);
+            throw new FileException(exceptionMessage.ToString(), keyNotFoundEx);
 
         }
         catch (FileNotFoundException fileNotFoundEx)
@@ -146,14 +148,15 @@ public class FileReaderContext
             var exceptionMessage = new StringBuilder();
             exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
             exceptionMessage.AppendFormat($"Reason:{fileNotFoundEx.Message}");
-            throw new CLIException(exceptionMessage.ToString(), fileNotFoundEx);
+            throw new FileException(exceptionMessage.ToString(), fileNotFoundEx);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            var exceptionMessage = new StringBuilder();
-            exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
-            exceptionMessage.AppendFormat($"Reason:{ex.Message}");
-            throw new CLIException(exceptionMessage.ToString(), ex);
+            throw;
+            //var exceptionMessage = new StringBuilder();
+            //exceptionMessage.AppendFormat($"This error shouldn't have happened! Something went seriously wrong at '{_metadata.ProjectFileName}'\n");
+            //exceptionMessage.AppendFormat($"Reason:{ex.Message}");
+            //throw new CLIException(exceptionMessage.ToString(), ex);
         }
     }
 

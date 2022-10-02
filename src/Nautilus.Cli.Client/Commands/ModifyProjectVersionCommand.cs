@@ -30,7 +30,7 @@ internal sealed class ModifyProjectVersionCommand
         project.Read();
 
         if (_restoreVersionNumber && _backup)
-            throw new CLIException("Restore and Backup switch cannot be used together in a single command line usage.");
+            throw new CommandException("Restore and Backup switch cannot be used together in a single command line usage.");
 
         if (_restoreVersionNumber)
         {

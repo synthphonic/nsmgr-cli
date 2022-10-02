@@ -4,12 +4,12 @@ public class Solution
 {
     private IList<Project> _projects;
 
-    public Solution(string solutionFullPath)
+    public Solution(FileInfo solutionFile)
     {
-        SolutionFullPath = solutionFullPath;
-        SolutionFileName = FileUtil.GetFileName(solutionFullPath);
-
+        //SolutionFullPath = solutionFullPath;
+        //SolutionFileName = FileUtil.GetFileName(solutionFullPath);
         _projects = new List<Project>();
+        SolutionFile = solutionFile;
     }
 
     internal void Done()
@@ -22,7 +22,8 @@ public class Solution
         _projects.Add(project);
     }
 
-    public string SolutionFileName { get; private set; }
-    public string SolutionFullPath { get; private set; }
+    //public string SolutionFileName { get; private set; }
+    //public string SolutionFullPath { get; private set; }
     public ReadOnlyCollection<Project> Projects { get; private set; }
+    public FileInfo SolutionFile { get; }
 }

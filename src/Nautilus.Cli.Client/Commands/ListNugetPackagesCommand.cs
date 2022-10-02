@@ -4,14 +4,16 @@
  * 
  */
 
+using Nautilus.SolutionExplorer.Core.Abstraction;
+
 namespace Nautilus.Cli.Client.Commands;
 
-internal sealed class ListNugetPackagesCommand
+internal sealed class ListNugetPackagesCommand : CommandBase
 {
     private readonly FileInfo _solutionFile;
     private readonly bool _projectsOnly;
 
-    public ListNugetPackagesCommand(FileInfo solutionFile, bool projectsOnly)
+    public ListNugetPackagesCommand(FileInfo solutionFile, bool projectsOnly, bool showFullError = false) : base(showFullError)
     {
         _solutionFile = solutionFile;
         _projectsOnly = projectsOnly;
@@ -19,14 +21,30 @@ internal sealed class ListNugetPackagesCommand
 
     public void Execute()
     {
-        Run().Wait();
+        try
+        {
+            Run().Wait();
+        }
+        catch (CommandException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     private async Task Run()
     {
+        if (!_solutionFile.Extension.Contains("sln"))
+        {
+            throw new CommandException($"Unrecognize file type ({_solutionFile.Extension})");
+        }
+
         Colorful.Console.WriteLine();
 
-        var slnFileReader = new SolutionFileReader(_solutionFile.Name, _projectsOnly);
+        var slnFileReader = new SolutionFileReader(_solutionFile, _projectsOnly);
         var solution = slnFileReader.Read();
 
         var flatList = solution.ExtractNugetPackageAsFlatList();
@@ -44,14 +62,14 @@ internal sealed class ListNugetPackagesCommand
 
         categorizedByPackageNameList = categorizedByPackageNameList.OrderBy(x => x.Key).ToDictionary();
 
-        WriteOutput(categorizedByPackageNameList, solution.SolutionFileName, solution.Projects.Count(), latestPackages);
+        WriteOutput(categorizedByPackageNameList, solution.SolutionFile, solution.Projects.Count(), latestPackages);
     }
 
-    private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> nugetPackages, string solutionFileName, int totalProjects, Dictionary<string, string> latestPackages)
+    private void WriteOutput(Dictionary<string, IList<NugetPackageReferenceExtended>> nugetPackages, FileInfo solutionFile, int totalProjects, Dictionary<string, string> latestPackages)
     {
         Colorful.Console.WriteLine();
         Colorful.Console.Write("{0,-15}", "Solution ");
-        Colorful.Console.WriteLine($": {solutionFileName}", Color.PapayaWhip);
+        Colorful.Console.WriteLine($": {solutionFile.Name}", Color.PapayaWhip);
         Colorful.Console.Write("Total Projects : ");
         Colorful.Console.WriteLine($"{totalProjects}", Color.PapayaWhip);
 

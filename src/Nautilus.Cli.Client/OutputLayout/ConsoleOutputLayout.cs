@@ -2,13 +2,13 @@
 
 internal static class ConsoleOutputLayout
 {
-    internal static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, bool debugMode = false)
+    internal static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, bool showFullError = false)
     {
         Console.WriteLine("");
         Colorful.Console.WriteLine(ex.Message, Color.Red);
         Console.WriteLine("");
 
-        if (debugMode)
+        if (showFullError)
         {
             var baseEx = ex.GetBaseException();
             Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
@@ -18,13 +18,13 @@ internal static class ConsoleOutputLayout
         DisplayProgramHasTerminatedMessage();
     }
 
-    internal static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, bool debugMode = false)
+    internal static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, bool showFullError = false)
     {
         Console.WriteLine("");
         Colorful.Console.WriteLine(ex.Message, Color.Red);
         Console.WriteLine("");
 
-        if (debugMode)
+        if (showFullError)
         {
             var baseEx = ex.GetBaseException();
             Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
@@ -34,13 +34,13 @@ internal static class ConsoleOutputLayout
         DisplayProgramHasTerminatedMessage();
     }
 
-    internal static void DisplayGeneralExceptionMessageFormat(Exception ex, bool debugMode = false)
+    internal static void DisplayGeneralExceptionMessageFormat(Exception ex, bool showFullError = false)
     {
         Console.WriteLine("");
         Colorful.Console.WriteLine(ex.Message, Color.Red);
         Console.WriteLine("");
 
-        if (debugMode)
+        if (showFullError)
         {
             var baseEx = ex.GetBaseException();
             Colorful.Console.WriteLine(baseEx.StackTrace, Color.Red);
@@ -50,20 +50,52 @@ internal static class ConsoleOutputLayout
         DisplayProgramHasTerminatedMessage();
     }
 
-    internal static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
+    internal static void DisplayCommandExceptionMessageFormat(CommandException cmdEx, bool showFullError = false)
     {
         Console.WriteLine("");
-        Colorful.Console.WriteLine(cliEx.Message, Color.Red);
+        Colorful.Console.Write($"[ERR] ", Color.Red);
+        Colorful.Console.WriteLine($"{cmdEx.Message}");
+
         Console.WriteLine("");
 
-        if (debugMode)
+        if (showFullError)
         {
-            Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
+            Colorful.Console.WriteLine(cmdEx.StackTrace, Color.Red);
             Console.WriteLine("");
         }
 
         DisplayProgramHasTerminatedMessage();
     }
+
+    internal static void DisplayExceptionMessageFormat(Exception ex, bool showFullError = false)
+    {
+        Colorful.Console.Write($"[ERR] ", Color.Red);
+        Colorful.Console.WriteLine($"Something went wrong for this command. {ex.Message}");
+        Console.WriteLine("");
+
+        if (showFullError)
+        {
+            Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+            Console.WriteLine("");
+        }
+
+        DisplayProgramHasTerminatedMessage();
+    }
+
+    //internal static void DisplayCLIExceptionMessageFormat(CLIException cliEx, bool debugMode = false)
+    //{
+    //    Console.WriteLine("");
+    //    Colorful.Console.WriteLine(cliEx.Message, Color.Red);
+    //    Console.WriteLine("");
+
+    //    if (debugMode)
+    //    {
+    //        Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
+    //        Console.WriteLine("");
+    //    }
+
+    //    DisplayProgramHasTerminatedMessage();
+    //}
 
     internal static void DisplayFinishingMessage(Stopwatch sw)
     {
@@ -86,22 +118,22 @@ internal static class ConsoleOutputLayout
         DisplayProgramHasTerminatedMessage();
     }
 
-    internal static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, string logFileName, bool debugMode = false)
+    internal static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, string logFileName, bool showFullError = false)
     {
         Console.WriteLine("");
         Colorful.Console.WriteLine(ConsoleMessageConstants.ErrorsHasOccurredM, Color.Red);
         Console.WriteLine("");
 
-        LogToFileIfDebugMode(ex, logFileName, debugMode);
+        LogToFileIfDebugMode(ex, logFileName, showFullError);
     }
 
-    internal static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, string logFileName, bool debugMode = false)
+    internal static void DisplayNugetPackageNotFoundMessageFormat(NugetPackageNotFoundException ex, string logFileName, bool showFullError = false)
     {
         Console.WriteLine("");
         Colorful.Console.WriteLine(ex.Message, Color.Red);
         Console.WriteLine("");
 
-        if (debugMode)
+        if (showFullError)
         {
             LoggingManager.Instance.Initialize(logFileName, true);
 
@@ -116,13 +148,13 @@ internal static class ConsoleOutputLayout
         }
     }
 
-    internal static void DisplayGeneralExceptionMessageFormat(Exception ex, string logFileName, bool debugMode = false)
+    internal static void DisplayGeneralExceptionMessageFormat(Exception ex, string logFileName, bool showFullError = false)
     {
         Console.WriteLine("");
         Colorful.Console.WriteLine(ex.Message, Color.Red);
         Console.WriteLine("");
 
-        if (debugMode)
+        if (showFullError)
         {
             LoggingManager.Instance.Initialize(logFileName, true);
 
@@ -137,29 +169,49 @@ internal static class ConsoleOutputLayout
         }
     }
 
-    internal static void DisplayCLIExceptionMessageFormat(CLIException cliEx, string logFileName, bool debugMode = false)
+    internal static void DisplayCommandExceptionMessageFormat(CommandException cmdEx, string logFileName, bool showFullError = false)
     {
         Console.WriteLine("");
-        Colorful.Console.WriteLine(cliEx.Message, Color.Red);
+        Colorful.Console.WriteLine(cmdEx.Message, Color.Red);
         Console.WriteLine("");
 
-        if (debugMode)
+        if (showFullError)
         {
             LoggingManager.Instance.Initialize(logFileName, true);
 
-            Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
+            Colorful.Console.WriteLine(cmdEx.StackTrace, Color.Red);
 
-            LoggingManager.Instance.WriteError($"{cliEx.Message}\n{cliEx.StackTrace}");
+            LoggingManager.Instance.WriteError($"{cmdEx.Message}\n{cmdEx.StackTrace}");
 
             Console.WriteLine("");
 
             LoggingManager.Instance.Close();
         }
     }
+
+    //internal static void DisplayCLIExceptionMessageFormat(CLIException cliEx, string logFileName, bool debugMode = false)
+    //{
+    //    Console.WriteLine("");
+    //    Colorful.Console.WriteLine(cliEx.Message, Color.Red);
+    //    Console.WriteLine("");
+
+    //    if (debugMode)
+    //    {
+    //        LoggingManager.Instance.Initialize(logFileName, true);
+
+    //        Colorful.Console.WriteLine(cliEx.StackTrace, Color.Red);
+
+    //        LoggingManager.Instance.WriteError($"{cliEx.Message}\n{cliEx.StackTrace}");
+
+    //        Console.WriteLine("");
+
+    //        LoggingManager.Instance.Close();
+    //    }
+    //}
 
     internal static void DisplayExecutionTimeMessage(Stopwatch sw)
     {
-        Colorful.Console.WriteLine($"{ConsoleMessageConstants.ExecutionTime} {sw.Elapsed}",Color.Yellow);
+        Colorful.Console.WriteLine($"{ConsoleMessageConstants.ExecutionTime} {sw.Elapsed}", Color.Yellow);
     }
 
     internal static void DisplayCompletedSuccessfullyFinishingMessage()
@@ -167,9 +219,9 @@ internal static class ConsoleOutputLayout
         Colorful.Console.WriteLine($"\n{ConsoleMessageConstants.CompletedSuccessfully}\n");
     }
 
-    internal static void LogToFileIfDebugMode(ProjectNotFoundException ex, string logFileName, bool debugMode)
+    internal static void LogToFileIfDebugMode(ProjectNotFoundException ex, string logFileName, bool showFullError)
     {
-        if (debugMode)
+        if (showFullError)
         {
             Colorful.Console.WriteLine(ConsoleMessageConstants.CheckLog, Color.Red);
 

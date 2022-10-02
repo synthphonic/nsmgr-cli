@@ -11,9 +11,9 @@ internal sealed class FindPackageCommand
 {
     private readonly bool _returnResults;
 
-    internal FindPackageCommand(string solutionFileName, string nugetPackage, bool returnResults = false)
+    internal FindPackageCommand(FileInfo solutionFile, string nugetPackage, bool returnResults = false)
     {
-        SolutionFileName = solutionFileName;
+        SolutionFile = solutionFile;
         NugetPackage = nugetPackage;
         _returnResults = returnResults;
     }
@@ -29,7 +29,7 @@ internal sealed class FindPackageCommand
         Colorful.Console.WriteLine();
         Colorful.Console.WriteLine("Working. Please wait...", Color.GreenYellow);
 
-        var slnFileReader = new SolutionFileReader(SolutionFileName, true);
+        var slnFileReader = new SolutionFileReader(SolutionFile, true);
         var solution = slnFileReader.Read();
 
         var flatList = solution.ExtractNugetPackageAsFlatList();
@@ -47,7 +47,7 @@ internal sealed class FindPackageCommand
             }
             else
             {
-                WriteOutput(projects, solution.SolutionFileName);
+                WriteOutput(projects, solution.SolutionFile);
             }
 
             return;
@@ -58,11 +58,11 @@ internal sealed class FindPackageCommand
         await Task.Delay(1);
     }
 
-    private void WriteOutput(IList<NugetPackageReferenceExtended> projects, string solutionFileName)
+    private void WriteOutput(IList<NugetPackageReferenceExtended> projects, FileInfo solutionFile)
     {
         Colorful.Console.WriteLine();
         Colorful.Console.Write("{0,-15}", "Solution ");
-        Colorful.Console.WriteLine($": {solutionFileName}", Color.PapayaWhip);
+        Colorful.Console.WriteLine($": {solutionFile}", Color.PapayaWhip);
 
         Colorful.Console.WriteLine();
 
@@ -81,5 +81,5 @@ internal sealed class FindPackageCommand
 
     public IList<NugetPackageReferenceExtended>? Results { get; private set; }
     public string? NugetPackage { get; }
-    public string? SolutionFileName { get; }
+    public FileInfo? SolutionFile { get; }
 }

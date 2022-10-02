@@ -48,7 +48,7 @@ public class UpdateNugetPackageCommand
 
         await Run();
 
-        var findPackage = new FindPackageCommand(solution.SolutionFullPath, _nugetPackageName, true);
+        var findPackage = new FindPackageCommand(solution.SolutionFile, _nugetPackageName, true);
         findPackage.Execute();
         var results = findPackage.Results;
 
@@ -140,7 +140,7 @@ public class UpdateNugetPackageCommand
 
     private Solution ReadSolutionStructure()
     {
-        var slnFileReader = new SolutionFileReader(_solutionFile.Name, true);
+        var slnFileReader = new SolutionFileReader(_solutionFile, true);
 
         try
         {
