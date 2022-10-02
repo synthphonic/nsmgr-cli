@@ -73,7 +73,7 @@ internal class CommonOption
     /// The full path of the solution file name option
     /// </summary>
     /// <returns></returns>
-    internal Option<FileInfo> SolutionOption()
+    internal Option<FileInfo> SolutionPathOption()
     {
         return OptionGenerator.CreateOption<FileInfo>("--solution", "The solution path", "-s", isRequired: true);
     }

@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.Cli.Client.Commands;
 
-internal sealed class ListProjectsCommand
+internal sealed class ListProjectsCommand : CommandBase
 {
     private readonly FileInfo _solutionFile;
     private readonly bool _projectsOnly;
@@ -15,12 +15,12 @@ internal sealed class ListProjectsCommand
         _showPreReleaseNugetPackages = showPreReleaseNugetPackages;
     }
 
-    public void Execute()
+    public override async Task ExecuteAsync()
     {
-        Run().Wait();
+        await RunAsync();
     }
 
-    private async Task Run()
+    private async Task RunAsync()
     {
         var slnFileReader = new SolutionFileReader(_solutionFile, _projectsOnly);
         Solution solution = null!;
@@ -35,13 +35,10 @@ internal sealed class ListProjectsCommand
             Colorful.Console.WriteLine($": {solution.SolutionFile.Name}", Color.PapayaWhip);
             Colorful.Console.Write("Total Projects : ");
             Colorful.Console.WriteLine($"{solution.Projects.Count()}\n", Color.PapayaWhip);
-
-            Colorful.Console.WriteLine();
-            Colorful.Console.WriteLine("Working. Please wait...", Color.DeepSkyBlue);
         }
-        catch (SolutionFileException)
+        catch (SolutionFileException solEx)
         {
-            throw;
+            throw new CommandException(solEx.Message, solEx);
         }
         catch (Exception)
         {

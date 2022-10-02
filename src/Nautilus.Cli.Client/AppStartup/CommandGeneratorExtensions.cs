@@ -1,13 +1,20 @@
 ﻿internal static class CommandGeneratorExtensions
 {
+    private static Option<string> NugetPackageNameOption = OptionGenerator.CreateOption<string>(name: "--package-name", description: "The nuget package name to find. e.g: Newtonsoft.Json", alias: "-n", isRequired: true);
+    private static Option<string> NugetPackageVersionOption = OptionGenerator.CreateOption<string>(name: "--version", description: "The nuget package version to target", alias: "-v", isRequired: true);
+    private static Option<FileInfo> SolutionPathOption = OptionGenerator.Common!.SolutionPathOption();
+    private static Option<FileInfo> ProjectPathOption = OptionGenerator.Common!.ProjectPathOption();
+    private static Option<string> ProjectNameOption = OptionGenerator.Common!.ProjectNameOption();
+    private static Option<bool> BackupOption = OptionGenerator.CreateOption<bool>("--backup", "Backup file before version is modified", "-b");
+    private static Option<bool> RestoreOption = OptionGenerator.CreateOption<bool>("--restore", "Restore file to its original state before modification", "-r");
+    private static Option<bool> ShowFullErrorOption = OptionGenerator.CreateOption<bool>(name: "--show-error", description: "Display full error", defaultValue: false, alias: "-e", isHidden: true);
+    private static Option<bool> ShowPreReleasePackageOption = OptionGenerator.CreateOption<bool>(name: "--prerelease-package", description: "Show pre release nuget package", defaultValue: false, alias: "-r", isHidden: false);
+    private static Option<bool> ShowProjectOnlyOption = OptionGenerator.CreateOption<bool>(name: "--project-only", description: "Show projects only", defaultValue: false, alias: "-p");
+    private static Option<bool> ShowNugetPackageUpdateOption = OptionGenerator.CreateOption<bool>(name: "--package-update", description: "Show available nuget package updates", defaultValue: false, alias: "-u");
+    private static Option<string> XmlMetadataOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description: "The fully qualified xml metadata element to target", alias: "-x", isRequired: true);
+
     internal static void BuildNugetPackageCommand(this RootCommand rootCommand)
     {
-        var nugetPackageNameOption = OptionGenerator.CreateOption<string>(name: "--name", description: "The nuget package name to find. e.g: Newtonsoft.Json", alias: "-n", isRequired: true);
-        var nugetPackageVersionOption = OptionGenerator.CreateOption<string>(name: "--version", description: "The nuget package version to target", alias: "-v", isRequired: true);
-        var projectNameOption = OptionGenerator.Common!.ProjectNameOption();
-        var solutionPathOption = OptionGenerator.Common.SolutionOption();
-        var showFullErrorOption = OptionGenerator.CreateOption<bool>(name: "--show-error", description: "Display full error", defaultValue: false, alias: "-e", isHidden: true);
-
         //
         // Parent: package command
         //
@@ -18,12 +25,10 @@
         // package find --name <name>
         //
         var findPackageCommand = new Command("find", "Finds the project(s) that depends on the intended nuget package");
-        findPackageCommand.AddOption(solutionPathOption);
-        findPackageCommand.AddOption(nugetPackageNameOption);
+        findPackageCommand.AddOption(SolutionPathOption);
+        findPackageCommand.AddOption(NugetPackageNameOption);
         findPackageCommand.SetHandler(async (solutionFile, nugetPackageName, showFullError) =>
         {
-            //Console.WriteLine($"trying to find {nugetPackageName}");
-
             try
             {
                 var command = new FindPackageCommand(solutionFile, nugetPackageName);
@@ -40,7 +45,7 @@
                 Environment.Exit(-1);
             }
 
-        }, solutionPathOption, nugetPackageNameOption, showFullErrorOption);
+        }, SolutionPathOption, NugetPackageNameOption, ShowFullErrorOption);
 
         packageCommand.Add(findPackageCommand);
 
@@ -48,8 +53,8 @@
         // package list --solution
         //
         var listPackageSubCommand = new Command("list", "List out all projects that exists under a solution (.sln)");
-        listPackageSubCommand.AddOption(solutionPathOption);
-        listPackageSubCommand.AddOption(showFullErrorOption);
+        listPackageSubCommand.AddOption(SolutionPathOption);
+        listPackageSubCommand.AddOption(ShowFullErrorOption);
         listPackageSubCommand.SetHandler(async (solutionFileInfo, showFullError) =>
         {
             try
@@ -67,7 +72,7 @@
                 ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
                 Environment.Exit(-1);
             }
-        }, solutionPathOption, showFullErrorOption);
+        }, SolutionPathOption, ShowFullErrorOption);
 
         packageCommand.Add(listPackageSubCommand);
 
@@ -81,10 +86,11 @@
         var updatePackageSubCommand = new Command("update", "Update a nuget package for a project to a latest version");
         packageCommand.Add(updatePackageSubCommand);
 
-        updatePackageSubCommand.AddOption(nugetPackageNameOption);
-        updatePackageSubCommand.AddOption(nugetPackageVersionOption);
-        updatePackageSubCommand.AddOption(projectNameOption);
-        updatePackageSubCommand.AddOption(solutionPathOption);
+        updatePackageSubCommand.AddOption(NugetPackageNameOption);
+        updatePackageSubCommand.AddOption(ShowFullErrorOption);
+        updatePackageSubCommand.AddOption(NugetPackageVersionOption);
+        updatePackageSubCommand.AddOption(ProjectNameOption);
+        updatePackageSubCommand.AddOption(SolutionPathOption);
         updatePackageSubCommand.SetHandler(async (packageName, packageVersion, projectName, solutionFile, showFullError) =>
         {
             Console.WriteLine($"Package Name    : {packageName}");
@@ -108,15 +114,11 @@
                 Environment.Exit(-1);
             }
 
-        }, nugetPackageNameOption, nugetPackageVersionOption, projectNameOption, solutionPathOption, showFullErrorOption);
+        }, NugetPackageNameOption, NugetPackageVersionOption, ProjectNameOption, SolutionPathOption, ShowFullErrorOption);
     }
 
     internal static void BuildProjectCommand(this RootCommand rootCommand)
     {
-        var solutionOption = OptionGenerator.Common!.SolutionOption();
-        var projectOption = OptionGenerator.Common!.ProjectPathOption();
-        var backupOption = OptionGenerator.CreateOption<bool>("--backup", "Backup file before version is modified", "-b");
-        var restoreOption = OptionGenerator.CreateOption<bool>("--restore", "Restore file to its original state before modification", "-r");
         var argument = new Argument<string>();
         argument.Name = "version number";
 
@@ -131,8 +133,31 @@
         //  --solution /path/to/the/solution/file/mysolution.sln
         //
         var projectListCommand = new Command("list", "Show all projects in a solution");
-        projectListCommand.AddOption(solutionOption);
+        projectListCommand.AddOption(SolutionPathOption);
+        projectListCommand.AddOption(ShowProjectOnlyOption);
+        projectListCommand.AddOption(NugetPackageNameOption);
+        projectListCommand.AddOption(ShowNugetPackageUpdateOption);
+        projectListCommand.AddOption(ShowFullErrorOption);
+        projectListCommand.AddOption(ShowPreReleasePackageOption);
         projectCommand.Add(projectListCommand);
+        projectListCommand.SetHandler(async (solutionFile, showProjectOnly, packageName, showNugetPackageUpdate, showFullError, showPreReleasePackage) =>
+        {
+            try
+            {
+                var command = new ListProjectsCommand(solutionFile, showProjectOnly, packageName, showNugetPackageUpdate, showPreReleasePackage);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
+        }, SolutionPathOption, ShowProjectOnlyOption, NugetPackageNameOption, ShowNugetPackageUpdateOption, ShowFullErrorOption, ShowPreReleasePackageOption);
 
         //
         // project update version 1.2.3.4
@@ -144,15 +169,15 @@
         var updateCommand = new Command("update", "Update command");
         var versionCommand = new Command("version", "The version to use");
         versionCommand.AddArgument(argument);
-        versionCommand.AddOption(projectOption);
-        versionCommand.AddOption(solutionOption);
-        versionCommand.AddOption(backupOption);
-        versionCommand.AddOption(restoreOption);
-        versionCommand.SetHandler((solutionFileInfo, isBackup, isRestore) =>
+        versionCommand.AddOption(ProjectNameOption);
+        versionCommand.AddOption(SolutionPathOption);
+        versionCommand.AddOption(BackupOption);
+        versionCommand.AddOption(RestoreOption);
+        versionCommand.SetHandler((solutionFileInfo, projectName, isBackup, isRestore) =>
         {
             Console.WriteLine($"Solution: {solutionFileInfo.Name} : [{solutionFileInfo.Exists}] : backup {isBackup} , restore {isRestore}");
 
-        }, solutionOption, backupOption, restoreOption);
+        }, SolutionPathOption, ProjectNameOption, BackupOption, RestoreOption);
 
         updateCommand.Add(versionCommand);
         projectCommand.Add(updateCommand);
@@ -162,9 +187,6 @@
 
     private static void BuildProjectMetadataCommand(Command? parentCommand)
     {
-        var metadataOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description: "The fully qualified xml metadata element to target", alias: "-x", isRequired: true);
-        var projectPathOption = OptionGenerator.Common!.ProjectPathOption();
-
         //
         // project metadata add
         //  --xml-metadata PropertyGroup:Authors=a,bb,ccc
@@ -174,11 +196,13 @@
         parentCommand!.Add(metadataCommand);
 
         var addMetadataCommand = new Command("add", "Add a new project metadata to the project file");
+        addMetadataCommand.AddOption(XmlMetadataOption);
+        addMetadataCommand.AddOption(ProjectPathOption);
         addMetadataCommand.SetHandler((xmlMetadata, projectPath) =>
         {
             Console.WriteLine($"Execute : add metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
 
-        }, metadataOption, projectPathOption);
+        }, XmlMetadataOption, ProjectPathOption);
 
         //
         // project metadata update
@@ -190,7 +214,7 @@
         {
             Console.WriteLine($"Execute : update metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
 
-        }, metadataOption, projectPathOption);
+        }, XmlMetadataOption, ProjectPathOption);
 
         //
         // project metadata delete
@@ -202,16 +226,16 @@
         {
             Console.WriteLine($"Execute : delete metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
 
-        }, metadataOption, projectPathOption);
+        }, XmlMetadataOption, ProjectPathOption);
 
-        addMetadataCommand.AddOption(metadataOption);
-        addMetadataCommand.AddOption(projectPathOption);
+        addMetadataCommand.AddOption(XmlMetadataOption);
+        addMetadataCommand.AddOption(ProjectPathOption);
 
-        updateMetadataCommand.AddOption(metadataOption);
-        updateMetadataCommand.AddOption(projectPathOption);
+        updateMetadataCommand.AddOption(XmlMetadataOption);
+        updateMetadataCommand.AddOption(ProjectPathOption);
 
-        deleteMetadataCommand.AddOption(metadataOption);
-        deleteMetadataCommand.AddOption(projectPathOption);
+        deleteMetadataCommand.AddOption(XmlMetadataOption);
+        deleteMetadataCommand.AddOption(ProjectPathOption);
 
         metadataCommand.Add(addMetadataCommand);
         metadataCommand.Add(updateMetadataCommand);
