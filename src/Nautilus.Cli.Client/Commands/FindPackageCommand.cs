@@ -1,11 +1,4 @@
-﻿/*
- * 
- * https://github.com/commandlineparser/commandline/wiki
- * 
- */
-
-
-namespace Nautilus.Cli.Client.Commands;
+﻿namespace Nautilus.Cli.Client.Commands;
 
 internal sealed class FindPackageCommand
 {

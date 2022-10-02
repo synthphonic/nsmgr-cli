@@ -7,5 +7,6 @@ public abstract class CommandBase
         ShowFullError = showFullError;
     }
 
+    public abstract Task ExecuteAsync();
     public bool ShowFullError { get; set; }
 }

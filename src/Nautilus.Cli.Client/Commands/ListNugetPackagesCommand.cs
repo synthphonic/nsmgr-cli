@@ -1,12 +1,4 @@
-﻿/*
- * 
- * https://github.com/commandlineparser/commandline/wiki
- * 
- */
-
-using Nautilus.SolutionExplorer.Core.Abstraction;
-
-namespace Nautilus.Cli.Client.Commands;
+﻿namespace Nautilus.Cli.Client.Commands;
 
 internal sealed class ListNugetPackagesCommand : CommandBase
 {
@@ -19,11 +11,11 @@ internal sealed class ListNugetPackagesCommand : CommandBase
         _projectsOnly = projectsOnly;
     }
 
-    public void Execute()
+    public override async Task ExecuteAsync()
     {
         try
         {
-            Run().Wait();
+            await RunAsync();
         }
         catch (CommandException)
         {
@@ -35,7 +27,7 @@ internal sealed class ListNugetPackagesCommand : CommandBase
         }
     }
 
-    private async Task Run()
+    private async Task RunAsync()
     {
         if (!_solutionFile.Extension.Contains("sln"))
         {
