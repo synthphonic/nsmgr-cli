@@ -13,18 +13,7 @@ internal sealed class ListNugetPackagesCommand : CommandBase
 
     public override async Task ExecuteAsync()
     {
-        try
-        {
-            await RunAsync();
-        }
-        catch (CommandException)
-        {
-            throw;
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        await RunAsync();
     }
 
     private async Task RunAsync()

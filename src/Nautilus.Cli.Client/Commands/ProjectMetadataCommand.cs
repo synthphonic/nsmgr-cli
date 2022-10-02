@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.Cli.Client.Commands;
 
-internal sealed class ProjectMetadataCommand
+internal sealed class ProjectMetadataCommand : CommandBase
 {
     private readonly string _metadata;
     private readonly string _projectFile;
@@ -13,7 +13,7 @@ internal sealed class ProjectMetadataCommand
         _removeMetadata = removeMetadata;
     }
 
-    public void Execute()
+    public override async Task ExecuteAsync()
     {
         //
         // project-property -p ../../../../../../nautilus/Nautilus.IO.csproj -t PropertyGroup:Authors=aa,bb,cc
@@ -38,5 +38,7 @@ internal sealed class ProjectMetadataCommand
                 .ParentElement(elementInfo.SearchElement)
                 .Create(elementInfo.TargetElement, elementInfo.TargetValue);
         }
+
+        await Task.CompletedTask;
     }
 }

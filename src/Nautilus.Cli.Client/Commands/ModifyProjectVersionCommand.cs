@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.Cli.Client.Commands;
 
-internal sealed class ModifyProjectVersionCommand
+internal sealed class ModifyProjectVersionCommand : CommandBase
 {
     private readonly FileInfo _projectFile;
     private readonly string _versionNumber;
@@ -15,13 +15,13 @@ internal sealed class ModifyProjectVersionCommand
         _backup = backup;
     }
 
-    public void Execute()
+    public override async Task ExecuteAsync()
     {
-        Run().Wait();
+        await RunAsync();
     }
 
-    private async Task Run()
-    {        
+    private async Task RunAsync()
+    {
         var prjMetadata = ProjectMetadata.SetMetadata(_projectFile.Name);
         var project = new Project(prjMetadata);
         project.Read();

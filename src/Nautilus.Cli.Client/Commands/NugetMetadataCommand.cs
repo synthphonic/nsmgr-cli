@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.Cli.Client.Commands;
 
-public class NugetMetadataCommand
+public class NugetMetadataCommand : CommandBase
 {
     private const string ParentElement = "PropertyGroup";
     private const string DescriptionMetadata = "Description";
@@ -19,7 +19,7 @@ public class NugetMetadataCommand
         _removeMetadata = removeMetadata;
     }
 
-    public void Execute()
+    public override async Task ExecuteAsync()
     {
         var prjMetadata = ProjectMetadata.SetMetadata(_projectFile.Name);
         var project = new Project(prjMetadata);
@@ -36,6 +36,8 @@ public class NugetMetadataCommand
         Console.WriteLine();
 
         AddNugetMetadata(project);
+
+        await Task.CompletedTask;
     }
 
     private static void AddNugetMetadata(Project project)
