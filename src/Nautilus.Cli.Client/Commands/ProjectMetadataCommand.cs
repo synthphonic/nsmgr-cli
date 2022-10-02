@@ -15,9 +15,6 @@ internal sealed class ProjectMetadataCommand
 
     public void Execute()
     {
-        Colorful.Console.WriteLine();
-        Colorful.Console.WriteLine("Working. Please wait...", Color.GreenYellow);
-
         //
         // project-property -p ../../../../../../nautilus/Nautilus.IO.csproj -t PropertyGroup:Authors=aa,bb,cc
         //

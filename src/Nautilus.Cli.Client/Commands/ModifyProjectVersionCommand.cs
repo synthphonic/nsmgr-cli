@@ -21,10 +21,7 @@ internal sealed class ModifyProjectVersionCommand
     }
 
     private async Task Run()
-    {
-        Colorful.Console.WriteLine();
-        Colorful.Console.WriteLine("Working. Please wait...", Color.GreenYellow);
-
+    {        
         var prjMetadata = ProjectMetadata.SetMetadata(_projectFile.Name);
         var project = new Project(prjMetadata);
         project.Read();

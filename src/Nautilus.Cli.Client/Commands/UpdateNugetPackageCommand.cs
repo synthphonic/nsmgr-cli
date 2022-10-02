@@ -1,6 +1,6 @@
 ﻿namespace Nautilus.Cli.Client.Commands;
 
-public class UpdateNugetPackageCommand
+public class UpdateNugetPackageCommand : CommandBase
 {
     private const string Example_Text = "Update nuget package to a specificed verison number";
     private readonly FileInfo _solutionFile;
@@ -17,12 +17,12 @@ public class UpdateNugetPackageCommand
         _nugetPackageVersion = nugetPackageVersion;
     }
 
-    public void Execute()
+    public override async Task ExecuteAsync()
     {
-        Run().Wait();
+        await RunAsync();
     }
 
-    private async Task Run()
+    private async Task RunAsync()
     {
         var solution = ReadSolutionStructure();
 
@@ -32,7 +32,7 @@ public class UpdateNugetPackageCommand
         }
         else
         {
-            await UpdatePerProject(solution);
+            await UpdateSingleProject(solution);
         }
     }
 
@@ -40,7 +40,7 @@ public class UpdateNugetPackageCommand
     {
         _returnResults = true;
 
-        await Run();
+        await RunAsync();
 
         var findPackage = new FindPackageCommand(solution.SolutionFile, _nugetPackageName, true);
         await findPackage.ExecuteAsync();
@@ -66,7 +66,7 @@ public class UpdateNugetPackageCommand
         _returnResults = returnResults;
     }
 
-    private async Task UpdatePerProject(Solution solution)
+    private async Task UpdateSingleProject(Solution solution)
     {
         //
         // Validate the project existence

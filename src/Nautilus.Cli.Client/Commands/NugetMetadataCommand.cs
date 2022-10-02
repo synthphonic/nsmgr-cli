@@ -19,7 +19,6 @@ public class NugetMetadataCommand
         _removeMetadata = removeMetadata;
     }
 
-
     public void Execute()
     {
         var prjMetadata = ProjectMetadata.SetMetadata(_projectFile.Name);

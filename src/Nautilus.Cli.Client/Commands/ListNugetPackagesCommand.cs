@@ -34,8 +34,6 @@ internal sealed class ListNugetPackagesCommand : CommandBase
             throw new CommandException($"Unrecognize file type ({_solutionFile.Extension})");
         }
 
-        Colorful.Console.WriteLine();
-
         var slnFileReader = new SolutionFileReader(_solutionFile, _projectsOnly);
         var solution = slnFileReader.Read();
 
@@ -84,7 +82,7 @@ internal sealed class ListNugetPackagesCommand : CommandBase
 
             foreach (var item in sortedByProjects)
             {
-                Colorful.Console.Write($"In Project ");
+                Colorful.Console.Write($"Project : ");
                 Colorful.Console.Write(CliStringFormatter.Format40, Color.Azure, item.ProjectName);
                 Colorful.Console.Write("[{0,-16}]", Color.Azure, item.ProjectTargetFramework);
                 Colorful.Console.Write(" found version ");
