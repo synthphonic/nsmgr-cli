@@ -16,7 +16,7 @@ public class QueryPackageResponse : BaseHttpResponse
     public Context Context { get; set; }
 
     [JsonProperty("totalHits")]
-    public int TotalHits { get; set; }
+    public ulong TotalHits { get; set; }
 
     [JsonProperty("lastReopen")]
     public DateTime LastReopen { get; set; }
@@ -43,7 +43,7 @@ public class VersionInfo
     public string Version { get; set; }
 
     [JsonProperty("downloads")]
-    public int Downloads { get; set; }
+    public ulong Downloads { get; set; }
 
     [JsonProperty("@id")]
     public string Id { get; set; }
@@ -91,7 +91,7 @@ public class Datum
     public IList<string> Authors { get; set; }
 
     [JsonProperty("totalDownloads")]
-    public int TotalDownloads { get; set; }
+    public ulong TotalDownloads { get; set; }
 
     [JsonProperty("verified")]
     public bool Verified { get; set; }
