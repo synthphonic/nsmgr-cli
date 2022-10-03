@@ -13,6 +13,7 @@ global using System.Xml;
 global using System.Xml.Linq;
 global using System.Xml.Serialization;
 global using Nautilus.SolutionExplorer.Core.Abstraction;
+global using Nautilus.SolutionExplorer.Core.Cache;
 global using Nautilus.SolutionExplorer.Core.Components.Http;
 global using Nautilus.SolutionExplorer.Core.Configurations;
 global using Nautilus.SolutionExplorer.Core.Configurations.Enums;
