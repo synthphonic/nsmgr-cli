@@ -22,20 +22,24 @@ internal sealed class ModifyProjectVersionCommand : CommandBase
 
     private async Task RunAsync()
     {
-        var prjMetadata = ProjectMetadata.SetMetadata(_projectFile.Name);
+        var prjMetadata = ProjectMetadata.SetMetadata(_projectFile.FullName);
         var project = new Project(prjMetadata);
         project.Read();
 
         if (_restoreVersionNumber && _backup)
             throw new CommandException("Restore and Backup switch cannot be used together in a single command line usage.");
 
-        if (_restoreVersionNumber)
+        if (_restoreVersionNumber && !_backup)
         {
             project.Restore();
         }
-        else if (_backup)
+        else if (!_restoreVersionNumber && _backup)
         {
             project.Backup();
+            project.Update("Version", _versionNumber);
+        }
+        else if (!_restoreVersionNumber && !_backup)
+        {
             project.Update("Version", _versionNumber);
         }
 

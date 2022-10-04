@@ -12,6 +12,7 @@
     private static Option<bool> ShowProjectOnlyOption = OptionGenerator.CreateOption<bool>(name: "--project-only", description: "Show projects only", defaultValue: false, alias: "-p");
     private static Option<bool> ShowNugetPackageUpdateOption = OptionGenerator.CreateOption<bool>(name: "--package-update", description: "Show available nuget package updates", defaultValue: false, alias: "-u");
     private static Option<string> XmlMetadataOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description: "The fully qualified xml metadata element to target", alias: "-x", isRequired: true);
+    private static Argument<string> VersionArgument = ArgumentGenerator.Common!.VersionArgument();
 
     internal static void BuildNugetPackageCommand(this RootCommand rootCommand)
     {
@@ -119,9 +120,6 @@
 
     internal static void BuildProjectCommand(this RootCommand rootCommand)
     {
-        var argument = new Argument<string>();
-        argument.Name = "version number";
-
         //
         // Parent: project command
         //
@@ -166,17 +164,31 @@
         //  --restore (optional)
         //
         var updateCommand = new Command("update", "Update command");
-        var versionCommand = new Command("version", "The version to use");
-        versionCommand.AddArgument(argument);
-        versionCommand.AddOption(ProjectNameOption);
-        versionCommand.AddOption(SolutionPathOption);
+        var versionCommand = new Command("version", "The version to set for the project");
+        versionCommand.AddArgument(VersionArgument);
+        versionCommand.AddOption(ProjectPathOption);
         versionCommand.AddOption(BackupOption);
         versionCommand.AddOption(RestoreOption);
-        versionCommand.SetHandler((solutionFileInfo, projectName, isBackup, isRestore) =>
+        versionCommand.AddOption(ShowFullErrorOption);
+        versionCommand.SetHandler(async (projectFile, versionNumber, isRestore, isBackup, showFullError) =>
         {
-            Console.WriteLine($"Solution: {solutionFileInfo.Name} : [{solutionFileInfo.Exists}] : backup {isBackup} , restore {isRestore}");
+            try
+            {
+                var command = new ModifyProjectVersionCommand(projectFile, versionNumber, isRestore, isBackup);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
 
-        }, SolutionPathOption, ProjectNameOption, BackupOption, RestoreOption);
+        }, ProjectPathOption, VersionArgument, RestoreOption, BackupOption, ShowFullErrorOption);
 
         updateCommand.Add(versionCommand);
         projectCommand.Add(updateCommand);
