@@ -38,12 +38,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
 
@@ -66,12 +66,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
         }, SolutionPathOption, ShowFullErrorOption);
@@ -107,12 +107,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
 
@@ -147,12 +147,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
         }, SolutionPathOption, ShowProjectOnlyOption, ShowNugetPackageUpdateOption, ShowFullErrorOption, ShowPreReleasePackageOption);
@@ -180,12 +180,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
 
@@ -214,12 +214,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
 
@@ -243,18 +243,18 @@
             }
             catch (SolutionFileException solEx)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<SolutionFileException>(solEx, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<SolutionFileException>(ex: solEx, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
-            
+
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
         }, SolutionPathOption, ShowFullErrorOption);
@@ -285,12 +285,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
 
@@ -313,12 +313,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
 
@@ -341,12 +341,12 @@
             }
             catch (CommandException cmdException)
             {
-                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
             catch (Exception ex)
             {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
 
