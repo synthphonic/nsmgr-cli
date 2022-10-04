@@ -23,100 +23,14 @@
         var packageCommand = new Command("package", "Nuget package command");
         rootCommand.Add(packageCommand);
 
-        //
-        // package find --name <name>
-        //
-        var findPackageCommand = new Command("find", "Finds the project(s) that depends on the intended nuget package");
-        findPackageCommand.AddOption(SolutionPathOption);
-        findPackageCommand.AddOption(NugetPackageNameOption);
-        findPackageCommand.SetHandler(async (solutionFile, nugetPackageName, showFullError) =>
-        {
-            try
-            {
-                var command = new FindPackageCommand(solutionFile, nugetPackageName);
-                await command.ExecuteAsync();
-            }
-            catch (CommandException cmdException)
-            {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
-                Environment.Exit(-1);
-            }
-            catch (Exception ex)
-            {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
-                Environment.Exit(-1);
-            }
-
-        }, SolutionPathOption, NugetPackageNameOption, ShowFullErrorOption);
-
+        var findPackageCommand = CreateFindPackageCommand();
         packageCommand.Add(findPackageCommand);
 
-        //
-        // package list --solution
-        //
-        var listPackageSubCommand = new Command("list", "List out all projects that exists under a solution (.sln)");
-        listPackageSubCommand.AddOption(SolutionPathOption);
-        listPackageSubCommand.AddOption(ShowFullErrorOption);
-        listPackageSubCommand.SetHandler(async (solutionFileInfo, showFullError) =>
-        {
-            try
-            {
-                var findPackageCmd = new ListNugetPackagesCommand(solutionFileInfo, false, showFullError);
-                await findPackageCmd.ExecuteAsync();
-            }
-            catch (CommandException cmdException)
-            {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
-                Environment.Exit(-1);
-            }
-            catch (Exception ex)
-            {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
-                Environment.Exit(-1);
-            }
-        }, SolutionPathOption, ShowFullErrorOption);
-
+        var listPackageSubCommand = CreateListPackageCommand();
         packageCommand.Add(listPackageSubCommand);
 
-        //
-        // package update
-        //  --name Xamarin.Forms
-        //  --version 1.2.3.4
-        //  --project MyProject
-        //  --solution /path/to/the/solution/file/mysolution.sln
-        //
-        var updatePackageSubCommand = new Command("update", "Update a nuget package for a project to a latest version");
+        var updatePackageSubCommand = CreateUpdatePackageCommand();
         packageCommand.Add(updatePackageSubCommand);
-
-        updatePackageSubCommand.AddOption(NugetPackageNameOption);
-        updatePackageSubCommand.AddOption(ShowFullErrorOption);
-        updatePackageSubCommand.AddOption(NugetPackageVersionOption);
-        updatePackageSubCommand.AddOption(ProjectNameOption);
-        updatePackageSubCommand.AddOption(SolutionPathOption);
-        updatePackageSubCommand.SetHandler(async (packageName, packageVersion, projectName, solutionFile, showFullError) =>
-        {
-            Console.WriteLine($"Package Name    : {packageName}");
-            Console.WriteLine($"Version         : {packageVersion}");
-            Console.WriteLine($"Project Name    : {projectName}");
-            Console.WriteLine($"Solution Path   : {solutionFile.Name} : [{solutionFile.Exists}]");
-
-            try
-            {
-                var cmd = new UpdateNugetPackageCommand(solutionFile, projectName, packageName, packageVersion);
-                await cmd.ExecuteAsync();
-            }
-            catch (CommandException cmdException)
-            {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
-                Environment.Exit(-1);
-            }
-            catch (Exception ex)
-            {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
-                Environment.Exit(-1);
-            }
-
-        }, NugetPackageNameOption, NugetPackageVersionOption, ProjectNameOption, SolutionPathOption, ShowFullErrorOption);
     }
 
     internal static void BuildProjectCommand(this RootCommand rootCommand)
@@ -127,22 +41,76 @@
         var projectCommand = new Command("project", "Project or csproj command");
         rootCommand.Add(projectCommand);
 
+        var projectListCommand = CreateProjectListingCommand();
+        projectCommand.Add(projectListCommand);
+
+        var updateCommand = CreateProjectVersionUpdateCommand();
+        projectCommand.Add(updateCommand);
+
+        var listProjectPackageCommand = CreateProjectNugetPackageListCommand();
+        projectCommand.Add(listProjectPackageCommand);
+
+        var listProjectTargetFrameworkCommand = CreateProjectListingTargetFrameworkCommand();
+        projectCommand.Add(listProjectTargetFrameworkCommand);
+
+        BuildProjectMetadataCommand(projectCommand);
+    }
+
+    private static Command CreateProjectListingTargetFrameworkCommand()
+    {
         //
-        // project list
+        // project list-target-framework
         //  --solution /path/to/the/solution/file/mysolution.sln
         //
-        var projectListCommand = new Command("list", "Show all projects in a solution");
-        projectListCommand.AddOption(SolutionPathOption);
-        projectListCommand.AddOption(ShowProjectOnlyOption);
-        projectListCommand.AddOption(ShowNugetPackageUpdateOption);
-        projectListCommand.AddOption(ShowFullErrorOption);
-        projectListCommand.AddOption(ShowPreReleasePackageOption);
-        projectCommand.Add(projectListCommand);
-        projectListCommand.SetHandler(async (solutionFile, showProjectOnly, showNugetPackageUpdate, showFullError, showPreReleasePackage) =>
+        var listProjectTargetFrameworkCommand = new Command("project-target-framework", "Shows all projects' target framework in a given solution");
+        listProjectTargetFrameworkCommand.AddOption(SolutionPathOption);
+        listProjectTargetFrameworkCommand.AddOption(ShowFullErrorOption);
+        listProjectTargetFrameworkCommand.SetHandler(async (solutionFile, showFullError) =>
         {
             try
             {
-                var command = new ListProjectsCommand(solutionFile, showProjectOnly, showNugetPackageUpdate, showPreReleasePackage);
+                var command = new ListProjectsTargetFrameworkCommand(solutionFile);
+                await command.ExecuteAsync();
+            }
+            catch (SolutionFileException solEx)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<SolutionFileException>(ex: solEx, showFullError: showFullError);
+                Environment.Exit(-1);
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
+                Environment.Exit(-1);
+            }
+
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
+                Environment.Exit(-1);
+            }
+        }, SolutionPathOption, ShowFullErrorOption);
+
+        return listProjectTargetFrameworkCommand;
+    }
+
+    private static Command CreateProjectNugetPackageListCommand()
+    {
+        //
+        // project list-package
+        //  --project myproject.csproj
+        //  --package-update
+        //  --prerelease-package
+        //
+        var listProjectPackageCommand = new Command("list-package", "Show all nuget packages available for a project");
+        listProjectPackageCommand.AddOption(ProjectPathOption);
+        listProjectPackageCommand.AddOption(ShowNugetPackageUpdateOption);
+        listProjectPackageCommand.AddOption(ShowPreReleasePackageOption);
+        listProjectPackageCommand.AddOption(ShowFullErrorOption);
+        listProjectPackageCommand.SetHandler(async (projectInfo, showNugetPackageUpdate, showPrereleaseNugetPackage, showFullError) =>
+        {
+            try
+            {
+                var command = new ListNugetPackageInSingleProjectCommand(projectInfo, showNugetPackageUpdate, showPrereleaseNugetPackage);
                 await command.ExecuteAsync();
             }
             catch (CommandException cmdException)
@@ -155,8 +123,14 @@
                 ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
-        }, SolutionPathOption, ShowProjectOnlyOption, ShowNugetPackageUpdateOption, ShowFullErrorOption, ShowPreReleasePackageOption);
 
+        }, ProjectPathOption, ShowNugetPackageUpdateOption, ShowPreReleasePackageOption, ShowFullErrorOption);
+
+        return listProjectPackageCommand;
+    }
+
+    private static Command CreateProjectVersionUpdateCommand()
+    {
         //
         // project update version 1.2.3.4
         //  --project myproject.csproj
@@ -192,24 +166,27 @@
         }, ProjectPathOption, VersionArgument, RestoreOption, BackupOption, ShowFullErrorOption);
 
         updateCommand.Add(versionCommand);
-        projectCommand.Add(updateCommand);
 
+        return updateCommand;
+    }
+
+    private static Command CreateProjectListingCommand()
+    {
         //
-        // project list-package
-        //  --project myproject.csproj
-        //  --package-update
-        //  --prerelease-package
+        // project list
+        //  --solution /path/to/the/solution/file/mysolution.sln
         //
-        var listProjectPackageCommand = new Command("list-package", "Show all nuget packages available for a project");
-        listProjectPackageCommand.AddOption(ProjectPathOption);
-        listProjectPackageCommand.AddOption(ShowNugetPackageUpdateOption);
-        listProjectPackageCommand.AddOption(ShowPreReleasePackageOption);
-        listProjectPackageCommand.AddOption(ShowFullErrorOption);
-        listProjectPackageCommand.SetHandler(async (projectInfo, showNugetPackageUpdate, showPrereleaseNugetPackage, showFullError) =>
+        var projectListCommand = new Command("list", "Show all projects in a solution");
+        projectListCommand.AddOption(SolutionPathOption);
+        projectListCommand.AddOption(ShowProjectOnlyOption);
+        projectListCommand.AddOption(ShowNugetPackageUpdateOption);
+        projectListCommand.AddOption(ShowFullErrorOption);
+        projectListCommand.AddOption(ShowPreReleasePackageOption);
+        projectListCommand.SetHandler(async (solutionFile, showProjectOnly, showNugetPackageUpdate, showFullError, showPreReleasePackage) =>
         {
             try
             {
-                var command = new ListNugetPackageInSingleProjectCommand(projectInfo, showNugetPackageUpdate, showPrereleaseNugetPackage);
+                var command = new ListProjectsCommand(solutionFile, showProjectOnly, showNugetPackageUpdate, showPreReleasePackage);
                 await command.ExecuteAsync();
             }
             catch (CommandException cmdException)
@@ -222,45 +199,113 @@
                 ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
+        }, SolutionPathOption, ShowProjectOnlyOption, ShowNugetPackageUpdateOption, ShowFullErrorOption, ShowPreReleasePackageOption);
 
-        }, ProjectPathOption, ShowNugetPackageUpdateOption, ShowPreReleasePackageOption, ShowFullErrorOption);
+        return projectListCommand;
+    }
 
-        projectCommand.Add(listProjectPackageCommand);
-
+    private static Command CreateUpdatePackageCommand()
+    {
         //
-        // project list-target-framework
+        // package update
+        //  --name Xamarin.Forms
+        //  --version 1.2.3.4
+        //  --project MyProject
         //  --solution /path/to/the/solution/file/mysolution.sln
         //
-        var listProjectTargetFrameworkCommand = new Command("project-target-framework", "Shows all projects' target framework in a given solution");
-        listProjectTargetFrameworkCommand.AddOption(SolutionPathOption);
-        listProjectTargetFrameworkCommand.AddOption(ShowFullErrorOption);
-        listProjectTargetFrameworkCommand.SetHandler(async (solutionFile, showFullError) =>
+        var updatePackageSubCommand = new Command("update", "Update a nuget package for a project to a latest version");
+        updatePackageSubCommand.AddOption(NugetPackageNameOption);
+        updatePackageSubCommand.AddOption(ShowFullErrorOption);
+        updatePackageSubCommand.AddOption(NugetPackageVersionOption);
+        updatePackageSubCommand.AddOption(ProjectNameOption);
+        updatePackageSubCommand.AddOption(SolutionPathOption);
+        updatePackageSubCommand.SetHandler(async (packageName, packageVersion, projectName, solutionFile, showFullError) =>
         {
+            Console.WriteLine($"Package Name    : {packageName}");
+            Console.WriteLine($"Version         : {packageVersion}");
+            Console.WriteLine($"Project Name    : {projectName}");
+            Console.WriteLine($"Solution Path   : {solutionFile.Name} : [{solutionFile.Exists}]");
+
             try
             {
-                var command = new ListProjectsTargetFrameworkCommand(solutionFile);
-                await command.ExecuteAsync();
-            }
-            catch (SolutionFileException solEx)
-            {
-                ConsoleOutputLayout.DisplayExceptionMessageFormat<SolutionFileException>(ex: solEx, showFullError: showFullError);
-                Environment.Exit(-1);
+                var cmd = new UpdateNugetPackageCommand(solutionFile, projectName, packageName, packageVersion);
+                await cmd.ExecuteAsync();
             }
             catch (CommandException cmdException)
             {
                 ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
                 Environment.Exit(-1);
             }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
+                Environment.Exit(-1);
+            }
 
+        }, NugetPackageNameOption, NugetPackageVersionOption, ProjectNameOption, SolutionPathOption, ShowFullErrorOption);
+
+        return updatePackageSubCommand;
+    }
+
+    private static Command CreateListPackageCommand()
+    {
+        //
+        // package list --solution
+        //
+        var listPackageSubCommand = new Command("list", "List out all projects that exists under a solution (.sln)");
+        listPackageSubCommand.AddOption(SolutionPathOption);
+        listPackageSubCommand.AddOption(ShowFullErrorOption);
+        listPackageSubCommand.SetHandler(async (solutionFileInfo, showFullError) =>
+        {
+            try
+            {
+                var findPackageCmd = new ListNugetPackagesCommand(solutionFileInfo, false, showFullError);
+                await findPackageCmd.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
+                Environment.Exit(-1);
+            }
             catch (Exception ex)
             {
                 ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
                 Environment.Exit(-1);
             }
         }, SolutionPathOption, ShowFullErrorOption);
-        projectCommand.Add(listProjectTargetFrameworkCommand);
 
-        BuildProjectMetadataCommand(projectCommand);
+        return listPackageSubCommand;
+    }
+
+    private static Command CreateFindPackageCommand()
+    {
+        //
+        // package find --name <name>
+        //
+        var findPackageCommand = new Command("find", "Finds the project(s) that depends on the intended nuget package");
+        findPackageCommand.AddOption(SolutionPathOption);
+        findPackageCommand.AddOption(NugetPackageNameOption);
+        findPackageCommand.SetHandler(async (solutionFile, nugetPackageName, showFullError) =>
+        {
+            try
+            {
+                var command = new FindPackageCommand(solutionFile, nugetPackageName);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<CommandException>(ex: cmdException, showFullError: showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<Exception>(ex: ex, showFullError: showFullError);
+                Environment.Exit(-1);
+            }
+
+        }, SolutionPathOption, NugetPackageNameOption, ShowFullErrorOption);
+
+        return findPackageCommand;
     }
 
     private static void BuildProjectMetadataCommand(Command? parentCommand)
