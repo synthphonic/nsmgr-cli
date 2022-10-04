@@ -3,10 +3,10 @@
 internal sealed class ProjectMetadataCommand : CommandBase
 {
     private readonly string _metadata;
-    private readonly string _projectFile;
+    private readonly FileInfo _projectFile;
     private readonly bool _removeMetadata;
 
-    public ProjectMetadataCommand(string metadata, string projectFile, bool removeMetadata)
+    public ProjectMetadataCommand(string metadata, FileInfo projectFile, bool removeMetadata)
     {
         _metadata = metadata;
         _projectFile = projectFile;
@@ -22,7 +22,7 @@ internal sealed class ProjectMetadataCommand : CommandBase
         // Parse the element name and value
         var elementInfo = XmlParser.ParseFromCliParameter(_metadata);
 
-        var prjMetadata = ProjectMetadata.SetMetadata(_projectFile);
+        var prjMetadata = ProjectMetadata.SetMetadata(_projectFile.FullName);
         var project = new Project(prjMetadata);
         project.Read();
 
