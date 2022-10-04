@@ -1,5 +1,5 @@
 ﻿internal static class CommandGeneratorExtensions
-{    
+{
     private static Option<string> NugetPackageNameOption = OptionGenerator.CreateOption<string>(name: "--package-name", description: "The nuget package name to find. e.g: Newtonsoft.Json", alias: "-n", isRequired: true);
     private static Option<string> NugetPackageVersionOption = OptionGenerator.CreateOption<string>(name: "--version", description: "The nuget package version to target", alias: "-v", isRequired: true);
     private static Option<FileInfo> SolutionPathOption = OptionGenerator.Common!.SolutionPathOption();
@@ -232,22 +232,36 @@
 
     private static void BuildProjectMetadataCommand(Command? parentCommand)
     {
+        var metadataCommand = new Command("metadata", "Visual studio's project file metadata command");
+        parentCommand!.Add(metadataCommand);
+
         //
         // project metadata add
         //  --xml-metadata PropertyGroup:Authors=a,bb,ccc
         //  --project-path ~/projects/somefoldername/myproject.csproj
         //
-        var metadataCommand = new Command("metadata", "Visual studio's project file metadata command");
-        parentCommand!.Add(metadataCommand);
-
         var addMetadataCommand = new Command("add", "Add a new project metadata to the project file");
         addMetadataCommand.AddOption(XmlMetadataAddOrUpdateOption);
         addMetadataCommand.AddOption(ProjectPathOption);
-        addMetadataCommand.SetHandler((xmlMetadata, projectPath) =>
+        addMetadataCommand.SetHandler(async (xmlMetadata, projectFile, showFullError) =>
         {
-            Console.WriteLine($"Execute : add metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
+            try
+            {
+                var command = new ProjectMetadataCommand(xmlMetadata, projectFile, false);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
 
-        }, XmlMetadataAddOrUpdateOption, ProjectPathOption);
+        }, XmlMetadataAddOrUpdateOption, ProjectPathOption, ShowFullErrorOption);
 
         //
         // project metadata update
@@ -255,11 +269,27 @@
         //  --project-path ~/projects/somefoldername/myproject.csproj
         //
         var updateMetadataCommand = new Command("update", "Update project metadata to the project file");
-        updateMetadataCommand.SetHandler((xmlMetadata, projectPath) =>
+        updateMetadataCommand.AddOption(XmlMetadataAddOrUpdateOption);
+        updateMetadataCommand.AddOption(ProjectPathOption);
+        updateMetadataCommand.SetHandler(async (xmlMetadata, projectFile, showFullError) =>
         {
-            Console.WriteLine($"Execute : update metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
+            try
+            {
+                var command = new ProjectMetadataCommand(xmlMetadata, projectFile, false);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
 
-        }, XmlMetadataAddOrUpdateOption, ProjectPathOption);
+        }, XmlMetadataAddOrUpdateOption, ProjectPathOption, ShowFullErrorOption);
 
         //
         // project metadata delete
@@ -267,6 +297,8 @@
         //  --project-path ~/projects/somefoldername/myproject.csproj
         //
         var deleteMetadataCommand = new Command("delete", "Delete project metadata");
+        deleteMetadataCommand.AddOption(XmlMetadataRemoveOption);
+        deleteMetadataCommand.AddOption(ProjectPathOption);
         deleteMetadataCommand.SetHandler(async (xmlMetadata, projectFile, showFullError) =>
         {
             try
@@ -286,15 +318,6 @@
             }
 
         }, XmlMetadataRemoveOption, ProjectPathOption, ShowFullErrorOption);
-
-        addMetadataCommand.AddOption(XmlMetadataAddOrUpdateOption);
-        addMetadataCommand.AddOption(ProjectPathOption);
-
-        updateMetadataCommand.AddOption(XmlMetadataAddOrUpdateOption);
-        updateMetadataCommand.AddOption(ProjectPathOption);
-
-        deleteMetadataCommand.AddOption(XmlMetadataRemoveOption);
-        deleteMetadataCommand.AddOption(ProjectPathOption);
 
         metadataCommand.Add(addMetadataCommand);
         metadataCommand.Add(updateMetadataCommand);
