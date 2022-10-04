@@ -1,11 +1,20 @@
 ﻿namespace Nautilus.Cli.Client.Commands;
 
+/// <summary>
+/// Project metadata command
+/// </summary>
 internal sealed class ProjectMetadataCommand : CommandBase
 {
     private readonly string _metadata;
     private readonly FileInfo _projectFile;
     private readonly bool _removeMetadata;
 
+    /// <summary>
+    /// ctor
+    /// </summary>
+    /// <param name="metadata"></param>
+    /// <param name="projectFile"></param>
+    /// <param name="removeMetadata">set to true to delete a metadata, else it is either add new or update an existing metadata</param>
     public ProjectMetadataCommand(string metadata, FileInfo projectFile, bool removeMetadata)
     {
         _metadata = metadata;
