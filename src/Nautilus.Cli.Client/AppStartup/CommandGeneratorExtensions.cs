@@ -208,12 +208,6 @@
         {
             try
             {
-                Console.WriteLine($"DEBUG ====");
-                Console.WriteLine($"{projectInfo.FullName} : [{projectInfo.Exists}]");
-                Console.WriteLine($"showNugetPackageUpdate : [{showNugetPackageUpdate}]");
-                Console.WriteLine($"showPrereleaseNugetPackage : [{showPrereleaseNugetPackage}]");
-                Console.WriteLine($"==========");
-
                 var command = new ListNugetPackageInSingleProjectCommand(projectInfo, showNugetPackageUpdate, showPrereleaseNugetPackage);
                 await command.ExecuteAsync();
             }
