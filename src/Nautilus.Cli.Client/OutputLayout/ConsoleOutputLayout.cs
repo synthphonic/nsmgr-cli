@@ -2,6 +2,22 @@
 
 internal static class ConsoleOutputLayout
 {
+    internal static void DisplayExceptionMessageFormat<T>(T ex, bool showFullError = false) where T : Exception, new()
+    {
+        Colorful.Console.Write($"[ERR] ", Color.Red);
+        Colorful.Console.WriteLine($"{ex.Message}");
+
+        Console.WriteLine("");
+
+        if (showFullError)
+        {
+            Colorful.Console.WriteLine(ex.StackTrace, Color.Red);
+            Console.WriteLine("");
+        }
+
+        DisplayProgramHasTerminatedMessage();
+    }
+
     internal static void DisplayProjectNotFoundMessageFormat(ProjectNotFoundException ex, bool showFullError = false)
     {
         Console.WriteLine("");
