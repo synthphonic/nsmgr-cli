@@ -34,7 +34,8 @@ internal sealed class ListNugetPackageInSingleProjectCommand : CommandBase
 
         try
         {
-            project = new Project(_projectInfo);
+            var metadata = ProjectMetadata.SetMetadata(_projectInfo.FullName);
+            project = new Project(metadata);
             project.Read();
 
             //Colorful.Console.Write($"{CliStringFormatter.Format15}", "Project ");
