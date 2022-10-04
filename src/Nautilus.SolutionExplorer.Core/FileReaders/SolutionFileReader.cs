@@ -28,7 +28,6 @@ public class SolutionFileReader
 
         foreach (var item in searchResults)
         {
-            //var parentPath = FileUtil.GetFullPath(_solutionFile.Name);
             ExtractProjectMetadata(item, _solutionFile.FullName);
         }
 
