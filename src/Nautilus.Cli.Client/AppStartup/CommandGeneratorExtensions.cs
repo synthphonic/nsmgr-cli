@@ -285,6 +285,7 @@
         var findPackageCommand = new Command("find", "Finds the project(s) that depends on the intended nuget package");
         findPackageCommand.AddOption(SolutionPathOption);
         findPackageCommand.AddOption(NugetPackageNameOption);
+        findPackageCommand.AddOption(ShowFullErrorOption);        
         findPackageCommand.SetHandler(async (solutionFile, nugetPackageName, showFullError) =>
         {
             try
