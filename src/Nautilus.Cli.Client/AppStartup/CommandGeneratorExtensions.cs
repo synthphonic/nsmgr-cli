@@ -181,6 +181,45 @@
         updateCommand.Add(versionCommand);
         projectCommand.Add(updateCommand);
 
+        //
+        // project list-package
+        //  --project myproject.csproj
+        //  --package-update
+        //  --prerelease-package
+        //
+        var listProjectPackageCommand = new Command("list-package", "Show all nuget packages available for a project");
+        listProjectPackageCommand.AddOption(ProjectPathOption);
+        listProjectPackageCommand.AddOption(ShowNugetPackageUpdateOption);
+        listProjectPackageCommand.AddOption(ShowPreReleasePackageOption);
+        listProjectPackageCommand.AddOption(ShowFullErrorOption);
+        listProjectPackageCommand.SetHandler(async (projectInfo, showNugetPackageUpdate, showPrereleaseNugetPackage, showFullError) =>
+        {
+            try
+            {
+                Console.WriteLine($"DEBUG ====");
+                Console.WriteLine($"{projectInfo.FullName} : [{projectInfo.Exists}]");
+                Console.WriteLine($"showNugetPackageUpdate : [{showNugetPackageUpdate}]");
+                Console.WriteLine($"showPrereleaseNugetPackage : [{showPrereleaseNugetPackage}]");
+                Console.WriteLine($"==========");
+
+                var command = new ListNugetPackageInSingleProjectCommand(projectInfo, showNugetPackageUpdate, showPrereleaseNugetPackage);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
+
+        }, ProjectPathOption, ShowNugetPackageUpdateOption, ShowPreReleasePackageOption, ShowFullErrorOption);
+
+        projectCommand.Add(listProjectPackageCommand);
+
         BuildProjectMetadataCommand(projectCommand);
     }
 

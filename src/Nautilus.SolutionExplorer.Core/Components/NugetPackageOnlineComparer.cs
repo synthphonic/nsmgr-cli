@@ -1,12 +1,13 @@
-﻿using Nautilus.SolutionExplorer.Core.Cache;
+﻿namespace Nautilus.SolutionExplorer.Core.Components;
 
-namespace Nautilus.SolutionExplorer.Core.Components;
-
+delegate Task RunTask();
 public class NugetPackageOnlineComparer
 {
     private readonly Solution _solution;
+    private readonly Project _project;
     private readonly bool _showPreReleaseNugetPackages;
     private readonly Action _writeProgressHandler;
+    private RunTask _runTask;
 
     public NugetPackageOnlineComparer(Solution solution, bool showPreReleaseNugetPackages, Action writeProgressHandler = null)
     {
@@ -14,9 +15,32 @@ public class NugetPackageOnlineComparer
         _showPreReleaseNugetPackages = showPreReleaseNugetPackages;
         _writeProgressHandler = writeProgressHandler;
         Result = new Dictionary<string, IList<NugetPackageInformationComparer>>();
+
+        _runTask = RunForSolutionAsync;
+    }
+
+    public NugetPackageOnlineComparer(Project project, bool showPreReleaseNugetPackages, Action writeProgressHandler = null)
+    {
+        _project = project;
+        _showPreReleaseNugetPackages = showPreReleaseNugetPackages;
+        _writeProgressHandler = writeProgressHandler;
+        Result = new Dictionary<string, IList<NugetPackageInformationComparer>>();
+
+        _runTask = RunForProjectAsync;
     }
 
     public async Task Run()
+    {
+        if (_runTask is not null)
+            await _runTask();
+    }
+
+    private async Task RunForProjectAsync()
+    {
+        await GetOnlinePackagesAsync(_project);
+    }
+
+    private async Task RunForSolutionAsync()
     {
         foreach (var project in _solution.Projects)
         {

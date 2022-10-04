@@ -16,18 +16,27 @@ public class FileReaderContext
     private readonly ProjectMetadata _metadata;
     private readonly ProjectTargetFramework _targetFramework;
     private readonly bool _packagesConfigFileExist;
+    private string _projectFullPath;
 
     public FileReaderContext(Project project) : this()
     {
         _metadata = project.Metadata;
+        _projectFullPath = _metadata.ProjectFullPath;
         _targetFramework = project.TargetFramework;
         _packagesConfigFileExist = project.PackagesConfigFileExist;
+    }
+
+    public FileReaderContext(ProjectTargetFramework targetFramework, string projectFullPath) : this()
+    {
+        _targetFramework = targetFramework;
+        _projectFullPath = projectFullPath;
     }
 
     internal FileReaderContext(ProjectTargetFramework targetFramework, ProjectMetadata projectMetadata) : this()
     {
         _metadata = projectMetadata;
         _targetFramework = targetFramework;
+        _projectFullPath = projectMetadata.ProjectFullPath;
     }
 
     private FileReaderContext()
@@ -80,13 +89,13 @@ public class FileReaderContext
                 _targetFramework == ProjectTargetFramework.NETFramework47 ||
                 _targetFramework == ProjectTargetFramework.NETFramework48)
             {
-                var projectFileName = _metadata.ProjectFullPath;
+                var projectFileName = _projectFullPath;
                 var packageConfigFile = Path.Combine(Path.GetDirectoryName(projectFileName), "packages.config");
                 packageConfigExists = File.Exists(packageConfigFile);
 
                 returnedObject = packageConfigExists
-                    ? _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath)
-                    : _fileReaders[ProjectTargetFramework.NETFramework].ReadNugetPackages(_metadata.ProjectFullPath);
+                    ? _fileReaders[_targetFramework].ReadNugetPackages(_projectFullPath)
+                    : _fileReaders[ProjectTargetFramework.NETFramework].ReadNugetPackages(_projectFullPath);
             }
             else
             {
@@ -94,7 +103,7 @@ public class FileReaderContext
                 // should be .NET CORE and above if code lands here
                 //
 
-                returnedObject = _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath);
+                returnedObject = _fileReaders[_targetFramework].ReadNugetPackages(_projectFullPath);
             }
 
             return returnedObject;
@@ -132,7 +141,7 @@ public class FileReaderContext
     {   
         try
         {
-            var foundVersion = _fileReaders[_targetFramework].ReadVersion(_metadata.ProjectFullPath);
+            var foundVersion = _fileReaders[_targetFramework].ReadVersion(_projectFullPath);
             return foundVersion;
         }
         catch (KeyNotFoundException keyNotFoundEx)
@@ -179,21 +188,21 @@ public class FileReaderContext
             {
                 if (_packagesConfigFileExist)
                 {
-                    packageReferences = _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+                    packageReferences = _fileReaders[_targetFramework].ReadNugetPackages(_projectFullPath) as IList<NugetPackageReference>;
                     found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
                     version = found.Version;
 
                     return !string.IsNullOrWhiteSpace(found.Version);
                 }
 
-                packageReferences = _fileReaders[ProjectTargetFramework.NETFramework].ReadNugetPackages(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+                packageReferences = _fileReaders[ProjectTargetFramework.NETFramework].ReadNugetPackages(_projectFullPath) as IList<NugetPackageReference>;
                 found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
                 version = found.Version;
 
                 return !string.IsNullOrWhiteSpace(found.Version);
             }
 
-            packageReferences = _fileReaders[_targetFramework].ReadNugetPackages(_metadata.ProjectFullPath) as IList<NugetPackageReference>;
+            packageReferences = _fileReaders[_targetFramework].ReadNugetPackages(_projectFullPath) as IList<NugetPackageReference>;
             found = packageReferences.FirstOrDefault(x => x.PackageName.Equals(packageName));
             version = found.Version;
 
