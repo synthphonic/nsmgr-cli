@@ -11,6 +11,11 @@ internal class ListProjectsTargetFrameworkCommand : CommandBase
 
     public override async Task ExecuteAsync()
     {
+        if (!_solutionFile!.Exists)
+        {
+            throw new SolutionFileException($"Solution file '{_solutionFile.FullName}' is invalid", "solutionFileName");
+        }
+
         await RunAsync();
     }
 
@@ -22,17 +27,17 @@ internal class ListProjectsTargetFrameworkCommand : CommandBase
         #region Solution file reader execution section
         solution = slnFileReader.Read();
 
-        Colorful.Console.WriteLine();
+        //Colorful.Console.WriteLine();
         Colorful.Console.Write($"{CliStringFormatter.Format15}", "Solution ");
         Colorful.Console.WriteLine($": {solution.SolutionFile}", Color.PapayaWhip);
         Colorful.Console.Write("Total Projects : ");
         Colorful.Console.WriteLine($"{solution.Projects.Count()}\n", Color.PapayaWhip);
 
-        Colorful.Console.WriteLine();
-        Colorful.Console.WriteLine("Working. Please wait...", Color.DeepSkyBlue);
+        //Colorful.Console.WriteLine();
+        //Colorful.Console.WriteLine("Working. Please wait...", Color.DeepSkyBlue);
         #endregion
 
-        Colorful.Console.WriteLine();
+        //Colorful.Console.WriteLine();
 
         WriteFinalizedResultToScreen(solution);
 

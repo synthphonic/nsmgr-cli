@@ -227,6 +227,39 @@
 
         projectCommand.Add(listProjectPackageCommand);
 
+        //
+        // project list-target-framework
+        //  --solution /path/to/the/solution/file/mysolution.sln
+        //
+        var listProjectTargetFrameworkCommand = new Command("project-target-framework", "Shows all projects' target framework in a given solution");
+        listProjectTargetFrameworkCommand.AddOption(SolutionPathOption);
+        listProjectTargetFrameworkCommand.AddOption(ShowFullErrorOption);
+        listProjectTargetFrameworkCommand.SetHandler(async (solutionFile, showFullError) =>
+        {
+            try
+            {
+                var command = new ListProjectsTargetFrameworkCommand(solutionFile);
+                await command.ExecuteAsync();
+            }
+            catch (SolutionFileException solEx)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat<SolutionFileException>(solEx, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
+        }, SolutionPathOption, ShowFullErrorOption);
+        projectCommand.Add(listProjectTargetFrameworkCommand);
+
         BuildProjectMetadataCommand(projectCommand);
     }
 
