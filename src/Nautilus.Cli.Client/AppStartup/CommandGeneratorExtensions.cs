@@ -1,5 +1,5 @@
 ﻿internal static class CommandGeneratorExtensions
-{
+{    
     private static Option<string> NugetPackageNameOption = OptionGenerator.CreateOption<string>(name: "--package-name", description: "The nuget package name to find. e.g: Newtonsoft.Json", alias: "-n", isRequired: true);
     private static Option<string> NugetPackageVersionOption = OptionGenerator.CreateOption<string>(name: "--version", description: "The nuget package version to target", alias: "-v", isRequired: true);
     private static Option<FileInfo> SolutionPathOption = OptionGenerator.Common!.SolutionPathOption();
@@ -11,7 +11,8 @@
     private static Option<bool> ShowPreReleasePackageOption = OptionGenerator.CreateOption<bool>(name: "--prerelease-package", description: "Show pre release nuget package", defaultValue: false, alias: "-r", isHidden: false);
     private static Option<bool> ShowProjectOnlyOption = OptionGenerator.CreateOption<bool>(name: "--project-only", description: "Show projects only", defaultValue: false, alias: "-p");
     private static Option<bool> ShowNugetPackageUpdateOption = OptionGenerator.CreateOption<bool>(name: "--package-update", description: "Show available nuget package updates", defaultValue: false, alias: "-u");
-    private static Option<string> XmlMetadataOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description: "The fully qualified xml metadata element to target", alias: "-x", isRequired: true);
+    private static Option<string> XmlMetadataAddOrUpdateOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description: "The fully qualified xml metadata element to target. e.g: PropertyGroup:Authors=a,bb,ccc", alias: "-x", isRequired: true);
+    private static Option<string> XmlMetadataRemoveOption = OptionGenerator.CreateOption<string>(name: "--xml-metadata", description: "The fully qualified xml metadata element to target. e.g: PropertyGroup:Authors", alias: "-x", isRequired: true);
     private static Argument<string> VersionArgument = ArgumentGenerator.Common!.VersionArgument();
 
     internal static void BuildNugetPackageCommand(this RootCommand rootCommand)
@@ -240,13 +241,13 @@
         parentCommand!.Add(metadataCommand);
 
         var addMetadataCommand = new Command("add", "Add a new project metadata to the project file");
-        addMetadataCommand.AddOption(XmlMetadataOption);
+        addMetadataCommand.AddOption(XmlMetadataAddOrUpdateOption);
         addMetadataCommand.AddOption(ProjectPathOption);
         addMetadataCommand.SetHandler((xmlMetadata, projectPath) =>
         {
             Console.WriteLine($"Execute : add metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
 
-        }, XmlMetadataOption, ProjectPathOption);
+        }, XmlMetadataAddOrUpdateOption, ProjectPathOption);
 
         //
         // project metadata update
@@ -258,7 +259,7 @@
         {
             Console.WriteLine($"Execute : update metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
 
-        }, XmlMetadataOption, ProjectPathOption);
+        }, XmlMetadataAddOrUpdateOption, ProjectPathOption);
 
         //
         // project metadata delete
@@ -266,19 +267,33 @@
         //  --project-path ~/projects/somefoldername/myproject.csproj
         //
         var deleteMetadataCommand = new Command("delete", "Delete project metadata");
-        deleteMetadataCommand.SetHandler((xmlMetadata, projectPath) =>
+        deleteMetadataCommand.SetHandler(async (xmlMetadata, projectFile, showFullError) =>
         {
-            Console.WriteLine($"Execute : delete metadata {xmlMetadata} : project-path {projectPath} : [{projectPath.Exists}]");
+            try
+            {
+                var command = new ProjectMetadataCommand(xmlMetadata, projectFile, true);
+                await command.ExecuteAsync();
+            }
+            catch (CommandException cmdException)
+            {
+                ConsoleOutputLayout.DisplayCommandExceptionMessageFormat(cmdException, showFullError);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutputLayout.DisplayExceptionMessageFormat(ex, showFullError);
+                Environment.Exit(-1);
+            }
 
-        }, XmlMetadataOption, ProjectPathOption);
+        }, XmlMetadataRemoveOption, ProjectPathOption, ShowFullErrorOption);
 
-        addMetadataCommand.AddOption(XmlMetadataOption);
+        addMetadataCommand.AddOption(XmlMetadataAddOrUpdateOption);
         addMetadataCommand.AddOption(ProjectPathOption);
 
-        updateMetadataCommand.AddOption(XmlMetadataOption);
+        updateMetadataCommand.AddOption(XmlMetadataAddOrUpdateOption);
         updateMetadataCommand.AddOption(ProjectPathOption);
 
-        deleteMetadataCommand.AddOption(XmlMetadataOption);
+        deleteMetadataCommand.AddOption(XmlMetadataRemoveOption);
         deleteMetadataCommand.AddOption(ProjectPathOption);
 
         metadataCommand.Add(addMetadataCommand);
