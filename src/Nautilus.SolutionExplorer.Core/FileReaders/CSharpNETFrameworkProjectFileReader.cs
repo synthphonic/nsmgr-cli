@@ -46,6 +46,18 @@ public class CSharpNETFrameworkProjectFileReader : IProjectFileReader
 
     public string ReadVersion(string fileName)
     {
-        throw new NotImplementedException();
+        var xmlContent = FileUtil.ReadFileContent(fileName);
+
+        var xElement = XElement.Parse(xmlContent);
+
+        var versionElement = xElement.Descendants("Version").FirstOrDefault();
+
+        //
+        // another way of getting the Version string value
+        //
+        //var itemGroups = xElement.Elements("PropertyGroup").ToList();
+        //var versionElement = itemGroups.Elements("Version").ToList();
+
+        return versionElement != null ? versionElement.Value : null;
     }
 }
