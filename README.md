@@ -8,7 +8,7 @@ Perhaps this tool can help you!
 Oh btw, There's always room for improvements, after all we are just human beings. We do our best. If there bugs, we fix. 
 
 ## Available commands
-Refer to [COMMANDS.md](https://github.com/synthphonic/nautilus-cli/blob/develop/develop-main/docs/COMMANDS.md) for available commands
+Refer to [COMMANDS.md](https://github.com/synthphonic/nautilus-cli/blob/master/docs/COMMANDS.md) for available commands
 
 ## Release Status
 ### v1.1 Current release and status
